@@ -7,43 +7,46 @@ import { notFound } from "next/navigation";
 import { development } from "#site/contents";
 
 type Props = {
-	params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
-export default function DevelopmentPage({ params }: Props) {
-	const { slug } = params;
-	const post = getPostBySlug({ slug: slug, category: "development" });
+export default async function DevelopmentPage({ params }: Props) {
+  const { slug } = await params;
+  const post = getPostBySlug({ slug: slug, category: "development" });
 
-	if (!post) {
-		notFound();
-	}
+  if (!post) {
+    notFound();
+  }
 
-	return (
-		<PageLayout>
-			<PostPageLayout post={post} />
-		</PageLayout>
-	);
+  return (
+    <PageLayout>
+      <PostPageLayout post={post} />
+    </PageLayout>
+  );
 }
 export function generateStaticParams() {
-	return development.map((post) => ({
-		slug: post.slug,
-	}));
+  return development.map((post) => ({
+    slug: post.slug,
+  }));
 }
 
-export function generateMetadata({
-	params,
-}: { params: { slug: string } }): Metadata {
-	const post = development.find((post) => post.slug === params.slug);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const post = development.find((post) => post.slug === slug);
 
-	if (!post) {
-		return {};
-	}
+  if (!post) {
+    return {};
+  }
 
-	return metadata({
-		title: post.title,
-		description: post.description,
-		path: post.permalink,
-		publishDate: post.publishDate,
-		image: post.thumbnailUrl,
-	});
+  return metadata({
+    title: post.title,
+    description: post.description,
+    path: post.permalink,
+    publishDate: post.publishDate,
+    image: post.thumbnailUrl,
+  });
 }

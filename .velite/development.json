@@ -9,15 +9,6 @@
     "permalink": "/development/deploy-nextjs-app-with-bun-ec2-nginx-pm2"
   },
   {
-    "title": "LLM에 대해",
-    "description": "텍스트 애널리틱스 수업을 듣고 복습한 내용을 정리하는 글 1",
-    "slug": "language-model",
-    "publishDate": "2025-03-13",
-    "thumbnailUrl": "/development/language-model/1.png",
-    "content": "const{Fragment:e,jsx:n,jsxs:t}=arguments[0];function _createMdxContent(r){const l={img:\"img\",li:\"li\",p:\"p\",ul:\"ul\",...r.components};return t(e,{children:[n(l.p,{children:\"Word Embedding: map the words the language into a vector space, so\\nsemantically similar words are located close to each other.\\n(distributed representation)\"}),\"\\n\",n(l.p,{children:\"Starting from NNLM(Neural Network Language Model), there are\\nthe models such as Word2Vec, GloVe, FastText.\"}),\"\\n\",t(l.ul,{children:[\"\\n\",n(l.li,{children:\"Word2Vec\"}),\"\\n\"]}),\"\\n\",t(l.p,{children:[n(l.img,{src:\"/development/language-model/2.png\",alt:\"\"}),\"\\n\",n(l.img,{src:\"/development/language-model/3.png\",alt:\"\"})]}),\"\\n\",t(l.ul,{children:[\"\\n\",n(l.li,{children:\"GloVe\"}),\"\\n\"]}),\"\\n\",n(l.p,{children:n(l.img,{src:\"/development/language-model/4.png\",alt:\"\"})}),\"\\n\",t(l.ul,{children:[\"\\n\",n(l.li,{children:\"FastText\"}),\"\\n\"]}),\"\\n\",t(l.p,{children:[n(l.img,{src:\"/development/language-model/5.png\",alt:\"\"}),\"\\n\",n(l.img,{src:\"/development/language-model/6.png\",alt:\"\"})]}),\"\\n\",n(l.p,{children:\"the sentences are tokenized and then fed into a language model.\"}),\"\\n\",n(l.p,{children:\"In first, the tokens are embedded into vectors using a embedding matrix.\\nwhy embed them? For analysing the natural language, we need to represent each word as a vector, which has real number values.\"}),\"\\n\",n(l.p,{children:n(l.img,{src:\"/development/language-model/1.png\",alt:\"\"})}),\"\\n\",n(l.p,{children:\"Embedding matrix is called 'W_E', represented as the upper picture. This is gained by training.\"})]})}return{default:function(e={}){const{wrapper:t}=e.components||{};return t?n(t,{...e,children:n(_createMdxContent,{...e})}):_createMdxContent(e)}};",
-    "permalink": "/development/language-model"
-  },
-  {
     "title": "Next.js 앱 CI/CD 구축하기 (Bun, GitHub Actions, CodeDeploy)",
     "description": "Next.js와 Bun으로 만든 애플리케이션을 배포합니다. Vercel이 아닌 AWS의 EC2를 이용하고, nginx와 pm2를 통해 서버를 관리합니다.",
     "slug": "setup-ci-cd-with-codedeploy-github-actions",
