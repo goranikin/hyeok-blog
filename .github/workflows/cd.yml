@@ -8,6 +8,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,7 +27,7 @@ jobs:
           tags: ghcr.io/${{ github.repository }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          platforms: linux/amd64 # GitHub Actions runner는 amd64 아키텍쳐가 기본이긴 하지만 공부할 겸 명시적으로 적었습니다.
+          platforms: linux/amd64
 
       - name: Deploy to AWS EC2
         uses: appleboy/ssh-action@v1
