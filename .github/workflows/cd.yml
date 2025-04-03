@@ -16,6 +16,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
+          dockerfile: ./Dockerfile
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
           cache-from: type=gha
