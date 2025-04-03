@@ -5,3 +5,4 @@ README.md
 .next
 .git
 .env
+.temp_content/*

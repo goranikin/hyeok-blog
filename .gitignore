@@ -47,3 +47,4 @@ next-env.d.ts
 # Velite
 ./velite
 public/static
+.temp_content/*
