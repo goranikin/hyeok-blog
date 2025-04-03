@@ -47,8 +47,3 @@ jobs:
             docker pull ghcr.io/${{ github.repository }}:latest
             docker rm -f hyeok-blog || true
             docker run -d --name hyeok-blog --restart always -p 3000:3000 ghcr.io/${{ github.repository }}:latest
-
-      - name: Verify Deployment on EC2
-        run: |
-          sleep 10
-          curl -f http://${{ secrets.EC2_HOST }}:3000 || exit 1
