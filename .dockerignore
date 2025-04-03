@@ -1,8 +1,7 @@
-Dockerfile
-.dockerignore
 node_modules
 README.md
 .next
 .git
 .env
-.temp_content/*
+*.mdx
+.temp_content/

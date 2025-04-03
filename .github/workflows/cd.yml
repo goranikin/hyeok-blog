@@ -1,0 +1,39 @@
+name: CD
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/${{ github.repository }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64 # GitHub Actions runner는 amd64 아키텍쳐가 기본이긴 하지만 공부할 겸 명시적으로 적었습니다.
+
+      - name: Deploy to AWS EC2
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker pull ghcr.io/${{ github.repository }}:latest
+            docker stop hyeok-blog || true && docker rm hyeok-blog || true
+            docker run -d --name hyeok-blog --restart always -p 3000:3000 ghcr.io/${{ github.repository }}:latest
+
+      - name: Verify Deployment on EC2
+        run: |
+          sleep 10
+          curl -f http://${{ secrets.EC2_HOST }}:3000 || exit 1
