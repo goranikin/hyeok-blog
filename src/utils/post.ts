@@ -4,7 +4,7 @@ export type Post = {
 	permalink: string;
 	slug: string;
 	title: string;
-	description: string;
+	description?: string;
 	publishDate: string;
 	content: string;
 	thumbnailUrl?: string;
@@ -13,7 +13,10 @@ export type Post = {
 export const getPostBySlug = ({
 	slug,
 	category,
-}: { slug: string; category: string }): Post | undefined => {
+}: {
+	slug: string;
+	category: string;
+}): Post | undefined => {
 	let posts: Post[];
 
 	switch (category) {

@@ -9,13 +9,13 @@ type MetadataProps = {
 	image?: string;
 };
 
-const defaultImage = "/itisme.png";
+const DEFAULT_IMAGE = "/itisme.png";
 
 export default function metadata(props: MetadataProps): Metadata {
 	const { title, description: desc, path, image } = props;
 	const description = `${desc} | 큰제비갈매기의 이야기, hyeok12053.dev`;
 
-	const images = BASE_URL + (image ?? defaultImage);
+	const images = BASE_URL + (image ?? DEFAULT_IMAGE);
 
 	return {
 		title,

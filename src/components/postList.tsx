@@ -1,10 +1,13 @@
 import type { Post } from "@/utils/post";
+import Image from "next/image";
 import Link from "next/link";
 
 interface PostListProps {
 	posts: Post[];
 	basePath: string; // 이동할 기본 경로 (예: '/development', '/writing/book-review')
 }
+
+const DEFAULT_IMAGE = "/itisme.png";
 
 export default function PostList({ posts, basePath }: PostListProps) {
 	return (
@@ -30,11 +33,20 @@ export default function PostList({ posts, basePath }: PostListProps) {
 								<span className="font-semibold text-lg break-all line-clamp-2">
 									{post.title}
 								</span>
-								<span className="break-all">{post.description}</span>
+								<span className="break-all">
+									{basePath.includes("writing") ? "" : post.description}
+								</span>
 								<time className="text-xs mt-1">
 									{year}.{month}.{day}
 								</time>
 							</div>
+							<Image
+								width={200}
+								height={200}
+								src={post.thumbnailUrl ?? DEFAULT_IMAGE}
+								alt={post.title}
+								className="object-cover w-28 h-28"
+							/>
 						</Link>
 					);
 				})}
