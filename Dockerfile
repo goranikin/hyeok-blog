@@ -11,8 +11,8 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN bun run build
 RUN bun velite
+RUN bun run build
 
 # Step 3 - copy all the files and run server
 FROM base AS runner
