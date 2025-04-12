@@ -3,5 +3,4 @@ README.md
 .next
 .git
 .env
-*.mdx
 .temp_content/
