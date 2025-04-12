@@ -17,7 +17,7 @@ LSTM is more advanced type of RNN that can retain long-term information better t
 
 Leveraging LSTMs, many researchers have developed various techniques for translating one language to another.
 
-![rnn](/development/tutorial-seq2seq/rnn1.png)
+![](/development/tutorial-seq2seq/rnn1.png)
 
 This is the original RNN architecture. The gray boxes represent cells, which take an input and produce an output, a hidden state, and a cell state.
 The mathematical expression is as follows:
@@ -28,8 +28,8 @@ $$
 
 However, the architecture above has a limitation: the dimensions of the inputs and outputs are fixed and identical. This poses a significant challenge for translation tasks, as most languages vary in length when expressing the same meaning.
 
-![paper](/development/tutorial-seq2seq/lstm1.png)
-![paper](/development/tutorial-seq2seq/lstm2.png)
+![](/development/tutorial-seq2seq/lstm1.png)
+![](/development/tutorial-seq2seq/lstm2.png)
 
 But this paper separates LSTM to two parts: encoder and decoder. Encoder LSTM takes the input sequence and produces a context vector, which has a information about the input sequence. Decoder LSTM takes the context vector and produces output one token at a time.
 
