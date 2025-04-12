@@ -2,7 +2,7 @@
 title: Let's learn seq2seq!
 publishDate: 2025-04-12
 description: Learn how to use seq2seq models using PyTorch
-thumbnailUrl: "/development/tutorial-seq2seq/rnn1.png"
+thumbnailUrl: /development/tutorial-seq2seq/rnn1.png
 ---
 
 Recently, I've been studying large language models(LLMs). I understand the algorithms behind what they are and how they work, but I don't have a precise understanding of their implementation.
@@ -29,10 +29,10 @@ $$
 However, the architecture above has a limitation: the dimensions of the inputs and outputs are fixed and identical. This poses a significant challenge for translation tasks, as most languages vary in length when expressing the same meaning.
 
 ![paper](/development/tutorial-seq2seq/lstm1.png)
+![paper](/development/tutorial-seq2seq/lstm2.png)
 
 But this paper separates LSTM to two parts: encoder and decoder. Encoder LSTM takes the input sequence and produces a context vector, which has a information about the input sequence. Decoder LSTM takes the context vector and produces output one token at a time.
 
-![archtecture of the paper](/development/tutorial-seq2seq/seq2seqpaper.png)
 
 ![archtecture of the paper](/development/tutorial-seq2seq/seq2seq1.png)
 
