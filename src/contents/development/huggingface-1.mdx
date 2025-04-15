@@ -30,7 +30,7 @@ Huggingface gives us a high-level operation of the model so that we can easily u
 
 
 ### pipeline
-pipeline() function execute a high-level api task for NLP.
+The pipeline() function executes high-level API tasks for NLP.
 
 ```python
 from transformers import pipeline
@@ -54,12 +54,12 @@ generator("In this course, we will teach you how to")
                     'HTTP'}]
 ```
 
-By a purpose to study, pipeline is not adequate for me. I just know about this and don't use it for my task.
+For my learning purposes, the pipeline approach isn't quite suitable. I'm just familiarizing myself with low-level libraries rather than using it for my actual task.
 
 
 ### Bias and Limitations
 
-It is pretty impressive one thing.
+One thing that's particularly impressive about this...
 
 ```python
 from transformers import pipeline
@@ -75,7 +75,7 @@ print([r["token_str"] for r in result])
    ['nurse', 'waitress', 'teacher', 'maid', 'prostitute']
 ```
 
-Oh... this is a serious problem. The huggingface told us as:
+Oh... this is a serious problem. as huggingface tells us:
 > When you use these tools, you therefore need to keep in the back of your mind that the original model you are using could very easily generate sexist, racist, or homophobic content. Fine-tuning the model on your data won’t make this intrinsic bias disappear.
 
 
@@ -87,7 +87,7 @@ Oh... this is a serious problem. The huggingface told us as:
 | Decoder | CTRL, GPT, GPT-2, Transformer XL | Text generation |
 | Encoder-Decoder | BART, T5, Marian, mBART | Summarization, translation, generative question answering |
 
-Chapter 1 is done! 🎉
+Chapter 1 is complete! 🎉
 
 ---
 ## Reference
