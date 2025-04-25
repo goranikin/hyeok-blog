@@ -1,0 +1,100 @@
+---
+title: Huggingface LLM Course - Chapter7 (Classical NLP tasks)
+publishDate: 2025-04-24
+description: Read huggingface docs. This time, let's cover to know classical NLP tasks.
+thumbnailUrl: /development/huggingface-2/1.png
+---
+
+Each section of this chapter is independent. The sections are following:
+- Token classification
+- Masked language modeling (like BERT)
+- Summarization
+- Translation
+- Causal language modeling pretraining (like GPT-2)
+- Question answering
+
+it is good chance to know an information about each task!
+
+In the introduction, there is short sentence about Trainer API:
+> the Trainer API is great for fine-tuning or training your model without worrying about what’s going on behind the scenes, while the training loop with Accelerate will let you customize any part you want more easily.
+
+### Token classification
+
+Token classification encompasses any problem that can be formulated as "attributing a label to each token in a sentence", such as:
+- Named entity recognition (NER): Find the entities (such as persons, locations or organizations) in a sentence.
+- Part-of-speech tagging (POS): Mark each word in a sentence as corresponding to a particular part of speech (such as noun, verb, adjective, etc.)
+- Chunking
+
+```python
+from datasets import load_dataset
+
+raw_datasets = load_dataset("conll2003")
+raw_datasets
+>>> DatasetDict({
+        train: Dataset({
+            features: ['chunk_tags', 'id', 'ner_tags', 'pos_tags', 'tokens'],
+            num_rows: 14041
+        })
+        validation: Dataset({
+            features: ['chunk_tags', 'id', 'ner_tags', 'pos_tags', 'tokens'],
+            num_rows: 3250
+        })
+        test: Dataset({
+            features: ['chunk_tags', 'id', 'ner_tags', 'pos_tags', 'tokens'],
+            num_rows: 3453
+        })
+    })
+```
+
+Let's have a look at the first element of the training set:
+```python
+raw_datasets["train"][0]["tokens"]
+>>> ['EU', 'rejects', 'German', 'call', 'to', 'boycott', 'British', 'lamb', '.']
+```
+```python
+raw_datasets["train"][0]["ner_tags"]
+>>> [3, 0, 7, 0, 0, 0, 7, 0, 0]
+```
+
+what are these numbers?
+
+```python
+ner_feature = raw_datasets["train"].features["ner_tags"]
+ner_feature
+>>> Sequence(feature=ClassLabel(num_classes=9, names=['O', 'B-PER', 'I-PER', 'B-ORG', 'I-ORG', 'B-LOC', 'I-LOC', 'B-MISC', 'I-MISC'], names_file=None, id=None), length=-1, id=None)
+```
+
+They are classes.
+
+> We already saw these labels when digging into the token-classification pipeline in Chapter 6, but for a quick refresher:
+> - O means the word doesn’t correspond to any entity.
+> - B-PER/I-PER means the word corresponds to the beginning of/is inside a person entity.
+> - B-ORG/I-ORG means the word corresponds to the beginning of/is inside an organization entity.
+> - B-LOC/I-LOC means the word corresponds to the beginning of/is inside a location entity.
+> - B-MISC/I-MISC means the word corresponds to the beginning of/is inside a miscellaneous entity.
+
+Check them more visible output:
+```python
+words = raw_datasets["train"][0]["tokens"]
+labels = raw_datasets["train"][0]["ner_tags"]
+line1 = ""
+line2 = ""
+for word, label in zip(words, labels):
+    full_label = label_names[label]
+    max_length = max(len(word), len(full_label))
+    line1 += word + " " * (max_length - len(word) + 1)
+    line2 += full_label + " " * (max_length - len(full_label) + 1)
+
+print(line1)
+print(line2)
+
+>>> 'EU    rejects German call to boycott British lamb .'
+    'B-ORG O       B-MISC O    O  O       B-MISC  O    O'
+```
+
+The following content is all related to the training and evaluation of Tokenizers, and since it's more of a guide on how to use the Huggingface library, it will be omitted.
+
+
+---
+## Reference
+https://huggingface.co/learn/llm-course/chapter6/1?fw=pt
