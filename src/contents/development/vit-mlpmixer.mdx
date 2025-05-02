@@ -15,7 +15,9 @@ NLP를 다루던 중 갑자기 ViT인가 싶을텐데요. 실은 이번 주에 �
 
 위와 같은 생각의 흐름을 쭉 전달드리고서 결국 `잘 모르겠다.`라고 말씀드렸습니다. 그러자 여기에는 정답이 없지만, 그럼에도 근본적인 차이는 `Multi-head attention`이라 생각한다는 말에 '아차' 싶었습니다. Transformer 구조에서 head의 개수가 늘어날수록 다양한 특징을 학습해 표현력이 높아지고, 또 해석 가능한 AI를 연구하시는 분들도 각각의 Head가 가진 latent representation이 뭔지 탐색한다는 어딘가 박혀있던 기억들이 새록새록 떠올랐습니다. Convolution 연산은 대상이 image든 natural language든 대상이 가진 잠재적 특성을 '다양하게' 고려하지 않습니다. 그저 하나의 값으로 표현할 뿐이죠.
 
-이 물음에 대해서 ViT와 MLP-Mixer를 공부했더라도 답변하지 못했던 건 매 한가지였을 겁니다. 왜냐하면 두 논문에서도 주요하게 다뤄지는 건 Context size와 이로 인해 생기는 inductive bias의 차이니까요. 오히려 context size 관점에서 벗어나지 못해 더 엉뚱한 이야기를 했을지도 모릅니다. 그러나 MLP-Mixer가 가져다주는 통찰도 있습니다. 바로 inductive bias든 multi-head attention이든 두 대상이 잠재적인 특성을 다룬다는 겁니다. 이와 같은 implicit한 의미들을 각각의 구조에서 이끌어내는 게 현재의 LLM을 다루는 데 중요한 능력이라 느꼈습니다. 결국 LLM은 고전적인 algorithm에 의한 machine learning 기법이 아니니까요. 언어의 근본적 특성부터 시작해 인간이 세상에게서 받는 지각을 처리하는 과정에 대한 이해가 SoTA를 만드는 것 아닌지 감히 생각해봅니다.
+이 물음에 대해서 ViT와 MLP-Mixer를 공부했더라도 답변하지 못했던 건 매 한가지였을 겁니다. 왜냐하면 두 논문에서도 주요하게 다뤄지는 건 Context size와 이로 인해 생기는 inductive bias의 차이니까요. 오히려 context size 관점에서 벗어나지 못해 더 엉뚱한 이야기를 했을지도 모릅니다. 그러나 MLP-Mixer가 가져다주는 통찰도 있습니다. 바로 inductive bias든 multi-head attention이든 두 대상이 잠재적인 특성을 다룬다는 겁니다.
+
+이와 같은 implicit한 의미들을 신경망 구조에서 어떻게 이끌어낼 수 있을까요? 수학적 논리력도 중요하겠지만, 무엇보다도 언어와 인간의 지각 처리 과정에 대한 깊은 이해, 그리고 탁월한 직관력이라 감히 말해봅니다. 결국 LLM은 고전적인 algorithm에 의한 machine learning 기법이 아니니까요.
 
 ---
 
