@@ -1,0 +1,36 @@
+{
+  // languages configuration
+  // Python | TS | JS
+  "languages": {
+    "TypeScript": {
+      "formatter": {
+        "language_server": { "name": "biome" }
+      }
+    },
+    "JavaScript": {
+      "formatter": {
+        "language_server": { "name": "biome" }
+      }
+    }
+  },
+
+  "lsp": {
+    "biome": {
+      "initialization_options": {
+        "enableFormatter": true,
+        "lspFormatter": true,
+        "enableLinting": true
+      }
+    },
+    "eslint": {
+      "initialization_options": {
+        "validate": [
+          "javascript",
+          "javascriptreact",
+          "typescript",
+          "typescriptreact"
+        ]
+      }
+    }
+  }
+}
