@@ -17,3 +17,9 @@ export type SearchFoodList = {
 	country: string;
 	city: string;
 };
+
+export type SearchRestaurantList = {
+	country: string;
+	city: string;
+	name: string;
+};
