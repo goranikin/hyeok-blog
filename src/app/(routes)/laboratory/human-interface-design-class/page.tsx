@@ -5,29 +5,15 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import FoodSearchForm from "./client-components/FoodSearchForm";
-import ResultsPanel from "./client-components/ResultsPanel";
+import FoodSearchForm from "@/app/(routes)/laboratory/human-interface-design-class/client-components/FoodSearchForm";
+import ResultsPanel from "@/app/(routes)/laboratory/human-interface-design-class/client-components/ResultsPanel";
 import Error from "next/error";
 
-export type FoodItem = {
-  name: string;
-  local_name: string;
-  english_name: string;
-  description: string;
-};
-
-export type RestaurantItem = {
-  name: string;
-  address: string;
-  rating: number;
-  user_rating_count: number;
-  price_level: string;
-};
-
-export type Search = {
-  country: string;
-  city: string;
-};
+import type {
+  FoodItem,
+  RestaurantItem,
+  Search,
+} from "@/app/(routes)/laboratory/human-interface-design-class//types";
 
 export default function HumanInterfaceDesignClassPage() {
   const [showForm, setShowForm] = useState(false);
