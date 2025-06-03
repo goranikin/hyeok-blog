@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import type { FoodItem, RestaurantItem } from "../page";
+import type { FoodItem, RestaurantItem } from "../types";
 
 type ResultsPanelProps = {
   foodList: FoodItem[] | null;
@@ -54,9 +54,9 @@ export default function ResultsPanel({
               추천 결과가 없습니다.
             </div>
           ) : (
-            foodList.map((item, idx) => (
+            foodList.map((item) => (
               <div
-                key={idx}
+                key={item.name}
                 className="border rounded-lg p-3 bg-orange-50 shadow-sm cursor-pointer hover:bg-orange-100 transition"
                 onClick={() => onFoodClick(item)}
                 onKeyDown={(e) => {
@@ -65,14 +65,14 @@ export default function ResultsPanel({
                   }
                 }}
                 title="클릭하면 음식점 정보를 볼 수 있습니다"
-                tabIndex={0}
               >
                 <div className="font-semibold text-lg">{item.name}</div>
                 <div className="text-sm text-gray-700">
                   <span className="font-medium">현지명:</span> {item.local_name}
                 </div>
                 <div className="text-sm text-gray-700">
-                  <span className="font-medium">영문명:</span> {item.english_name}
+                  <span className="font-medium">영문명:</span>{" "}
+                  {item.english_name}
                 </div>
                 <div className="text-sm text-gray-600 mt-1">
                   {item.description}
@@ -112,9 +112,7 @@ export default function ResultsPanel({
               onClick={onRestaurantSearch}
               disabled={restaurantPending}
               className={
-                restaurantPending
-                  ? "cursor-not-allowed"
-                  : "cursor-pointer"
+                restaurantPending ? "cursor-not-allowed" : "cursor-pointer"
               }
             >
               {restaurantPending ? "검색 중..." : "음식점 검색"}
@@ -144,9 +142,9 @@ export default function ResultsPanel({
                 음식점 정보를 불러오는 중입니다...
               </div>
             ) : restaurantList && restaurantList.length > 0 ? (
-              restaurantList.map((r, idx) => (
+              restaurantList.map((r) => (
                 <div
-                  key={idx}
+                  key={r.name}
                   className="border rounded-lg p-3 bg-blue-50 shadow-sm"
                 >
                   <div className="font-semibold text-base">{r.name}</div>
@@ -154,7 +152,8 @@ export default function ResultsPanel({
                     <span className="font-medium">주소:</span> {r.address}
                   </div>
                   <div className="text-sm text-gray-700">
-                    <span className="font-medium">평점:</span> {r.rating} ({r.user_rating_count}명)
+                    <span className="font-medium">평점:</span> {r.rating} (
+                    {r.user_rating_count}명)
                   </div>
                   <div className="text-sm text-gray-600">
                     <span className="font-medium">가격대:</span> {r.price_level}
