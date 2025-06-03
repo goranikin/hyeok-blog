@@ -1,9 +1,11 @@
 ---
-title: Go to the VISION
+title: ViT and MLP-Mixer
 publishDate: 2025-05-02
-description: While I already knew CNN architecture, I have yet to explore Vision Transformers, and other modern image processing models. In this article, I'll delve into ViT, MLP-Mixer, and the concept of 'inductive bias' - topics I'm eager to understand more thoroughly.
+description: What is inductive bias? Then, what is the key difference between ViT and CNN?
 thumbnailUrl: /development/vit-mlpmixer/2.png
 ---
+
+NLP를 공부하던 중, Vision에 대해 알아보게 된 배경을 짧막하게 한글로 작성하겠습니다!
 
 NLP를 다루던 중 갑자기 ViT인가 싶을텐데요. 실은 이번 주에 가졌던 커피챗에서 ViT와 CNN의 차이가 뭔지에 대한 질문을 받았습니다. 눈 앞에 놓인 목적만을 최대한 잘 완수하기 위해 Vision field를 완전히 배제하다보니 image processing을 모른 채 답변을 했습니다.
 
@@ -17,7 +19,7 @@ NLP를 다루던 중 갑자기 ViT인가 싶을텐데요. 실은 이번 주에 �
 
 이 물음에 대해서 ViT와 MLP-Mixer를 공부했더라도 답변하지 못했던 건 매 한가지였을 겁니다. 왜냐하면 두 논문에서도 주요하게 다뤄지는 건 Context size와 이로 인해 생기는 inductive bias의 차이니까요. 오히려 context size 관점에서 벗어나지 못해 더 엉뚱한 이야기를 했을지도 모릅니다. 그러나 MLP-Mixer가 가져다주는 통찰도 있습니다. 바로 inductive bias든 multi-head attention이든 두 대상이 잠재적인 특성을 다룬다는 겁니다.
 
-이와 같은 implicit한 의미들을 신경망 구조에서 어떻게 이끌어낼 수 있을까요? 수학적 논리력도 중요하겠지만, 무엇보다도 언어와 인간의 지각 처리 과정에 대한 깊은 이해, 그리고 탁월한 직관력이라 감히 말해봅니다. 결국 LLM은 고전적인 algorithm에 의한 machine learning 기법이 아니니까요.
+이와 같은 implicit한 의미들을 신경망 구조에서 어떻게 이끌어낼 수 있을까요? 수학적 논리력도 중요하겠지만, 무엇보다도 언어와 인간의 지각 처리 과정에 대한 깊은 이해, 그리고 탁월한 직관력이지 않을까 생각해봅니다. 알면 알수록 참 재미있는 세계인 듯해요!
 
 ---
 

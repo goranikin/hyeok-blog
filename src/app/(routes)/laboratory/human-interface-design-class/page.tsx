@@ -63,6 +63,13 @@ export default function HumanInterfaceDesignClassPage() {
       title="휴먼 인터페이스 디자인 수업용"
       description="구글 지도에서 LLM이 음식과 음식점을 추천해줍니다."
     >
+      <div className="flex flex-col items-center">
+        <p className="text-xl text-red-700">주의</p>
+        <p className="text-lg">로컬에서 Ollama qwen3:14b 모델을 작동시키고,</p>
+        <p className="text-lg">
+          해당 모델과 통신하는 fastAPI 서버를 켜야 합니다.
+        </p>
+      </div>
       <div className="flex justify-center items-center min-h-[500px] relative">
         <Image
           src="/laboratory/human-interface-design-class/google-map.jpeg"
