@@ -1,11 +1,19 @@
-import { API_URL } from "@/constants/network";
-import { objToQueryString } from "@/services/convertParams";
+import { FASTAPI_URL } from "@/constants/network";
+import { objToQueryString } from "./convertParams";
 
-export const getRequest = async (url: string, params: object = {}) => {
+export async function fetchFromFastAPI(
+	endpoint: string,
+	params: Record<string, string> = {},
+) {
 	const queryString = objToQueryString(params);
-	const resp = await _fetch(`${API_URL}${url}${queryString}`, "GET");
-	return await resp.json();
-};
+
+	const response = await _fetch(
+		`${FASTAPI_URL}${endpoint}${queryString}`,
+		"GET",
+	);
+
+	return await response.json();
+}
 
 const _fetch = async (url: string, method: string) => {
 	const resp = await fetch(url, {

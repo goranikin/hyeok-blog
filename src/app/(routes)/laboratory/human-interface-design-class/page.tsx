@@ -7,78 +7,55 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import FoodSearchForm from "@/app/(routes)/laboratory/human-interface-design-class/client-components/FoodSearchForm";
 import ResultsPanel from "@/app/(routes)/laboratory/human-interface-design-class/client-components/ResultsPanel";
-import Error from "next/error";
+import { useFoodRecommend } from "@/app/(routes)/laboratory/human-interface-design-class/hooks/useFoodRecommend";
+import { useRestaurantSearch } from "@/app/(routes)/laboratory/human-interface-design-class/hooks/useRestaurantSearch";
 
 import type {
   FoodItem,
-  RestaurantItem,
-  Search,
+  SearchFoodList,
 } from "@/app/(routes)/laboratory/human-interface-design-class//types";
 
 export default function HumanInterfaceDesignClassPage() {
   const [showForm, setShowForm] = useState(false);
-  const [pending, setPending] = useState(false);
-  const [foodList, setFoodList] = useState<FoodItem[] | null>(null);
   const [selectedFood, setSelectedFood] = useState<FoodItem | null>(null);
-  const [restaurantList, setRestaurantList] = useState<RestaurantItem[] | null>(
-    null,
-  );
-  const [restaurantPending, setRestaurantPending] = useState(false);
   const [restaurantHelp, setRestaurantHelp] = useState(false);
-  const [lastSearch, setLastSearch] = useState<Search | null>(null);
-  const form = useForm<Search>({
+  const [lastSearch, setLastSearch] = useState<SearchFoodList | null>(null);
+
+  const form = useForm<SearchFoodList>({
     defaultValues: {
       country: "",
       city: "",
     },
   });
 
-  async function onSubmit(data: Search) {
-    setPending(true);
-    try {
-      const res = await fetch(
-        `/api/food-recommend?country=${encodeURIComponent(data.country)}&city=${encodeURIComponent(data.city)}&max_items=10`,
-      );
-      if (!res.ok) throw new Error("추천 실패");
-      const result = await res.json();
-      setFoodList(result); // 결과 저장
-      setShowForm(false); // 폼 닫기
-      setLastSearch({ country: data.country, city: data.city });
-    } catch {
-      alert(`에러`);
-    }
-    setPending(false);
+  const { foodList, pending, fetchFoodRecommend } = useFoodRecommend();
+  const {
+    restaurantList,
+    pending: restaurantPending,
+    fetchRestaurants,
+  } = useRestaurantSearch();
+
+  async function onSubmit(data: SearchFoodList) {
+    await fetchFoodRecommend(data);
+    setShowForm(false);
+    setLastSearch({ country: data.country, city: data.city });
     form.reset();
   }
 
-  // 음식 클릭 시 도움말 표시
   function handleFoodClick(item: FoodItem) {
     setSelectedFood(item);
     setRestaurantHelp(true);
-    setRestaurantList(null);
   }
 
   // 음식점 검색 요청
-  async function fetchRestaurants() {
+  async function handleRestaurantSearch() {
     if (!selectedFood || !lastSearch) return;
-    setRestaurantPending(true);
     setRestaurantHelp(false);
-    setRestaurantList(null);
-    try {
-      const params = new URLSearchParams({
-        country: lastSearch.country,
-        city: lastSearch.city,
-        food: selectedFood.name,
-        max_results: "10",
-      });
-      const res = await fetch(`/api/search-restaurant?${params.toString()}`);
-      if (!res.ok) throw new Error("음식점 검색 실패");
-      const result = await res.json();
-      setRestaurantList(result);
-    } catch {
-      setRestaurantList([]);
-    }
-    setRestaurantPending(false);
+    await fetchRestaurants({
+      country: lastSearch.country,
+      city: lastSearch.city,
+      food: selectedFood.name,
+    });
   }
 
   return (
@@ -121,16 +98,15 @@ export default function HumanInterfaceDesignClassPage() {
             restaurantPending={restaurantPending}
             lastSearch={lastSearch}
             onClose={() => {
-              setFoodList(null);
+              setShowForm(false);
               setSelectedFood(null);
-              setRestaurantList(null);
               setRestaurantHelp(false);
+              setLastSearch(null);
             }}
             onFoodClick={handleFoodClick}
-            onRestaurantSearch={fetchRestaurants}
+            onRestaurantSearch={handleRestaurantSearch}
             onBack={() => {
               setSelectedFood(null);
-              setRestaurantList(null);
               setRestaurantHelp(false);
             }}
             onCancelRestaurant={() => {
