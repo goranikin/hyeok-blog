@@ -13,7 +13,7 @@ export default defineConfig({
 	collections: {
 		development: {
 			name: "Development",
-			pattern: "development/**/*.mdx",
+			pattern: "study/development/**/*.mdx",
 			schema: s
 				.object({
 					title: s.string(),
@@ -26,7 +26,25 @@ export default defineConfig({
 				.transform((data) => ({
 					...data,
 					permalink: `/${data.slug}`,
-					slug: data.slug.replaceAll("development/", ""),
+					slug: data.slug.replaceAll("study/development/", ""),
+				})),
+		},
+		paperReview: {
+			name: "PaperReview",
+			pattern: "study/paper-review/**/*.mdx",
+			schema: s
+				.object({
+					title: s.string(),
+					description: s.string(),
+					slug: s.path(),
+					publishDate: s.string().date(),
+					thumbnailUrl: s.string().optional(),
+					content: s.mdx(),
+				})
+				.transform((data) => ({
+					...data,
+					permalink: `/${data.slug}`,
+					slug: data.slug.replaceAll("study/paper-review/", ""),
 				})),
 		},
 		bookReview: {

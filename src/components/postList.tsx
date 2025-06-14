@@ -30,13 +30,13 @@ export default function PostList({ posts, basePath }: PostListProps) {
 							className="flex py-5 items-center justify-between gap-2 border-b last:border-none"
 						>
 							<div className="flex flex-col gap-1 flex-1">
-								<span className="font-semibold text-lg break-all line-clamp-2">
+								<span className="font-medium text-lg break-all line-clamp-2">
 									{post.title}
 								</span>
 								<span className="break-all">
 									{basePath.includes("writing") ? "" : post.description}
 								</span>
-								<time className="text-xs mt-1">
+								<time className="text-sm mt-1">
 									{year}.{month}.{day}
 								</time>
 							</div>

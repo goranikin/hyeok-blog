@@ -7,11 +7,14 @@ type Props = {
 
 const PostPageLayout = (props: Props) => {
 	return (
-		<div className="flex flex-col mt-5 gap-10">
-			<h1 className="text-4xl font-bold whitespace-pre-wrap">
-				{props.post.title}
-			</h1>
-			<div className="prose max-w-full">
+		<div className="flex flex-col mt-5 gap-6">
+			<div>
+				<h1 className="text-2xl font-bold whitespace-pre-wrap">
+					{props.post.title}
+				</h1>
+				<p className="mt-2">{props.post.publishDate}</p>
+			</div>
+			<div className="prose max-w-full text-lg leading-loose">
 				<MDXContent code={props.post.content} />
 			</div>
 		</div>
