@@ -2,7 +2,7 @@
 title: Reading papers
 publishDate: 2025-04-27
 description: Read papers about MT-DNN, MASS, UNILM, XLNet, RoBERTa, ALBERT.
-thumbnailUrl: /development/reading-papers-1/thum.jpeg
+thumbnailUrl: /study/paper-review/reading-papers-1/thum.jpeg
 ---
 
 During my previous studies, I examined research papers on various language models, including seq2seq, Transformer, and BERT (though I didn't write about BERT). My objective is gaining knowledge in the LLM field and also have an assignment requiring me to create a video presentation explaining the concepts I've learned in class to my peers. Previous posts are the result of the assignment. Therefore, this post will be too. :D
@@ -13,7 +13,7 @@ This post covers MT-DNN, MASS, UNILM, XLNet, RoBERTa and ALBERT. I won't describ
 [MT-DNN] (Multi-Task Deep Neural Networks for natural language understanding)
 
 
-![](/development/reading-papers-1/1.png)
+![](/study/paper-review/reading-papers-1/1.png)
 
 In abstract, there is a key purpose of MT-DNN.
 > MT-DNN not only leverages large amounts of cross-task data, but also benefits from a regularization effect that leads to more general representations to help adapt to new tasks and domains.
@@ -23,12 +23,12 @@ And in the introduction, they explain the motivation behind MT-DNN, which is the
 
 They propose a diverse range of tasks to train the model:
 
-![](/development/reading-papers-1/2.png)
+![](/study/paper-review/reading-papers-1/2.png)
 
 However, I think the intricate details of these tasks are not essential for my current understanding. At this point, I'm focused on grasping the fundamental concepts rather than delving too deeply into the specifics.
 
 The benchmark is following:
-![](/development/reading-papers-1/3.png)
+![](/study/paper-review/reading-papers-1/3.png)
 
 ---
 [MASS] (MAsked Sequence to Sequence learning)
@@ -37,28 +37,28 @@ In abstract:
 > its encoder takes a sentence with randomly masked fragment (several consecutive tokens) as input, and its decoder tries to predict this masked fragment. In this way, MASS can jointly train the encoder and decoder to develop the capability of representation extraction and language modeling. In this paper, inspired by BERT, we propose a novel objective for pre-training: MAsked Sequence to Sequence learning (MASS) for language generation.
 
 What does that mean? See the figure below:
-![](/development/reading-papers-1/4.png)
+![](/study/paper-review/reading-papers-1/4.png)
 
 MASS masks continuous sequences of tokens within the source sentence. Subsequently, the decoder predicts these masked tokens, generating the output seqeuntially, one token at a time.
 
 This provides a detailed mathematical formulation representing the loss function derived from the log-likelihood function:
-![](/development/reading-papers-1/5.png)
+![](/study/paper-review/reading-papers-1/5.png)
 
 Researchers assert that, under specific constraint condtions, MASS can effectively function as both BERT and GPT architectures.
-![](/development/reading-papers-1/6.png)
+![](/study/paper-review/reading-papers-1/6.png)
 
 However, MASS is the encoder-decoder framework to generate tokens and there is a cross-attention between the encoder and decoder. It is the fundamental difference from BERT (which is a single encoder architecture) and GPT (which is a single decoder architecture).
 
 ---
 [UNILM] (UNIfied Language Model pre-training for natural language understanding and generation)
 
-![](/development/reading-papers-1/7.png)
+![](/study/paper-review/reading-papers-1/7.png)
 
 The authors describe UNILM's foundational architecture as a 'multi-layer Transformer network'.
 
 However, upon examination of Figure 1, it appears identical to the encoder layer of a standard Transformer. (In fact, its architecture is precisely that of BERT Large.)
 
-![](/development/reading-papers-1/8.png)
+![](/study/paper-review/reading-papers-1/8.png)
 
 They implement a strategy that emulates language modeling techniques through the strategic manipulation of self-attention masks.
 
@@ -67,7 +67,7 @@ They implement a strategy that emulates language modeling techniques through the
 ---
 [XLNet] (XLNet: Generalized Autoregressive Pretraining for Language Understanding)
 
-![](/development/reading-papers-1/9.png)
+![](/study/paper-review/reading-papers-1/9.png)
 
 The name 'XLNet does not appear explicitly in the paper's title. However, the authors clarify the origin of this designation in the abstract.
 
@@ -82,26 +82,26 @@ What are the distinctive characteristics of this approach?
 
 They propose an enhanced pre-training methodology that leverages permutations of token order. How exactly does this mechanism function?
 
-![](/development/reading-papers-1/10.png)
+![](/study/paper-review/reading-papers-1/10.png)
 
 (a) shows the normal self-attention mechanism, and (b) shows the permutation self-attention what the researchers claim.
 
 For instance, consider the sentence 'New York is a city' which would be masked as '\[Mask] \[Mask] is a city' in traditional pre-training. BERT's approach involves predicting 'New' and 'York' independently, calculating p(New | is a city) and p(York | is a city) separately. In contrast, XLNet employs a sequential prediction method: first calculating p(New | is a city), then p(York | New, is a city), thereby effectively capturing the relationship between 'New' and 'York'."
 
-![](/development/reading-papers-1/12.png)
+![](/study/paper-review/reading-papers-1/12.png)
 
 For those familiar with the inherent limitations of transformer architectures, particularly their substantial computational overhead, it comes as no surprise that XLNet inherits these same challenges. The authors were acutely aware of this computational burden.
 
 > While the permutation language modeling objective (3) has several benefits, it is a much more challenging optimization problem due to the permutation and causes slow convergence in preliminary experiments. To reduce the optimization difficulty, we choose to only predict the last tokens in a factorization order.
 
-![](/development/reading-papers-1/11.png)
+![](/study/paper-review/reading-papers-1/11.png)
 
 To mitigate this issue, they strategically implemented the permutation method on only a subset of the sequence, rather than applying it exhaustively.
 
 ---
 [RoBERTa]
 
-![](/development/reading-papers-1/13.png)
+![](/study/paper-review/reading-papers-1/13.png)
 
 In abstract:
 > hyperparameter choices have significant impact on the final results. We present a replication study of BERT pretraining (Devlin et al., 2019) that carefully measures the impact of many key hyperparameters and training data size.
@@ -115,7 +115,7 @@ They also implement an masking strategy called dynamic masking, which randomly m
 
 Intuitively, as most would likely concur, dynamic masking appears inherently more effective than static masking approaches. However, the empirical results indicate:
 
-![](/development/reading-papers-1/14.png)
+![](/study/paper-review/reading-papers-1/14.png)
 
 > We find that our reimplementation with static masking performs similar to the original BERT model, and dynamic masking is comparable or slightly better than static masking.
 
@@ -128,7 +128,7 @@ The followings are all approaches:
 > large mini-batches (Section 4.3)
 > a larger byte-level BPE (Section 4.4)
 
-![](/development/reading-papers-1/15.png)
+![](/study/paper-review/reading-papers-1/15.png)
 
 And they assert that BPE has advantages although it doesn't show a better performance.
 
@@ -137,7 +137,7 @@ And they assert that BPE has advantages although it doesn't show a better perfor
 ---
 [ALBERT]
 
-![](/development/reading-papers-1/16.png)
+![](/study/paper-review/reading-papers-1/16.png)
 
 In abstract:
 > we present two parameter reduction techniques to lower memory consumption and increase the training speed of BERT (Devlin et al., 2019). Comprehensive empirical evidence shows that our proposed methods lead to models that scale much better compared to the original BERT.
@@ -152,12 +152,12 @@ These approaches yield efficiency gains:
 > An ALBERT configuration similar to BERT-large has 18x fewer parameters and can be trained about 1.7x faster.
 
 The first one:
-![](/development/reading-papers-1/18.png)
+![](/study/paper-review/reading-papers-1/18.png)
 
 > Therefore, for ALBERT we use a factorization of the embedding parameters, decomposing them into two smaller matrices. Instead of projecting the one-hot vectors directly into the hidden space of size H, we first project them into a lower dimensional embedding space of size E, and then project it to the hidden space. By using this decomposition, we reduce the embedding parameters from O(V × H) to O(V × E + E × H).
 
 The second:
-![](/development/reading-papers-1/17.png)
+![](/study/paper-review/reading-papers-1/17.png)
 
 > We observe that the transitions from layer to layer are much smoother for ALBERT than for BERT. These results show that weight-sharing has an effect on stabilizing network parameters. Although there is a drop for both metrics compared to BERT, they nevertheless do not converge to 0 even after 24 layers. This shows that the solution space for ALBERT parameters is very different from the one found by DQE. Although there is a drop for both metrics compared to BERT, they nevertheless do not converge to 0 even after 24 layers. This shows that the solution space for ALBERT parameters is very different from the one found by DQE.
 

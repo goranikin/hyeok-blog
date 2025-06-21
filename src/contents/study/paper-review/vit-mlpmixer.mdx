@@ -2,7 +2,7 @@
 title: ViT and MLP-Mixer
 publishDate: 2025-05-02
 description: What is inductive bias? Then, what is the key difference between ViT and CNN?
-thumbnailUrl: /development/vit-mlpmixer/2.png
+thumbnailUrl: /study/paper-review/vit-mlpmixer/2.png
 ---
 
 NLP를 공부하던 중, Vision에 대해 알아보게 된 배경을 짧막하게 한글로 작성하겠습니다!
@@ -27,7 +27,7 @@ Before diving into this topic, I'd like to highlight an exceptional [YouTube Vid
 
 Initially, I'll examine the groundbreaking [Vit Paper].
 
-![](/development/vit-mlpmixer/1.png)
+![](/study/paper-review/vit-mlpmixer/1.png)
 
 In abstract,
 > When pre-trained on large amounts of data and transferred to multiple mid-sized or small image recognition benchmarks (ImageNet, CIFAR-100, VTAB, etc.), Vision Transformer (ViT) attains excellent results compared to state-of-the-art convolutional networks while requiring substantially fewer computational resources to train.
@@ -46,7 +46,7 @@ So, what does this actually imply? what precisely is 'inductive bias', and why i
 
 Before exploring these questions, let's first understand the ViT architecture.
 
-![](/development/vit-mlpmixer/2.png)
+![](/study/paper-review/vit-mlpmixer/2.png)
 
 ViT requires the input to be divided into fixed-size segments, known as PxP patches.
 
@@ -55,7 +55,7 @@ The original image dimensions are represented as (H, W, C), corresponding to Hei
 After splitting the image into the patches:
 > The Transformer uses constant latent vector size D through all of its layers, so we flatten the patches and map to Ddimensions with a trainable linear projection (Eq. 1). We refer to the output of this projection as the patch embeddings.
 
-![](/development/vit-mlpmixer/3.png)
+![](/study/paper-review/vit-mlpmixer/3.png)
 
 In equation (1), xE represents the embedding vector that serves as input for the self-attention operation. Furthermore, the subsequent equations elucidate the operation performed by the architecture, as illustrated in Figure 1.
 
@@ -63,7 +63,7 @@ For those already familiar with 'self-attention' mechanisms, the fundamental dis
 
 Inductive bias refers to the inherent predispositions or assumptions within a model that facilitate generalization, thereby enhancing performance. How does this mechanism function? In machine learning contexts, the objective is to identify a predictor that minimizes loss. Throughout this optimization process, inductive bias serves a vital function in mitigating overfitting. Calibrating an appropriate degree of inductive bias is crucial, as suboptimal values can either lead to overfitting or compromise overall performance.
 
-![](/development/vit-mlpmixer/4.png)
+![](/study/paper-review/vit-mlpmixer/4.png)
 
 > In CNNs, locality, two-dimensional neighborhood structure, and translation equivariance are baked into each layer throughout the whole model. In ViT, only MLP layers are local and translationally equivariant, while the self-attention layers are global.
 
@@ -71,13 +71,13 @@ The authors explain that CNNs inherently possess locality and translation induct
 
 Well, I explained inductive bias as 'predispositions or assumptions within a model'. It means that inductive bias enhance a model's predictive capabilities when confronted with novel scenarios-situations the model hasn't encountered during its training phase. Following this rationale, both CNNs and transformers inherently possess inductive biases, although the former has structural inductive bias, while the latter has global inductive bias.
 
-![](/development/vit-mlpmixer/5.png)
+![](/study/paper-review/vit-mlpmixer/5.png)
 
 Structural inductive bias can be effectively learned from comparatively smaller datasets than those required for global inductive bias. This distinction is intuitively comprehensible: establishing meaningful correlations across all input elements and identifying appropriate patterns for model generalization presents a substantially more complex challenge.
 
 MLP-Mixer effectively exemplifies this intuition through its linear computational complexity processes: Token-mixing MLP and Channel-mixing MLP.
 
-![](/development/vit-mlpmixer/6.png)
+![](/study/paper-review/vit-mlpmixer/6.png)
 
 This architecture represents not merely a novel approach that is considerably more streamlined than either ViT or CNNs, but also an evolutionary synthesis derived from both CNNs and transformers. The authors characterize MLP-Mixer as an expanded conceptualization of CNNs.
 

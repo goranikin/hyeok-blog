@@ -2,7 +2,7 @@
 title: Next.js 앱 CI/CD 구축하기
 publishDate: 2025-03-03
 description: Github Actions와 AWS CodeDeploy를 이용해 CI/CD를 구축합니다.
-thumbnailUrl: /development/setup-ci-cd-with-codedeploy-github-actions/1.png
+thumbnailUrl: /study/development/setup-ci-cd-with-codedeploy-github-actions/1.png
 ---
 
 수정 사항이 있을 때마다 매번 EC2 인스턴스에 들어가 레포지토리를 클론하고 빌드하는 건 번거로운 과정이다. 그래서 배포를 자동화해 주는 작업을 통해 수고로움을 덜 수 있다. 흔히 CI/CD로 부르는데 용어가 뭔지 간단하게 살펴보자.
@@ -131,8 +131,8 @@ jobs:
 
 위 과정이 잘 일어나는지 브랜치를 생성해 PR을 올려보자.
 
-![](/development/setup-ci-cd-with-codedeploy-github-actions/1.png)
-![](/development/setup-ci-cd-with-codedeploy-github-actions/2.png)
+![](/study/development/setup-ci-cd-with-codedeploy-github-actions/1.png)
+![](/study/development/setup-ci-cd-with-codedeploy-github-actions/2.png)
 
 workflow가 잘 작동했고, 코드 검사도 성공적으로 잘 끝난 걸 볼 수 있다.
 이제 앞으로 main 브랜치에 PR로 올려주면 CI 성공 여부를 보고 합칠 수 있다.
@@ -143,7 +143,7 @@ workflow가 잘 작동했고, 코드 검사도 성공적으로 잘 끝난 걸 �
 
 자동 배포의 파이프라인은 어떻게 될까?
 
-![](/development/setup-ci-cd-with-codedeploy-github-actions/3.png)
+![](/study/development/setup-ci-cd-with-codedeploy-github-actions/3.png)
 첫 시작은 GitHub repository의 main 브랜치에 변경사항이 생기면 GitHub Actions를 트리거하도록 설정한다.
 
 이후 GitHub Actions는
@@ -183,13 +183,13 @@ A2-2) 빌드와 배포 단계를 분리한다. 중간에 S3를 두고 업로드 
 
 우선 압축한 빌드 파일을 올릴 bucket을 생성하자.
 
-![](/development/setup-ci-cd-with-codedeploy-github-actions/4.png)
+![](/study/development/setup-ci-cd-with-codedeploy-github-actions/4.png)
 
 rookie-review-ci-cd라는 이름으로 만들었다.
 
 그리고 GitHub Actions가 사용할 IAM 계정을 만들어야 한다. 이 계정은 S3와 CodeDeploy에 접근할 수 있는 권한이 있어야 한다.
 
-![](/development/setup-ci-cd-with-codedeploy-github-actions/5.png)
+![](/study/development/setup-ci-cd-with-codedeploy-github-actions/5.png)
 
 AmazonS3FullAccess, AWSCodeDeployFullAccess 두 정책을 할당한 뒤, GitHub Actions가 이 계정에 접근할 수 있도록 Access key를 발급받자.
 
@@ -197,7 +197,7 @@ AmazonS3FullAccess, AWSCodeDeployFullAccess 두 정책을 할당한 뒤, GitHub 
 
 이후 GitHub 레포지토리의 Setting > Secrets and variables > Actions로 이동해 Access key를 Repository Secrets을 등록하자.
 
-![](/development/setup-ci-cd-with-codedeploy-github-actions/6.png)
+![](/study/development/setup-ci-cd-with-codedeploy-github-actions/6.png)
 
 ---
 
@@ -210,12 +210,12 @@ EC2는 어떤 정책이 필요할까?
 1. S3에 업로드된 아티팩트를 다운로드 받아야 한다. -> AmazonS3ReadOnlyAccess
 2. EC2 인스턴스에서 CodeDeploy Agent가 작동할 때 필요한 권한이 있어야 한다. -> AmazonEC2RoleforAWSCodeDeploy
 
-![](/development/setup-ci-cd-with-codedeploy-github-actions/7.png)
-![](/development/setup-ci-cd-with-codedeploy-github-actions/8.png)
+![](/study/development/setup-ci-cd-with-codedeploy-github-actions/7.png)
+![](/study/development/setup-ci-cd-with-codedeploy-github-actions/8.png)
 
 그리고 CodeDeploy에 필요한 역할도 만들어주자.
 
-![](/development/setup-ci-cd-with-codedeploy-github-actions/9.png)
+![](/study/development/setup-ci-cd-with-codedeploy-github-actions/9.png)
 
 얘는 요거 하나만 있으면 된다.
 
@@ -224,21 +224,21 @@ EC2는 어떤 정책이 필요할까?
 3. CodeDeploy 애플리케이션 및 배포 그룹 생성
 
 CodeDeploy에 들어가 애플리케이션을 생성하자.
-![](/development/setup-ci-cd-with-codedeploy-github-actions/10.png)
+![](/study/development/setup-ci-cd-with-codedeploy-github-actions/10.png)
 
 CodeDeplooy를 이용해 EC2에 배포할 것이므로 EC2/On-premises로 플랫폼을 지정하자.
 
 배포 그룹을 생성하자.
 
-![](/development/setup-ci-cd-with-codedeploy-github-actions/11.png)
-![](/development/setup-ci-cd-with-codedeploy-github-actions/12.png)
-![](/development/setup-ci-cd-with-codedeploy-github-actions/13.png)
+![](/study/development/setup-ci-cd-with-codedeploy-github-actions/11.png)
+![](/study/development/setup-ci-cd-with-codedeploy-github-actions/12.png)
+![](/study/development/setup-ci-cd-with-codedeploy-github-actions/13.png)
 
 그룹에 아까 생성한 역할을 지정해 주고, 인스턴스를 연결해 주자. 로드 밸런서는 우선 체크 해제해 주자! (비용 절감)
 
 이후 GitHub Actions에 필요한 사항들을 secrets에 등록해 주자.
 
-![](/development/setup-ci-cd-with-codedeploy-github-actions/14.png)
+![](/study/development/setup-ci-cd-with-codedeploy-github-actions/14.png)
 
 ---
 
@@ -517,7 +517,7 @@ No space left on device @ io_write - /opt/codedeploy-agent/deployment-root/a9949
 
 인스턴스로 들어가 volume에서 현재 우리가 배포한 인스턴스가 사용 중인 volume의 크기를 늘려주자.
 
-![](/development/setup-ci-cd-with-codedeploy-github-actions/15.png)
+![](/study/development/setup-ci-cd-with-codedeploy-github-actions/15.png)
 
 그리고 인스턴스에서 디스크의 첫 번째 파티션 크기를 늘려준다.
 

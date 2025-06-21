@@ -2,16 +2,16 @@
 title: Attention is all you need
 publishDate: 2025-04-13
 description: Deep dive into the Transformer architecture, especially the implementation in each layers.
-thumbnailUrl: /development/attention-is-all-you-need/thum.jpeg
+thumbnailUrl: /study/paper-review/attention-is-all-you-need/thum.jpeg
 ---
 
 In this post, I will explain the [transformer] architecture and its implementation at the code level. I referred to a [scratch] implementation for the PyTorch code!
 
-![](/development/attention-is-all-you-need/1.png)
+![](/study/paper-review/attention-is-all-you-need/1.png)
 
 The authors of the paper all left Google and founded their own companies, except for Lukasz Kaiser, who joined OpenAI. Five out of the 7 companies have become unicorns, with a combined valuation exceeding $17 billion. It's quite impressive.
 
-![](/development/attention-is-all-you-need/2.png)
+![](/study/paper-review/attention-is-all-you-need/2.png)
 
 This is Figure 1 from the paper. It illustrates the overall architecture of the Transformer.
 
@@ -19,7 +19,7 @@ They designed the operation, called Scaled Dot-Product Attention, which calculat
 
 They represented the formula like this.
 
-![](/development/attention-is-all-you-need/3.png)
+![](/study/paper-review/attention-is-all-you-need/3.png)
 
 How can we implement Scaled Dot-Product Attention in PyTorch? Let's start from scratch.
 
@@ -56,7 +56,7 @@ The output has a shape of `[batch_size, n_head, len_q, d_v]`
 
 This is just one module used in the Multi-Head attention mechanism.
 
-![](/development/attention-is-all-you-need/4.png)
+![](/study/paper-review/attention-is-all-you-need/4.png)
 
 ```python
 class MultiHeadAttention(nn.Module):

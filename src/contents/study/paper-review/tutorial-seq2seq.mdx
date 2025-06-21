@@ -2,7 +2,7 @@
 title: Let's learn seq2seq!
 publishDate: 2025-04-12
 description: Learn how to use seq2seq models using PyTorch
-thumbnailUrl: /development/tutorial-seq2seq/thum.jpeg
+thumbnailUrl: /study/paper-review/tutorial-seq2seq/thum.jpeg
 ---
 
 Recently, I've been studying large language models(LLMs). I understand the algorithms behind what they are and how they work, but I don't have a precise understanding of their implementation.
@@ -17,7 +17,7 @@ LSTM is more advanced type of RNN that can retain long-term information better t
 
 Leveraging LSTMs, many researchers have developed various techniques for translating one language to another.
 
-![](/development/tutorial-seq2seq/rnn1.png)
+![](/study/paper-review/tutorial-seq2seq/rnn1.png)
 
 This is the original RNN architecture. The gray boxes represent cells, which take an input and produce an output, a hidden state, and a cell state.
 The mathematical expression is as follows:
@@ -26,13 +26,13 @@ The mathematical expression is as follows:
 
 However, the architecture above has a limitation: the dimensions of the inputs and outputs are fixed and identical. This poses a significant challenge for translation tasks, as most languages vary in length when expressing the same meaning.
 
-![](/development/tutorial-seq2seq/lstm1.png)
-![](/development/tutorial-seq2seq/lstm2.png)
+![](/study/paper-review/tutorial-seq2seq/lstm1.png)
+![](/study/paper-review/tutorial-seq2seq/lstm2.png)
 
 But this paper separates LSTM to two parts: encoder and decoder. Encoder LSTM takes the input sequence and produces a context vector, which has a information about the input sequence. Decoder LSTM takes the context vector and produces output one token at a time.
 
 
-![](/development/tutorial-seq2seq/seq2seq1.png)
+![](/study/paper-review/tutorial-seq2seq/seq2seq1.png)
 
 the code implementing the paper is as follows (be cautious about the dimensions):
 
