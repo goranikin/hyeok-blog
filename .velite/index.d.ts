@@ -7,6 +7,9 @@ type Collections = typeof __vc.collections
 export type Development = Collections['development']['schema']['_output']
 export declare const development: Development[]
 
+export type PersonalStudy = Collections['personalStudy']['schema']['_output']
+export declare const personalStudy: PersonalStudy[]
+
 export type PaperReview = Collections['paperReview']['schema']['_output']
 export declare const paperReview: PaperReview[]
 

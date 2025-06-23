@@ -29,6 +29,24 @@ export default defineConfig({
 					slug: data.slug.replaceAll("study/development/", ""),
 				})),
 		},
+		personalStudy: {
+			name: "PersonalStudy",
+			pattern: "study/personal-study/**/*.mdx",
+			schema: s
+				.object({
+					title: s.string(),
+					description: s.string(),
+					slug: s.path(),
+					publishDate: s.string().date(),
+					thumbnailUrl: s.string().optional(),
+					content: s.mdx(),
+				})
+				.transform((data) => ({
+					...data,
+					permalink: `/${data.slug}`,
+					slug: data.slug.replaceAll("study/personal-study/", ""),
+				})),
+		},
 		paperReview: {
 			name: "PaperReview",
 			pattern: "study/paper-review/**/*.mdx",
