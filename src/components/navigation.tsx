@@ -100,9 +100,6 @@ export const SidebarNav = () => {
         <div className="w-11/12 p-4">
           {selectedCategory?.subcategories && (
             <div className="py-2">
-              <h3 className="font-bold px-3 pb-3 text-xl">
-                {selectedCategory.label}
-              </h3>
               {selectedCategory.subcategories.map((subItem, index) => (
                 <div key={subItem.href}>
                   <SubcategoryItem
