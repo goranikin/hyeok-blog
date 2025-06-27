@@ -29,9 +29,9 @@ export default defineConfig({
 					slug: data.slug.replaceAll("study/development/", ""),
 				})),
 		},
-		personalStudy: {
-			name: "PersonalStudy",
-			pattern: "study/personal-study/**/*.mdx",
+		project: {
+			name: "Project",
+			pattern: "study/project/**/*.mdx",
 			schema: s
 				.object({
 					title: s.string(),
@@ -44,7 +44,7 @@ export default defineConfig({
 				.transform((data) => ({
 					...data,
 					permalink: `/${data.slug}`,
-					slug: data.slug.replaceAll("study/personal-study/", ""),
+					slug: data.slug.replaceAll("study/project/", ""),
 				})),
 		},
 		paperReview: {

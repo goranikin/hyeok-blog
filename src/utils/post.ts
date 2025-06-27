@@ -3,6 +3,7 @@ import {
 	development,
 	paperReview,
 	personalEssay,
+	project,
 } from "#site/contents";
 
 export type Post = {
@@ -30,6 +31,9 @@ export const getPostBySlug = ({
 			break;
 		case "study/paper-review":
 			posts = paperReview;
+			break;
+		case "study/project":
+			posts = project;
 			break;
 		case "writing/book-review":
 			posts = bookReview;

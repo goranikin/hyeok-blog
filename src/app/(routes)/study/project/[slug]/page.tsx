@@ -4,7 +4,7 @@ import metadata from "@/utils/metadata";
 import { getPostBySlug } from "@/utils/post";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { development } from "#site/contents";
+import { project } from "#site/contents";
 
 type Props = {
 	params: Promise<{ slug: string }>;
@@ -12,7 +12,7 @@ type Props = {
 
 export default async function DevelopmentPage({ params }: Props) {
 	const { slug } = await params;
-	const post = getPostBySlug({ slug: slug, category: "study/development" });
+	const post = getPostBySlug({ slug: slug, category: "study/project" });
 
 	if (!post) {
 		notFound();
@@ -25,7 +25,7 @@ export default async function DevelopmentPage({ params }: Props) {
 	);
 }
 export function generateStaticParams() {
-	return development.map((post) => ({
+	return project.map((post) => ({
 		slug: post.slug,
 	}));
 }
@@ -36,7 +36,7 @@ export async function generateMetadata({
 	params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
 	const { slug } = await params;
-	const post = development.find((post) => post.slug === slug);
+	const post = project.find((post) => post.slug === slug);
 
 	if (!post) {
 		return {};
