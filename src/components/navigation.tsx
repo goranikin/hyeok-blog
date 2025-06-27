@@ -74,34 +74,6 @@ export const SidebarNav = () => {
 			<div className="p-4 flex items-center gap-3">
 				<HomeButton />
 				<BackButton />
-				<Link
-					href="https://github.com/goranikin"
-					target="_blank"
-					rel="noopener noreferrer"
-					className="rounded-full border-1 cursor-pointer"
-				>
-					<Button
-						variant="ghost"
-						size="icon"
-						className="rounded-full cursor-pointer"
-					>
-						<Github className="h-5 w-5" />
-					</Button>
-				</Link>
-				<Link
-					href="https://www.instagram.com/hyeok_12053/"
-					target="_blank"
-					rel="noopener noreferrer"
-					className="rounded-full border-1 cursor-pointer"
-				>
-					<Button
-						variant="ghost"
-						size="icon"
-						className="rounded-full cursor-pointer"
-					>
-						<Instagram className="h-5 w-5" />
-					</Button>
-				</Link>
 			</div>
 
 			<div className="flex flex-row flex-grow h-[calc(100%-64px)]">
