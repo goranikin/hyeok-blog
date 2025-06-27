@@ -1,19 +1,19 @@
 export type FoodItem = {
-	name: string;
-	local_name: string;
-	english_name: string;
-	description: string;
+  name: string;
+  local_name: string;
+  english_name: string;
+  description: string;
 };
 
 export type RestaurantItem = {
-	name: string;
-	address: string;
-	rating: number;
-	user_rating_count: number;
-	price_level: string;
+  name: string;
+  address: string;
+  rating: number;
+  user_rating_count: number;
+  price_level: string;
 };
 
 export type SearchFoodList = {
-	country: string;
-	city: string;
+  country: string;
+  city: string;
 };
