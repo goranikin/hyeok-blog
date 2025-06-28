@@ -17,22 +17,22 @@ thumbnailUrl: /study/project/text-analytics/thm.png
 
 서칭해준 논문 및 Dataset을 바탕으로 시작.
 
-**Dataset - [LitSearch](https://arxiv.org/abs/2407.18940)**
+**Dataset: LitSearch [논문 링크](https://arxiv.org/abs/2407.18940)**
 - S2ORC dataset에서 추출한 64000개의 paper corpus (id, title, abstract, full text) 기반
-- 특정 논문을 검색하는 query를 해당 논문 저자에게 작성해달라고 요청
-- 이후 LLM을 활용해 추가 생성 후, 저자들의 수작업 검수
+- 특정 논문을 검색하는 query를 해당 논문 저자에게 작성해달라고 요청 (Manual Query)
+- 이후 LLM을 활용해 추가 생성 후, 저자들의 수작업 검수 (Inline Query)
 - Query data는 논문을 검색하는 query text와 정답 논문 id label (query, paper id)
 - 이 외 query에 대한 추가적인 정보 데이터들 존재
 
 **Model**
-- [SPECTER2](https://arxiv.org/abs/2004.07180)
+- SPECTER2 - [논문 링크](https://arxiv.org/abs/2004.07180)
     - 과학 논문으로 훈련된 SciBERT checkpoint
     - 논문 triplet을 이용해 임베딩 공간을 학습
     - Adapter를 통해 Downstream task 수행 가능
-- [DPR](https://arxiv.org/abs/2004.04906)
+- DPR - [논문 링크](https://arxiv.org/abs/2004.04906)
     - BERT-base model
     - Dual Encoder 구조 - Question encoder | Passage encoder
-- [SPLADE](https://arxiv.org/abs/2107.05720)
+- SPLADE - [논문 링크](https://arxiv.org/abs/2107.05720)
     - BERT-base model
     - Sparse Search를 위해 MLM Head를 이용
     - [Retrieval의 흐름과 SPLADE에 대한 설명 블로그](https://europe.naverlabs.com/blog/splade-a-sparse-bi-encoder-bert-based-model-achieves-effective-and-efficient-first-stage-ranking/)
@@ -42,7 +42,7 @@ thumbnailUrl: /study/project/text-analytics/thm.png
 
 이미 성숙한 Retrieval 분야에서 LLM을 활용한 개선 방안 모색.
 1. Query Rewriting
-2. HyDE (query를 기반으로 LLM이 생성한 할루시네이션 문서를 임베딩해 유사도로 검색)
+2. HyDE (LLM이 생성한 할루시네이션 문서를 query로 검색)
 3. Data Augmentation
 
 이 중 3번, Data Augmentation(데이터 증강)을 맡아서 진행.
@@ -52,11 +52,10 @@ thumbnailUrl: /study/project/text-analytics/thm.png
 ### Why and How
 
 **Pain point**  
+LitSearch Dataset은 많은 노동을 요구하며, 이로 인해 567개밖에 존재하지 않음  
+→ 실제로 Finetuning 시 과적합 문제가 발생
 
-LitSearch Dataset은 많은 인력의 노동을 요구하며, 이로 인해 567개밖에 존재하지 않음  
-→ 실제로 Finetuning 시 과적합 문제가 발생함
-
-LitSearch 논문에서 진행한 LLM 활용 query 생성 방식을 사용
+LitSearch 저자들이 LLM으로 생성한 Inline Query 증강 계획
 1. 특정 논문을 인용하는 문장인 Inline Citation Sentence를 활용
 2. Inline Citation Sentence를 Input으로 하여 인용되는 논문을 검색하는 쿼리 생성
 
@@ -127,8 +126,8 @@ triplet 생성 과정은 [/data_augmentation/generate_query/make_triplet/make_tr
 Adapter 방식을 통한 PEFT가 Retrieval embedding 모델에 효과적이라고 판단.
 
 SPLADE-v3 모델의 성능 저하 - 모델에 대한 근본적 이해 부족
-- Sparse Search가 목표민 모델에 대해, vector db상의 유사도를 triplet으로 조정하는 finetuning 방식은 당연히 기존 모델의 지식 구조를 붕괴시킬 수밖에 없음. 이에 대해서 실험 전에는 큰 생각 없이 막연하게 '해볼만하지 않을까' 싶었고, 막상 결과를 보니 당연했던 결과라 느껴짐.
-- 추가로 [SPLADE 레포지토리](https://github.com/naver/splade)에 잘 만들어진 코드들을 보고 내가 짜놓은 구조에 끼워 맞추는 과정이 있었음. 여기서 코드 단위의 통합을 좇다가 loss나 regularizer 등 실험적 요소들을 제대로 챙기지 못한 점도 성능 하락의 원인 중 하나.
+- Sparse Search가 목표인 모델에 대해 triplet으로 dense 임베딩 공간 거리를 조절하는 finetuning 방식을 적용해 지식 붕괴가 일어났다고 판단. 다만 Sparse Search에 대해서도 막연하게 성능이 좋아질 수도 있을 거란 믿음으로 진행했었음.
+- 추가로 [SPLADE 레포지토리](https://github.com/naver/splade)에 존재하는 코드를 옮기는 과정 중, loss나 regularizer와 같은 실험 인자들을 제대로 반영하지 못함. 이 또한 성능 하락의 원인으로 추정.
 
 ---
 
@@ -138,10 +137,10 @@ SPLADE-v3 모델의 성능 저하 - 모델에 대한 근본적 이해 부족
 증강을 위한 context data 추출에서 겪은 많은 실패가 있었다. inline citation sentence와 cited paper를 짝지어 얻는 과정부터 시간 소모가 컸는데, 이 부분도 그렇고 전 과정에서 데이터셋을 천천히 살펴보며 설계했다면 훨씬 시간을 아꼈을 듯하다. 이건 프로젝트 전체적으로도 많이 느꼈다. 코딩하기 전에 설계부터 하자.
 
 **프롬프트 엔지니어링**  
-증강의 첫 시도가 직접 보기에도 매우 실망스러운 수준이라 당황했다. 여러 조건을 바꿔가며 진행할 때마다 점점 결과물이 좋아지는 걸 보며, LLM을 다룰 때 프롬프트 엔지니어링이 얼마나 중요한지도 체감했다. 단순히 trial-error 반복이 아니라, 이전 결과를 보고 나름의 가설을 세워 다시금 프롬프트를 적용해 원하는 결과를 얻어내려면 LLM 자체에 대한 이해가 필수라 생각.
+증강의 첫 시도가 매우 실망스러운 수준이었고, 여러 조건을 바꿔가며 진행할 때마다 점점 결과물이 좋아졌다. LLM을 다룰 때 프롬프트 엔지니어링이 얼마나 중요한지도 체감했다. 단순히 trial-error 반복이 아니라, 이전 결과를 보고 나름의 가설을 세워 다시금 프롬프트를 적용해 원하는 결과를 얻어내려면 LLM 자체에 대한 이해가 필수라 생각했다. 그리고 여러 LLM 엔지니어링 책들이 프롬프트 입출력을 로그로 남겨 모델 개선에 사용하는 이유를 확실히 깨달았다.
 
 **코드 구현**  
-이 부분은 프로젝트에는 그닥 필요 없지만 혼자서 코드로 만들며 고생한 부분이다. 편하게 실험하도록 된 API를 쓰기보다 직접 클래스로 구현해보려 했고, 무엇보다 Jupyter Notebook이 아닌 Vessl AI에서 container를 띄우는 yml 파일을 작성해 실행시키려 했다. 이 과정에서 수많은 Failed를 마주하고 디버깅할 때 코드의 근본적인 문제가 있음을 깨달았다. 기능들이 올바르게 분리되어 있지 않고 하나의 클래스에 몰려있는 점, 로그부터 assertion, error handling 등등. 프론트와 근본적으로 다른 코드 구조를 가져가야 함을 run 돌릴 때 확실히 깨달았다. 아래는 finetuning만을 위해 70번 넘게 Run을 돌린 흔적. 일단 실패하고, 로그 보고 조금씩 고치다보니 저렇게 됐다.
+이 부분은 프로젝트에는 큰 필요가 없지만 혼자서 노력한 부분이다. 편하게 실험하도록 된 API를 쓰기보다 직접 클래스로 구현해보려 했고, 무엇보다 Jupyter Notebook이 아닌 Vessl AI에서 container를 띄우는 yml 파일을 작성해 실행시키려 했다. 이 과정에서 수많은 Failed를 마주하고 디버깅할 때 코드의 근본적인 문제가 있음을 깨달았다. 기능들이 올바르게 분리되어 있지 않고 하나의 클래스에 몰려있는 점, 로그부터 assertion, error handling 등등. 프론트와 근본적으로 다른 코드 구조를 가져가야 함을 run 돌릴 때 확실히 깨달았다. 아래는 finetuning만을 위해 70번 넘게 Run을 돌린 흔적. 일단 실패하고, 로그 보고 조금씩 고치다보니 저렇게 됐다.
 ![](/study/project/text-analytics/10.png)
 
 
