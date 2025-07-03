@@ -9,6 +9,14 @@
     "permalink": "/study/development/deploy-nextjs-app-with-bun-ec2-nginx-pm2"
   },
   {
+    "title": "실수로 커밋된 파일 삭제하기 (feat. git-filter-repo)",
+    "description": "굳이 reset하지 말자~",
+    "slug": "git-filter-repo",
+    "publishDate": "2025-07-03",
+    "content": "const{Fragment:e,jsx:n,jsxs:r}=arguments[0];function _createMdxContent(t){const c={code:\"code\",hr:\"hr\",p:\"p\",...t.components};return r(e,{children:[n(c.p,{children:\"이미 커밋된 히스토리를 되돌릴 것 없이, 그냥 특정 파일만 쏙 없던 것처럼 만들어주는 도구가 있다!\"}),\"\\n\",r(c.p,{children:[\"바로 \",n(c.code,{children:\"git-filter-repo\"}),\".\"]}),\"\\n\",r(c.p,{children:[\"MacOS 사용하시는 분들은 \",n(c.code,{children:\"brew install git-filter-repo\"}),\"로 설치하면 된다. window는 pip을 쓰면 된다고 함.\"]}),\"\\n\",n(c.p,{children:\"나같은 경우엔 굳이 github에 안 올려도 되는 고용량 파일을 실수로 커밋까지 가져가버렸다. 그래서 git push가 길어지다 못해 중간에 끊어졌고, 굳이 올릴 필요도 없어서... 커밋 내역에서 파일만 삭제하려 했다. 그런데 굳이 reset하면 너무 슬프니까... 더 나은 방법이 있나 찾아보는데 신통방통한 패키지가 있었음.\"}),\"\\n\",r(c.p,{children:[\"사용법은 프로젝트 루트에서 \",n(c.code,{children:\"git filter-repo --path 파일명 --invert-paths\"}),\"을 써주면 된다. 신기한 게 진짜 깃헙 커밋에서 해당 파일만 쏙 사라져있음. 실제로 로컬 저장소의 히스토리를 영구적으로 변경하므로 협업 시 비상 상황이 발생하지 않도록 조심하자.\"]}),\"\\n\",n(c.hr,{})]})}return{default:function(e={}){const{wrapper:r}=e.components||{};return r?n(r,{...e,children:n(_createMdxContent,{...e})}):_createMdxContent(e)}};",
+    "permalink": "/study/development/git-filter-repo"
+  },
+  {
     "title": "Huggingface LLM Course - Chapter1",
     "description": "Read huggingface docs and note down important points",
     "slug": "huggingface-1",
