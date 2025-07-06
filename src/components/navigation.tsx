@@ -45,6 +45,7 @@ export const navigationItems: NavItem[] = [
     label: "실험실",
     subcategories: [
       { href: "/laboratory/human-interface-design-class", label: "휴인디" },
+      { href: "/laboratory/extract-transcript", label: "자막 추출" },
     ],
   },
 ];
