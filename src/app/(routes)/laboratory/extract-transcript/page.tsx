@@ -10,7 +10,7 @@ type YoutubeInfo = {
 
 type TranscriptResult = {
   youtube_url: string;
-  transcript: string;
+  transcript: string[];
 };
 
 function formatDate(yyyymmdd: string) {
@@ -35,7 +35,7 @@ export default function ExtractTranscriptPage() {
   const [loadingInfo, setLoadingInfo] = useState(false);
   const [infoError, setInfoError] = useState<string | null>(null);
 
-  const [transcript, setTranscript] = useState<string | null>(null);
+  const [transcript, setTranscript] = useState<string[] | null>(null);
   const [loadingTranscript, setLoadingTranscript] = useState(false);
   const [transcriptError, setTranscriptError] = useState<string | null>(null);
 
@@ -131,19 +131,21 @@ export default function ExtractTranscriptPage() {
                 ? "자막 추출 중..."
                 : "자막을 추출하시겠습니까?"}
             </button>
-            {transcriptError && (
-              <p className="text-red-500">{transcriptError}</p>
-            )}
-            {transcript && (
-              <div className="mt-4">
-                <h3 className="font-bold mb-2">추출된 자막</h3>
-                <pre className="bg-gray-100 p-2 rounded max-h-96 overflow-auto">
-                  {transcript}
-                </pre>
-              </div>
-            )}
           </div>
         )}
+        <div>
+          {transcriptError && <p className="text-red-500">{transcriptError}</p>}
+          {transcript && (
+            <div className="mt-4">
+              <h3 className="font-bold mb-2">추출된 자막</h3>
+              {transcript.map((line) => (
+                <p key={line} className="p-2 text-lg leading-loose">
+                  {line}
+                </p>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </PageLayout>
   );

@@ -320,6 +320,14 @@
     "permalink": "/writing/personal-essay/itinerary"
   },
   {
+    "title": "조용한 세계",
+    "description": "처음 본 세계",
+    "slug": "silent-world",
+    "publishDate": "2025-07-10",
+    "content": "const{jsx:n}=arguments[0];function _createMdxContent(t){const e={hr:\"hr\",...t.components};return n(e.hr,{})}return{default:function(t={}){const{wrapper:e}=t.components||{};return e?n(e,{...t,children:n(_createMdxContent,{...t})}):_createMdxContent(t)}};",
+    "permalink": "/writing/personal-essay/silent-world"
+  },
+  {
     "title": "불확실성, 선택과 집중",
     "description": "먼 훗날 내 불확실성들을 돌아보며 웃을 수 있기를.",
     "slug": "uncertainty",

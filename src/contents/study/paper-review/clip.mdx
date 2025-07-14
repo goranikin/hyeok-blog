@@ -1,0 +1,420 @@
+---
+title: CLIP
+publishDate: 2025-07-14
+description: DSBA 연구실 사전학습 논문 리뷰 - Learning Transferable Visual Models From Natural Language Supervision
+thumbnailUrl: /study/paper-review/clip/thm1.jpeg
+---
+
+7월부터 DSBA 연구실에서 인턴을 하는 중입니다. AI 무지랭이를 위해 감사하게도 사전학습이란 제도가 있는데요. 각 분야 별로 논문을 읽고 Notion에 정리한 뒤, 기존 연구원분들 앞에서 읽은 내용에 대해 자신만의 생각을 이야기하는 구조입니다. 어떤 식으로 논문을 읽으면 좋을지, 또 앞으로 어떤 식으로 나아가면 좋을지 피드백을 듣는 자리입니다. 이와 관련해서 Notion에 내용을 옮기고, 이후 마지막 단락에서 발표할 때 말했던 것들과 피드백 등 다양한 이야깃거리를 남기려고 합니다.
+
+이전과 달리 해당 문서들은 한글로 작성될 예정입니다.
+
+---
+
+다음 구분 선까지 Notion 내용입니다.
+
+
+[Paper Link](https://arxiv.org/abs/2103.00020)
+
+## 1. Introduction
+
+1) 논문이 다루는 분야
+
+- Vision model training with natural language
+- Multi-modal model
+- Natural Language Supervision & Weak-Supervision Training
+- Transfer learning
+- Zero-show or few-shot transfer task capability
+
+2) 해당 task에서 기존 연구 한계점 (정상적인 논문이라면 introduction에서 간략히 언급함)
+
+- 기존 Vision model을 학습시키기 위한 Dataset들은 대부분 labeled data → 양이 적음
+- 다양한 downstream task에 대한 기존 model의 zero-shot transfer 능력 부족
+
+3) 논문의 contributions 
+
+- 대규모 데이터셋을 통한 Weak-supervised training concept 제시
+    - (본문 내용) Could scalable pre-training methods which learn directly from web text result in a similar breakthrough in computer vision?
+- zero-shot transfer를 통한 task 수행 능력에 초점 → 기존에는 representation에 초점
+    - ex) 고양이 이미지를 얼마나 잘 표현하는가? → 고양이임을 얼마나 잘 분류하는가?
+    - (본문 내용) While much research in the field of unsupervised learning focuses on the representation learning capabilities of machine learning systems, we motivate studying zero-shot transfer as a way of measuring the task-learning capabilities of machine learning systems.
+
+
+## 2. Related Work
+
+- Improved deep metric learning with multi-class n-pair loss objective, Advances in neural information processing systems 2016
+    - N-pair loss로 한 번에 여러 클래스 샘플을 동시에 고려하여 더 효율적으로 “거리”를 학습
+    - CLIP의 training에도 해당 N-pair contrastive loss 사용
+- Learning Visual Features from Large Weakly Supervised Data, ECCV 2016
+    - 대규모 Weakly supervised 데이터셋을 활용해 CNN 기반 모델을 학습
+    - 라벨이 약하더라도 충분한 데이터가 존재하면 일반화된 능력을 얻을 수 있음
+    - CLIP의 Weak-supervised dataset의 motivation.
+- Learning Visual N-grams from Web Data, IEEE 2017
+    - 이미지와 텍스트 N-gram을 연결하도록 모델을 학습
+    - 단일 단어가 아닌, 구나 문장 단위 개념을 모델링
+    - CLIP 학습 방법의 Motivation
+- VirTex, ICMLM, ConVIRT
+    - CLIP과 비슷하게 텍스트-이미지 구조를 통해 학습시킨 모델들
+
+
+## 3. 제안 방법론
+
+### Main Idea & Contribution
+
+1. Architecture
+
+![image.png](/study/paper-review/clip/1.png)
+
+Text encoder: Transformer - 63M parameter, 12 layer, 512 wide model with 8 heads
+
+Image encoder
+
+|  | Base style | EfficientNet style |  |
+| --- | --- | --- | --- |
+| ResNe | ResNet-50, ResNet-101 | RN50x4, RN50x16, RN50x64 |  |
+
+|  | Base | Large |
+| --- | --- | --- |
+| ViT | 16, 32 | 14, 14@336px |
+
+CLIP model은 ViT-L/14@336px 사용 (Best performance)
+
+가장 큰 모델 기준으로 RN50x64는 592대의 V100으로 18일간 학습, ViT-L/14는 256대의 V100으로 12일간 학습 🤔
+
+코드 구현 (https://github.com/openai/CLIP)
+
+불필요한 코드 생략
+
+```python
+class CLIP(nn.Module):
+    def __init__(self,
+                 embed_dim: int,
+                 # vision
+                 image_resolution: int,
+                 vision_layers: Union[Tuple[int, int, int, int], int],
+                 vision_width: int,
+                 vision_patch_size: int,
+                 # text
+                 context_length: int,
+                 vocab_size: int,
+                 transformer_width: int,
+                 transformer_heads: int,
+                 transformer_layers: int
+                 ):
+        super().__init__()
+
+        if isinstance(vision_layers, (tuple, list)):
+            vision_heads = vision_width * 32 // 64
+            self.visual = ModifiedResNet(
+                layers=vision_layers,
+                output_dim=embed_dim,
+                heads=vision_heads,
+                input_resolution=image_resolution,
+                width=vision_width
+            )
+        else:
+            vision_heads = vision_width // 64
+            self.visual = VisionTransformer(
+                input_resolution=image_resolution,
+                patch_size=vision_patch_size,
+                width=vision_width,
+                layers=vision_layers,
+                heads=vision_heads,
+                output_dim=embed_dim
+            )
+
+        self.transformer = Transformer(
+            width=transformer_width,
+            layers=transformer_layers,
+            heads=transformer_heads,
+            attn_mask=self.build_attention_mask()
+            
+    def encode_image(self, image):
+        return self.visual(image.type(self.dtype))
+
+    def encode_text(self, text):
+        x = self.token_embedding(text).type(self.dtype)  # [batch_size, n_ctx, d_model]
+
+        x = x + self.positional_embedding.type(self.dtype)
+        x = x.permute(1, 0, 2)  # NLD -> LND
+        x = self.transformer(x)
+        x = x.permute(1, 0, 2)  # LND -> NLD
+        x = self.ln_final(x).type(self.dtype)
+
+        # x.shape = [batch_size, n_ctx, transformer.width]
+        # take features from the eot embedding (eot_token is the highest number in each sequence)
+        x = x[torch.arange(x.shape[0]), text.argmax(dim=-1)] @ self.text_projection
+
+        return x
+            
+    def forward(self, image, text):
+        image_features = self.encode_image(image)
+        text_features = self.encode_text(text)
+
+        # normalized features
+        image_features = image_features / image_features.norm(dim=1, keepdim=True)
+        text_features = text_features / text_features.norm(dim=1, keepdim=True)
+
+        # cosine similarity as logits
+        logit_scale = self.logit_scale.exp()
+        logits_per_image = logit_scale * image_features @ text_features.t()
+        logits_per_text = logits_per_image.t()
+
+        # shape = [global_batch_size, global_batch_size]
+        return logits_per_image, logits_per_text
+```
+
+세부적인 ResNet, ViT, Transformer 의 스크래치 구현은 깃헙 CLIP/clip/model.py 참고 (굉장히 깔끔하게 잘 정리되어있고, scratch부터 구현된 코드를 보기에 좋은 듯!)
+
+1. Natural Language Supervision
+
+(본문 내용) It’s much easier to scale natural language supervision compared to standard crowd-sourced labeling for image classification. (…중략) methods which work on natural language can learn passively from the supervision contained in the vast amount of text on the internet.
+
+GPT 학습에 필요한 대규모 데이터셋을 긁어모은 OpenAI 답게 엄청난 크롤링 능력을 보여줌. 
+
+1. 50만개의 Query 설정 후 (image, text) pair 크롤링
+2. 각 Query마다 최대 2만개의 pair (클래스 분포 밸런스)
+3. 총 400M → GPT-2 학습에 쓰인 WebText dataset과 비슷한 총 단어 수
+
+1. Training Method
+
+(본문 내용) Given a batch of N (image, text) pairs, CLIP is trained to predict which of the N ×N possible (image, text) pairings across a batch actually occurred.
+
+Architecture에 소개된 것처럼 NxN matrix of image & text pair를 얻음. 여기서 Diagonal에 대해서만 positive, 나머지는 negative로 학습
+
+Q) False negative에 대해서는 어떻게 대응하는가?
+
+A) 충분한 데이터셋이 확보되면 저품질이더라도 학습에 지장 X (Weak-supervision의 진가)
+
+실험에서 확인해야 할 문제 → pre-training 과정에서 정말 zero-shot transfer 성능이 증가할 것인가? (GPT처럼)
+
+
+## 4. 실험 및 결과
+
+본 논문은 매우 긴 분량으로 이루어져 있고, 대부분 실험 설계와 결과, 그리고 의의로 이루어짐. 따라서 각각의 실험들을 하나씩 살펴볼 것.
+
+### 1) vs Visual N-Grams
+
+![](/study/paper-review/clip/2.png)
+Visual N-Grams와 CLIP은 성능을 동등하게 비교할 수 없는 모델 (본문에서 언급). 다만 Zero-shot 성능에 있어서 얼마나 큰 발전을 이루었는지 보여주는 성능표.
+
+### 2) Image encoding을 위한 Prompt Engineering
+
+CLIP은 pre-training 과정에서 dataset의 text가 image에 대한 설명인 ‘구’ 혹은 ‘문장’으로 이루어짐(caption). 그러나 Evaluation dataset에서는 단순히 class에 대한 label로만 주어지는 경우가 있음. 이에 대해 굉장히 간단한 Prompt Engineering으로 성능 향상.
+
+- 기본 템플릿: “A photo of a label” → ImageNet에서 1.3% 향상
+- Oxford-IIIT Pets: “A photo of a label}, a type of pet.”
+- ORC: 문자나 숫자에 quotes 추가 - ex) 1, a → “1”, “a”
+
+이 외에도 다양한 context prompt를 통해 ImageNet에서 3.5% 향상을 보임 (해당 promt는 깃헙 CLIP/data/prompts.md에 정리되어 있음)
+
+Prompt 예시
+
+```jsx
+templates = [
+    'a photo of a {}.',
+    'a blurry photo of a {}.',
+    'a black and white photo of a {}.',
+    'a low contrast photo of a {}.',
+    'a high contrast photo of a {}.',
+    'a bad photo of a {}.',
+    'a good photo of a {}.',
+    'a photo of a small {}.',
+    'a photo of a big {}.',
+    'a photo of the {}.',
+    'a blurry photo of the {}.',
+    'a black and white photo of the {}.',
+    'a low contrast photo of the {}.',
+    'a high contrast photo of the {}.',
+    'a bad photo of the {}.',
+    'a good photo of the {}.',
+    'a photo of the small {}.',
+    'a photo of the big {}.',
+]
+```
+
+해당 프롬프트들을 앙상블 → 각각의 프롬프트 입력으로 얻은 embedding의 pooling 값
+
+Q) Inference time이 증가하지는 않는지?
+
+A) text encoder는 정답 레이블에 대해 미리 계산한 뒤, inferenced image embedding과의 similarity만 계산. 따라서 캐싱된 값을 사용하면 되므로 prompt template이 늘어난다고 inference 비용이 비례해서 늘지 않음!
+
+### 3) Zero-Shot CLIP Performance
+
+**vs fully Supervised models**
+![](/study/paper-review/clip/3.png)
+
+꽤 많은 Dataset에서 fully supervised baseline을 웃돔.
+
+나쁜 성능을 보인 데이터셋들은 뭘까?
+
+→ (본문 내용) we see that zero-shot CLIP is quite weak on several specialized, complex, or abstract tasks such as satellite image classification (EuroSAT and RESISC45), lymph node tumor detection (PatchCamelyon), counting objects in synthetic scenes (CLEVRCounts), self-driving related tasks such as German traffic sign recognition (GTSRB), recognizing distance to the nearest car (KITTI Distance).
+
+매우 특수하거나 복잡한 이미지 인식에는 Transfer performance가 나쁘게 나타남
+
+다만 이런 예시는 사전학습에서 거의 마주치지 못한 class일 확률이 높으며, non-expert human 또한 zero-shot으로 해당 task를 수행할 때 보일 성과를 생각하면…
+
+
+**vs Few-shot models**
+![](/study/paper-review/clip/4.png)
+Linear Probe CLIP은 LogisticRegression으로 학습 후 평가
+
+놀라운 점은 CLIP의 4-shot까지는 Zero-shot이 높은 성능을 보임
+
+→ (본문 내용) Context-less example-based learning has the drawback that many different hypotheses can be consistent with the data, especially in the one-shot case.
+
+Q) 왜 그럴까?
+
+A)
+
+1. image는 text에 비해 매우 높은 variance을 보임. 같은 class여도 조명, 각도, 배경, 해상도, 스타일, 노이즈 등에 따라 완전히 다르게 보일 수 있음.
+2. text는 구조적이고 의미가 명확하게 표현됨.
+
+→ 고양이에 대해 사진으로 제시하는 것과 단어로 제시하는 것의 명확성 차이.
+
+이미지의 시각적 특징을 충분히 학습할 수 있도록 많은 few-shot samples를 제공해야 함.
+
+Q) 그렇다면 image의 pixel이 늘어날수록 few-shot에 더 많은 샘플이 필요해질까?
+
+A) (by GPT)
+
+```bash
+네, 맞습니다!  
+**이미지의 픽셀(해상도)이 늘어날수록, few-shot 학습에서 더 많은 샘플이 필요해지는 경향이 커집니다.**
+
+---
+
+## 이유를 자세히 설명하면
+
+### 1. **고차원 공간의 일반화 어려움**
+- 이미지의 해상도가 높아질수록, 각 샘플이 가지는 정보(특징)도 훨씬 더 많아집니다.
+- 예를 들어, 32×32 픽셀 이미지는 1,024차원, 224×224 픽셀 이미지는 50,176차원입니다.
+- 고차원 공간에서는 데이터가 희박(sparse)해지고,  
+  클래스 경계를 잘 잡으려면 더 많은 예시가 필요합니다.
+
+### 2. **시각적 다양성 증가**
+- 해상도가 높아지면,  
+  같은 클래스 내에서도 더 다양한 세부적인 특징(무늬, 질감, 배경 등)이 나타날 수 있습니다.
+- 모델이 이런 세부적인 차이를 일반화하려면 더 많은 샘플이 필요합니다.
+
+### 3. **오버피팅 위험 증가**
+- 샘플 수가 적은데 픽셀(특징) 수가 많으면,  
+  모델이 소수 샘플의 세부적인 특징에 과도하게 적합(overfit)될 위험이 커집니다.
+- 이를 방지하려면 더 많은 샘플로 클래스의 전체적인 특징을 학습해야 합니다.
+
+---
+
+## 실제로 어떻게 나타나는가?
+
+- **해상도가 높을수록**  
+  - 같은 클래스의 다양한 모습(포즈, 배경, 조명 등)을 더 많이 포착할 수 있음
+  - 모델이 이런 다양성을 학습하려면 더 많은 예시가 필요함
+- **few-shot 학습에서**  
+  - 저해상도 이미지(예: MNIST, CIFAR-10)는 1~5장만으로도 어느 정도 일반화 가능
+  - 고해상도 이미지(예: ImageNet, 의료 영상 등)는 10장 이상, 때로는 수십~수백 장이 필요할 수 있음
+
+---
+
+## 결론
+
+- **이미지의 픽셀(해상도)이 늘어날수록, few-shot 학습에서 더 많은 샘플이 필요해지는 경향이 커진다**는 것이 맞습니다.
+- 이는 고차원 데이터의 일반화 어려움, 시각적 다양성, 오버피팅 위험 등 때문입니다.
+```
+
+
+**the # of samples to deal with zero-shot model**
+![](/study/paper-review/clip/5.png)
+
+각 데이터셋별 zero-shot 성능을 따라 잡기 위한 few-shot sample의 개수
+
+상위 4개 dataset에 대해 살펴보자
+
+FER2013: 표정 인식 → 사람마다 다른 표현 방식으로 인해 일관된 class representation 학습 불리
+
+CIFAR10: 저해상도 및 클래스 내 다양한 변이
+
+OxfordPets: 품종 비교에서 어려움을 겪었을 거라 유추
+
+Food101: 같은 음식이더라도 다른 조리법이나 각도에 따라 완전히 달라 보일 수 있음
+
+다만 데이터셋을 하나하나 자세히 확인해본 건 아니고… 이정도 특성만 있음을 확인함. 클래스 내에서 포착해야 하는 특징이 매우 많거나(FER2013), class 외 배경 정보가 많을 경우(Food101) few-shot이 불리하다고 판단.
+
+
+**A theoretical limit performance and the real performances**
+![](/study/paper-review/clip/6.png)
+이론적 성능과 zero-shot의 비교
+![](/study/paper-review/clip/7.png)
+모델 사이즈와 성능 비교 → 꾸준히 성능 상승. 더 큰 모델이 더 좋은 성능을 낼 수 있을 거란 기대
+
+### 4) Representation Learning
+
+저자들은 Representation learning capability보다는 task leaning capability가 중요하다고는 했지만, 어쨌거나 기존 평가 방식으로 확인하고자 함.
+
+실험 방법
+
+- 각각의 model에서 classification space로 projection 제거
+- scikit-learn’s L-BFGS implementation 사용
+- 각각의 dataset마다 적합한 metric 평가 (해당 부분은 아래 사진 첨부, 본문 부록 A에 존재)
+
+**Dataset and meta-information**
+![](/study/paper-review/clip/8.png)
+![](/study/paper-review/clip/9.png)
+
+해당 결과의 시각화 figure
+![](/study/paper-review/clip/10.png)
+
+Large parameter CLIP model이 우수한 embedding 능력을 보임!
+
+Q) Linear probe가 embedding 우수성을 체크하는 좋은 지표인가?
+A) 만약 embedding이 매우 간단한 linear layer만으로도 좋은 성능을 낸다고 가정. 이는 임베딩이 여러 이미지 속에서 다양한 시각적/추상적 특징을 잘 담고 있으며, 특정 class만을 잘 인식하기보다 일반적인 embedding을 갖고있다고 볼 수 있음. 이는 다시 말해 해당 모델이 이미지 내에서 다양한 class를 대상으로 feature를 뽑아내는 능력이 뛰어나다고 볼 수 있음 → 높은 embedding representation!
+
+### 5) Robustness to Natural Distribution Shift
+
+Introduction에서 줄기차게 설명해온 transfer capability에 대한 실험
+
+본문에서는 Robustness를 두 종류로 설명
+
+1. Relative Robustness: it captures any improvement in out-of-distribution accuracy.
+2. Effective Robustness: it measures improvements in accuracy under distribution shift above what is predicted by the documented relationship between in-distribution and out-of-distribution accuracy.
+
+당연히 둘 다 높아야 Robust한 모델이겠죠?
+
+![](/study/paper-review/clip/11.png)
+다른 분포에서 더 높은 성능을 보여버리는 CLIP. ImageNet-R을 보면 ImageNet ResNet101은 약 40% 가량 감소한 성능이 CLIP은 되려 12%가 증가했다. 자연어로 이미지의 구조를 파악하는 능력이 일반화에 얼마나 강력한지 보여주는 예시. 애초에 GPT가 선례를 보여주기도 했고…
+
+![](/study/paper-review/clip/12.png)
+ImageNet에 대해 학습할 경우 다른 dataset에 대한 robustness가 떨어지는 걸 볼 수 있음. 대신 zero-shot CLIP에 class name를 맞춰줄 경우 특정 데이터셋에서 높은 성능 향상.
+
+![](/study/paper-review/clip/13.png)
+Zero-shot이 Few-shot 보다 훨씬 robust함.
+
+### 6) Comparison to Human Performance
+
+CLIP is better
+
+### 7) Data overlap
+
+pre-training model 평가가 어려운 이유 중 하나로 eval dataset이 학습에 섞여 들어가는 일이 발생. 본 논문에서는 Overlap detector를 만들어서 Clean subset을 만들었고, 몇 dataset을 제외하면 허용할만한 범위에 존재하는 것으로 판단. 다만 CLIP 이후 만들어진 eval dataset으로 정밀한 평가 필요.
+
+(본문 내용) Creating a new benchmark of tasks designed explicitly to evaluate broad zero-shot transfer capabilities, rather than re-using existing supervised datasets, would help address these issues.
+
+
+### 8) Bias
+
+대규모 인터넷 데이터로 학습된 만큼 Sexual, Race, Job bias 존재
+![](/study/paper-review/clip/14.png)
+![](/study/paper-review/clip/15.png)
+
+InstructionGPT처럼 효과적인 Intruction Tuning이 필요할 것.
+
+## 5. 결론 (배운 점)
+
+대규모 자원을 동원해 나온 갖가지 Insight의 범람 덕에, 매우 긴 길이였음에도 상당히 재미있게 읽었다. 특히 실험 하나하나마다 연구 주제급.
+
+이 외에도 개인적으로 Speech-to-Text쪽 논문을 살펴보는데, CLIP과 유사하게 Whisper도 natural supervision dataset을 구축해 pre-training한 모델을 제시하고 다양한 실험 결과를 공유함. GPT-3도 그렇고 사실상 현재 AI 모델들의 토대를 전부 OpenAI가 만든 셈… 특히 본문 안에서도 ‘Representation learning capability’가 아닌 ‘Task learning capability’에 집중하고 ‘현실 세계에 의미 있는 AI model’을 만들고 싶다는 뚜렷한 목적이 보였다. 지금이야 Closed model로 바뀌었지만 지금까지의 결과만 해도 정말 OpenAI의 이름을 그대로 실천한 듯. 특히 25페이지 우측에 적힌 문단에 감동먹음.
+
+- We hope that this work motivates future research on the characterization of the capabilities, shortcomings, and biases of such models, and we are excited to engage with the research community on such questions.
+
+---
+
+진짜 소감
