@@ -42,11 +42,11 @@ export default function PostList({ posts, basePath }: PostListProps) {
               </div>
               {post.thumbnailUrl ? (
                 <Image
-                  width={200}
-                  height={200}
+                  width={300}
+                  height={300}
                   src={post.thumbnailUrl ?? DEFAULT_IMAGE}
                   alt={post.title}
-                  className="object-cover w-28 h-28"
+                  className="object-cover w-40 h-40"
                 />
               ) : null}
             </Link>

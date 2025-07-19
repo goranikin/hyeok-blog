@@ -1,0 +1,138 @@
+---
+title: VQ-VAE
+publishDate: 2025-07-19
+description: DSBA 연구실 사전학습 논문 리뷰 - Neural Discrete Representation Learning
+thumbnailUrl: /study/paper-review/vq-vae/vq-vae_thm1.jpeg
+---
+
+스크래치 구현(Original VAE와 같이 작성됨): [GitHub](https://github.com/goranikin/DSBA-intern-study/tree/main/VAE)
+
+---
+
+## 1. Introduction
+
+1) 논문이 다루는 분야
+
+- Latent representation
+- Vector Quantization
+
+2) 해당 task에서 기존 연구 한계점 (정상적인 논문이라면 introduction에서 간략히 언급함)
+
+- Language and speech are inherently discrete in nature.
+    - This raises the question: since images can often be described using language, is it beneficial to represent images with discrete latent variables?
+- Traditional VAEs suffer from posterior collapse problem.
+    - This occurs when the encoder becomes too closely aligned with the prior distribution, causing the latent variables to carry little or no meaningful information about the input.
+
+3) 논문의 contributions 
+
+- It shows a wide variety of applications such as speech and video generation.
+- It doesn’t suffer from the posterior collapse problem.
+
+## 2. Related Work
+
+VAE
+- it shows an architecture of VAE (inferring a variational latent)
+
+## 3. Methodology
+
+### Main Idea
+
+### 1. Discrete Latent variables
+
+**notations**
+- e: a embedding space
+- K: the size of the discrete latent space (K-way categorical)
+- D: the dimensionality of each latent embedding vector $e_i$ and there are K embedding vectors.
+- z_e(x): the output of the encoder
+
+Q) How to move to discrete latent?
+
+A) a nearest neighbour look-up!
+
+**posterior categorical distribution**
+![](/study/paper-review/vq-vae/1.png)
+
+pseudo code:
+```python
+def quantize(z_e, codebook):
+    distances = ((z_e. - codebook) ** 2).sum(-1)
+    indices = distances.argmin(1)
+    z_q = codebook[indices]
+    return z_q, indices
+```
+
+how to update parameter with this discrete codebook?
+
+![](/study/paper-review/vq-vae/2.png)
+
+The right image means that a loss relocate the representation to other embedding vectors, then the result changes in the next process.
+
+**Loss**
+![](/study/paper-review/vq-vae/3.png)
+
+sg: stop-gradient
+
+A first term is reconstruction loss
+
+2nd: codebook loss
+
+- it updates codebook vector only, moving to the encoder’s output.
+
+3th: Commitment loss
+
+- it updates the output of the encoder only, moving to the codebook vector.
+
+Q) I’ve understood why does loss contains only the output of the encoder and embedding vectors (due to an non-differentiable of quantization operation). But why they are divided into two terms as codebook loss and commitment loss?
+
+A) (본문 내용)  To make sure the encoder commits to an embedding and its output does not grow, we add a commitment loss, the third term in equation
+
+Q) Waiiiiiiiiit… the reconstruction loss contains quantization loss which is not differentiable. 
+
+A)
+![](/study/paper-review/vq-vae/4.png)
+
+it just passes the gradient: STE(Straight-Through Estimator)
+
+So… it updates the decoder and the encoder parameters, but not codebook. → codebook parameter only updates by codebook loss term.
+
+2. with PixelCNN
+
+Original VAE practices a Gaussian distribution to sample z. When the VQ-VAE paper had written, many of researches and applications have found a better performance to exploit VAE architecture. One of them is to use PixelCNN, which models the distribution of z autoregressively. Some experiments in the paper adopt the PixelCNN to generate image with VQ-VAE.
+
+### Contribution
+
+VQ-VAE presents a Vector-Quantization method at VAE with a codebook(embedding vector space).
+
+## 4. Experiments and Results
+
+### Datasets
+- ImageNet
+    - Reconstruction
+![](/study/paper-review/vq-vae/5.png)
+- VCTK(The Voice Cloning Toolkit)
+    - 110 people’s audio samples.
+    - Most of them are from news or wikipedia.
+    - A variety of English pronounce.
+
+### Results
+- 다양한 데이터 종류에 대해 적용 가능한 모델을 보여줌 (다른 표현들은 이산적이므로)
+- VQ 방식을 통해 기존 VAE가 가진 posterior collapse 문제를 해결
+
+## 5. Conclusions
+
+기존 VAE 코드에 VQ 과정만 얹어서 코드를 짜보았습니다.
+![](/study/paper-review/vq-vae/6.png)
+
+논문에서 ImageNet 생성할 때 사용한 embedding 개수인 512개로 했더니 그렇게 좋지 않음... 실제로 원래 이미지를 복원하는 문제에서도 Traditional VAE보다 훨씬 흐릿한 이미지가 생성됨.
+
+다만 같은 embedding vector 표현에서 생성된 애들은 동일한 모습을 보여주는 결과.
+
+![](/study/paper-review/vq-vae/7.png)
+
+이건 embedding number를 10으로 제한한 결과. 이전 보단 좀 더 깔끔해진 듯.
+
+적당한 하이퍼파라미터를 찾으면 잘 나오겠다만… 그냥 여기서 stop!
+
++ latent diffusion model의 경우 n_embed: 8192를 사용
+
+---
