@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "title": "갈림길 속에서",
+    "description": "짧막한 연구실 인턴, 그리고 달파",
+    "slug": "1",
+    "publishDate": "2025-07-19",
+    "content": "const{jsx:n}=arguments[0];function _createMdxContent(t){const e={p:\"p\",...t.components};return n(e.p,{children:\"어쩌다보니\"})}return{default:function(t={}){const{wrapper:e}=t.components||{};return e?n(e,{...t,children:n(_createMdxContent,{...t})}):_createMdxContent(t)}};",
+    "permalink": "/writing/light-topic/1"
+  }
+]

@@ -4,7 +4,7 @@ import metadata from "@/utils/metadata";
 import { getPostBySlug } from "@/utils/post";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { bookReview } from "#site/contents";
+import { lightTopic } from "#site/contents";
 
 type Props = {
   params: Promise<{
@@ -28,7 +28,7 @@ export default async function BookReviewPage({ params }: Props) {
 }
 
 export function generateStaticParams() {
-  return bookReview.map((post) => ({
+  return lightTopic.map((post) => ({
     slug: post.slug,
   }));
 }
@@ -39,7 +39,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = bookReview.find((post) => post.slug === slug);
+  const post = lightTopic.find((post) => post.slug === slug);
 
   if (!post) {
     return {};

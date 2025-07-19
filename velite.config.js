@@ -116,7 +116,7 @@ export default defineConfig({
         .transform((data) => ({
           ...data,
           permalink: `/${data.slug}`,
-          slug: data.slug.replaceAll("writing/personal-essay/", ""),
+          slug: data.slug.replaceAll("writing/light-topic/", ""),
         })),
     },
   },
