@@ -18,3 +18,6 @@ export declare const bookReview: BookReview[]
 
 export type PersonalEssay = Collections['personalEssay']['schema']['_output']
 export declare const personalEssay: PersonalEssay[]
+
+export type LightTopic = Collections['lightTopic']['schema']['_output']
+export declare const lightTopic: LightTopic[]

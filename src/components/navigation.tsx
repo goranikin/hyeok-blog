@@ -35,6 +35,7 @@ export const navigationItems: NavItem[] = [
     href: "/writing",
     label: "글",
     subcategories: [
+      { href: "/writing/light-topic", label: "가벼운 것들" },
       { href: "/writing/personal-essay", label: "삶의 기록" },
       { href: "/writing/book-review", label: "리뷰" },
     ],

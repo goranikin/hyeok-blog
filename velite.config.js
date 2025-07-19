@@ -83,10 +83,27 @@ export default defineConfig({
           slug: data.slug.replaceAll("writing/book-review/", ""),
         })),
     },
-    // personal-essay 폴더 내 MDX 파일 처리
     personalEssay: {
       name: "PersonalEssay",
       pattern: "writing/personal-essay/**/*.mdx",
+      schema: s
+        .object({
+          title: s.string(),
+          description: s.string(),
+          slug: s.path(),
+          publishDate: s.string().date(),
+          thumbnailUrl: s.string().optional(),
+          content: s.mdx(),
+        })
+        .transform((data) => ({
+          ...data,
+          permalink: `/${data.slug}`,
+          slug: data.slug.replaceAll("writing/personal-essay/", ""),
+        })),
+    },
+    lightTopic: {
+      name: "LightTopic",
+      pattern: "writing/light-topic/**/*.mdx",
       schema: s
         .object({
           title: s.string(),
