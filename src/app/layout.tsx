@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`${pretendard.className}`}>
+    <html lang="ko" className={pretendard.className}>
       <body className="min-w-[320px] mx-auto">
         {/* 모바일 네비게이션 - 모바일에서만 표시 */}
         <div className="sm:hidden">

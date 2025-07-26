@@ -106,7 +106,7 @@ export const SidebarNav = () => {
                 <div key={subItem.href}>
                   <SubcategoryItem
                     item={subItem}
-                    isActive={pathname === subItem.href}
+                    isActive={pathname.startsWith(subItem.href)}
                   />
                   {/* 마지막 항목이 아니면 구분선 추가 */}
                   {index <
@@ -137,7 +137,7 @@ const CategoryButton = ({
       type="button"
       className={cn(
         "w-full text-left px-4 py-3 hover:bg-gray-100 transition-colors rounded-md mb-1 block text-xl cursor-pointer",
-        isActive ? "text-black font-bold bg-gray-100" : "",
+        isActive ? "text-black font-semibold bg-gray-100" : "",
       )}
       onClick={onClick}
     >
@@ -158,7 +158,7 @@ const SubcategoryItem = ({
       href={item.href}
       className={cn(
         "flex items-center px-3 py-1.5 hover:bg-gray-100 rounded-md transition-colors text-lg",
-        isActive ? "font-bold bg-gray-100" : "",
+        isActive ? "font-semibold bg-gray-100" : "",
       )}
       target={item.external ? "_blank" : undefined}
     >

@@ -12,7 +12,7 @@ export default function Home() {
         src="/images/itisme.PNG"
         width={300}
         height={300}
-        className="self-center rounded-full shadow-lg"
+        className="self-center rounded-full"
       />
       <h1 className="self-center text-2xl font-bold mt-4 mb-2">
         장혁이의 블로그

@@ -14,7 +14,7 @@ const PostPageLayout = (props: Props) => {
         </h1>
         <p className="mt-2">{props.post.publishDate}</p>
       </div>
-      <div className="prose max-w-full text-lg leading-loose">
+      <div className="prose max-w-full text-lg leading-9">
         <MDXContent code={props.post.content} />
       </div>
     </div>
