@@ -183,3 +183,16 @@
         @apply bg-background text-foreground;
     }
 }
+
+.prose ul,
+.prose ol {
+    margin-top: 0.6em;
+    margin-bottom: 0.6em;
+    padding-left: 1.2em;
+}
+
+.prose li {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    line-height: 1.6;
+}
