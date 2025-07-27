@@ -13,7 +13,7 @@ thumbnailUrl: /study/paper-review/clip/thm1.jpeg
 
 *This is a same content with the above paragraph.
 
-I've been interning at the DSBA lab at SNU sine July. Thankfully, there is a preparatory program for freshman and intern who have little to no background in AI research. The program focuses on DSBA's main research interests: Computer Vision (CV), Natural Language Process (NLP), and Time Series (TS). As part of the program, I read papers in each field, summarize them in Notion, and then present to the current researchers about 1) how I approached the paper, 2) what I thought or felt about it, and 3) any questions that came up during my reading.
+I've been interning at the DSBA lab at SNU since July. Thankfully, there is a preparatory program for freshman and intern who have little to no background in AI research. The program focuses on DSBA's main research interests: Computer Vision (CV), Natural Language Process (NLP), and Time Series (TS). As part of the program, I read papers in each field, summarize them in Notion, and then present to the current researchers about 1) how I approached the paper, 2) what I thought or felt about it, and 3) any questions that came up during my reading.
 
 I'm planning to transfer the contents I wrote in Notion to my blog. At the end of each post, I'll also share some brief personal thoughts.
 
@@ -26,46 +26,44 @@ I'm planning to transfer the contents I wrote in Notion to my blog. At the end o
 
 ## 1. Introduction
 
-1) 논문이 다루는 분야
+1) The research area covered by the paper
 
 - Vision model training with natural language
-- Multi-modal model
-- Natural Language Supervision & Weak-Supervision Training
+- Multi-modal models
+- Natural language supervision and weakly-supervised training
 - Transfer learning
-- Zero-show or few-shot transfer task capability
+- Zero-shot and few-shot transfer task capabilities
 
-2) 해당 task에서 기존 연구 한계점 (정상적인 논문이라면 introduction에서 간략히 언급함)
+2) Limitations of previous studies in this task
 
-- 기존 Vision model을 학습시키기 위한 Dataset들은 대부분 labeled data → 양이 적음
-- 다양한 downstream task에 대한 기존 model의 zero-shot transfer 능력 부족
+- Existing datasets for training vision models are limited in size, as they are labeled data.
+- Existing models lack the ability to perform zero-shot transfer on various downstream tasks.
 
-3) 논문의 contributions 
+3) Contributions 
 
-- 대규모 데이터셋을 통한 Weak-supervised training concept 제시
-    - (본문 내용) Could scalable pre-training methods which learn directly from web text result in a similar breakthrough in computer vision?
-- zero-shot transfer를 통한 task 수행 능력에 초점 → 기존에는 representation에 초점
-    - ex) 고양이 이미지를 얼마나 잘 표현하는가? → 고양이임을 얼마나 잘 분류하는가?
-    - (본문 내용) While much research in the field of unsupervised learning focuses on the representation learning capabilities of machine learning systems, we motivate studying zero-shot transfer as a way of measuring the task-learning capabilities of machine learning systems.
+- Presenting a large-scale dataset and a pre-training methodology based on weakly-supervised training)
+    - (The paper states that) Could scalable pre-training methods which learn directly from web text result in a similar breakthrough in computer vision?
+- Focusing on the capability to solve task using zero-shot transfer
+    - While existing models focus on learning better representations, CLIP is designed to directly solve tasks (e.g., shifting from 'how to represent a cat image well' to 'how to classify a cat image well')
+    - (The paper states that) While much research in the field of unsupervised learning focuses on the representation learning capabilities of machine learning systems, we motivate studying zero-shot transfer as a way of measuring the task-learning capabilities of machine learning systems.
 
 
 ## 2. Related Work
 
 - Improved deep metric learning with multi-class n-pair loss objective, Advances in neural information processing systems 2016
-    - N-pair loss로 한 번에 여러 클래스 샘플을 동시에 고려하여 더 효율적으로 “거리”를 학습
-    - CLIP의 training에도 해당 N-pair contrastive loss 사용
+    - The N-pair loss was intoduced to efficiently learn representations by considering samples from multiple classes at once.
+    - CLIP employed the N-pair contrastive loss
 - Learning Visual Features from Large Weakly Supervised Data, ECCV 2016
-    - 대규모 Weakly supervised 데이터셋을 활용해 CNN 기반 모델을 학습
-    - 라벨이 약하더라도 충분한 데이터가 존재하면 일반화된 능력을 얻을 수 있음
-    - CLIP의 Weak-supervised dataset의 motivation.
+    - A CNN-based model was trained using a large-scale weakly-supervised dataset.
+    - The model could achieve generalization even when the labels were weak (contaminated or incomplete), as long as there was enough data.
 - Learning Visual N-grams from Web Data, IEEE 2017
-    - 이미지와 텍스트 N-gram을 연결하도록 모델을 학습
-    - 단일 단어가 아닌, 구나 문장 단위 개념을 모델링
-    - CLIP 학습 방법의 Motivation
+    - The model is trained to associate N-grams from images and text
+    - It models concepts not as single word, but as phrases or even entire sentences.
 - VirTex, ICMLM, ConVIRT
-    - CLIP과 비슷하게 텍스트-이미지 구조를 통해 학습시킨 모델들
+    _ These models also use a text-image architeccture, which served as an inspiration for CLIP.
 
 
-## 3. 제안 방법론
+## 3. Proposed Methodology
 
 ### Main Idea & Contribution
 
@@ -85,13 +83,13 @@ Image encoder
 | --- | --- | --- |
 | ViT | 16, 32 | 14, 14@336px |
 
-CLIP model은 ViT-L/14@336px 사용 (Best performance)
+CLIP model used ViT-L/14@336px, which showed the best performance)
 
-가장 큰 모델 기준으로 RN50x64는 592대의 V100으로 18일간 학습, ViT-L/14는 256대의 V100으로 12일간 학습 🤔
+For the largest model, RN50x64 was trained on 592 V100 GPUs for 18 days, while ViT-L/14 was trained on 256 V100 GPUs for 12 days.
 
-코드 구현 (https://github.com/openai/CLIP)
+An implementaion of the code. (https://github.com/openai/CLIP)
 
-불필요한 코드 생략
+Skip an unnecassary code.
 
 ```python
 class CLIP(nn.Module):
@@ -172,11 +170,12 @@ class CLIP(nn.Module):
         return logits_per_image, logits_per_text
 ```
 
-세부적인 ResNet, ViT, Transformer 의 스크래치 구현은 깃헙 CLIP/clip/model.py 참고 (굉장히 깔끔하게 잘 정리되어있고, scratch부터 구현된 코드를 보기에 좋은 듯!)
+You can find clean and well-organized from-scratch implementations of ResNet, ViT, and Transformer in the CLIP/clip/model.py file of the repository. It's a great reference if you want to see how these models are implemented from the ground up.
 
 1. Natural Language Supervision
 
-(본문 내용) It’s much easier to scale natural language supervision compared to standard crowd-sourced labeling for image classification. (…중략) methods which work on natural language can learn passively from the supervision contained in the vast amount of text on the internet.
+(The paper states that) It’s much easier to scale natural language supervision compared to standard crowd-sourced labeling for image classification. (…ellipsis) methods which work on natural language can learn passively from the supervision contained in the vast amount of text on the internet.
+
 
 GPT 학습에 필요한 대규모 데이터셋을 긁어모은 OpenAI 답게 엄청난 크롤링 능력을 보여줌. 
 
@@ -197,7 +196,7 @@ A) 충분한 데이터셋이 확보되면 저품질이더라도 학습에 지장
 실험에서 확인해야 할 문제 → pre-training 과정에서 정말 zero-shot transfer 성능이 증가할 것인가? (GPT처럼)
 
 
-## 4. 실험 및 결과
+## 4. Expreiments and Results
 
 본 논문은 매우 긴 분량으로 이루어져 있고, 대부분 실험 설계와 결과, 그리고 의의로 이루어짐. 따라서 각각의 실험들을 하나씩 살펴볼 것.
 
@@ -415,7 +414,7 @@ pre-training model 평가가 어려운 이유 중 하나로 eval dataset이 학�
 
 InstructionGPT처럼 효과적인 Intruction Tuning이 필요할 것.
 
-## 5. 결론 (배운 점)
+## 5. Conclusion (Lessons learned)
 
 대규모 자원을 동원해 나온 갖가지 Insight의 범람 덕에, 매우 긴 길이였음에도 상당히 재미있게 읽었다. 특히 실험 하나하나마다 연구 주제급.
 

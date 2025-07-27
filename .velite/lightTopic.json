@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "title": "기차 창가 자리",
+    "description": ".",
+    "slug": "2025-06-27",
+    "publishDate": "2025-06-27",
+    "content": "const{Fragment:n,jsx:e,jsxs:t}=arguments[0];function _createMdxContent(r){const c={p:\"p\",...r.components};return t(n,{children:[e(c.p,{children:\"기차 선로 사이 그림자 하나 없이 무성한 녹색. 사이사이 노랗게 피어난 서양민들레.\"}),\"\\n\",e(c.p,{children:\"저 푹신함 속에 누워 죽는다면 나쁘지 않은 마지막일까.\"})]})}return{default:function(n={}){const{wrapper:t}=n.components||{};return t?e(t,{...n,children:e(_createMdxContent,{...n})}):_createMdxContent(n)}};",
+    "permalink": "/writing/light-topic/2025-06-27"
+  }
+]
