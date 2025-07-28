@@ -176,46 +176,43 @@ You can find clean and well-organized from-scratch implementations of ResNet, Vi
 
 (The paper states that) It’s much easier to scale natural language supervision compared to standard crowd-sourced labeling for image classification. (…ellipsis) methods which work on natural language can learn passively from the supervision contained in the vast amount of text on the internet.
 
-
-GPT 학습에 필요한 대규모 데이터셋을 긁어모은 OpenAI 답게 엄청난 크롤링 능력을 보여줌. 
-
-1. 50만개의 Query 설정 후 (image, text) pair 크롤링
-2. 각 Query마다 최대 2만개의 pair (클래스 분포 밸런스)
-3. 총 400M → GPT-2 학습에 쓰인 WebText dataset과 비슷한 총 단어 수
+OpenAI, known for gathering massive datasets for GPT training, demonstrates impressive web crawling capabilities.
+1. They set up 500K queries and crawled (image, text) pairs for each.
+2. For each query, they collected up to 20,000 pairs, ensuring balanced class distribution.
+3. In total, they gathered 400 million paris--comparable in total word count to the WebText dataset used for GPT-2 training.
 
 1. Training Method
 
-(본문 내용) Given a batch of N (image, text) pairs, CLIP is trained to predict which of the N ×N possible (image, text) pairings across a batch actually occurred.
+(The paper states that) Given a batch of N (image, text) pairs, CLIP is trained to predict which of the N ×N possible (image, text) pairings across a batch actually occurred.
 
-Architecture에 소개된 것처럼 NxN matrix of image & text pair를 얻음. 여기서 Diagonal에 대해서만 positive, 나머지는 negative로 학습
+This results in an N x N matrix of image and text pairs, where only the diagonal elements are considered positive examples, and all others are treated as negatives during training.
 
-Q) False negative에 대해서는 어떻게 대응하는가?
+Q) How does the model handle false negatives?  
+A) As long as the dataset is sufficiently large, even if some data is low-quality, it does not significantly hinder training. (This demonstrates the strength of weak supervision.)
 
-A) 충분한 데이터셋이 확보되면 저품질이더라도 학습에 지장 X (Weak-supervision의 진가)
-
-실험에서 확인해야 할 문제 → pre-training 과정에서 정말 zero-shot transfer 성능이 증가할 것인가? (GPT처럼)
+A key question to verify through experiments:
+Will zero-shot transfer performance truly improve during pre-training, as it did with GPT?
 
 
 ## 4. Expreiments and Results
 
-본 논문은 매우 긴 분량으로 이루어져 있고, 대부분 실험 설계와 결과, 그리고 의의로 이루어짐. 따라서 각각의 실험들을 하나씩 살펴볼 것.
+This paper is quite lengthy, with most of its content dedicated to experimental design, results, and their significance. Therefore, I will go through each experiment one by one.
 
 ### 1) vs Visual N-Grams
 
 ![](/study/paper-review/clip/2.png)
-Visual N-Grams와 CLIP은 성능을 동등하게 비교할 수 없는 모델 (본문에서 언급). 다만 Zero-shot 성능에 있어서 얼마나 큰 발전을 이루었는지 보여주는 성능표.
+As mentioned in the paper, Visual N-Grams and CLIP are not directly comparable models due to their architecture, dataset what they train, and so on. However, this table demonstrates just how much zero-shot performance has improved.
 
-### 2) Image encoding을 위한 Prompt Engineering
+### 2) Prompt Engineering for Image Encoding
 
-CLIP은 pre-training 과정에서 dataset의 text가 image에 대한 설명인 ‘구’ 혹은 ‘문장’으로 이루어짐(caption). 그러나 Evaluation dataset에서는 단순히 class에 대한 label로만 주어지는 경우가 있음. 이에 대해 굉장히 간단한 Prompt Engineering으로 성능 향상.
+During pre-training, the text in CLIP's dataset consist of phrases or sentences (captions) that describe the image. However, in some evaluation datasets, only the class label is provided. In such cases, even simple prompt engineering can lead to significant performance improvements.
+- Basic template: "A photo of a label" -> 1.3% improvement on ImageNet dataset
+- Oxford-IIIT Pets: "A photo of a lable, a type of pet"
+- OCR: Add quotes around characters or numbers, e.g., 1, a -> "1", "a"
 
-- 기본 템플릿: “A photo of a label” → ImageNet에서 1.3% 향상
-- Oxford-IIIT Pets: “A photo of a label}, a type of pet.”
-- ORC: 문자나 숫자에 quotes 추가 - ex) 1, a → “1”, “a”
+Beyond these, various context prompts led to a total improvement of 3.5% on ImageNet. (The promptes used are summarized in CLIP/data/prompts.md on GitHub.)
 
-이 외에도 다양한 context prompt를 통해 ImageNet에서 3.5% 향상을 보임 (해당 promt는 깃헙 CLIP/data/prompts.md에 정리되어 있음)
-
-Prompt 예시
+Examples of prompt.
 
 ```jsx
 templates = [
@@ -240,50 +237,47 @@ templates = [
 ]
 ```
 
-해당 프롬프트들을 앙상블 → 각각의 프롬프트 입력으로 얻은 embedding의 pooling 값
+The prompts are ensembeld by pooling the embeddings obtained from each individual prompt input.
 
-Q) Inference time이 증가하지는 않는지?
-
-A) text encoder는 정답 레이블에 대해 미리 계산한 뒤, inferenced image embedding과의 similarity만 계산. 따라서 캐싱된 값을 사용하면 되므로 prompt template이 늘어난다고 inference 비용이 비례해서 늘지 않음!
+Q) Does this increase inference time?  
+A) The text encoder computes embeddings for the ground-truth labels in advance, and during inference, only the similarity with the image embedding needs to be calculated. Therefore, as long as the cached values are used, increasing the number of prompt templates does not proportionally increase inference cost!
 
 ### 3) Zero-Shot CLIP Performance
 
 **vs fully Supervised models**
 ![](/study/paper-review/clip/3.png)
 
-꽤 많은 Dataset에서 fully supervised baseline을 웃돔.
+On quite a few datasets, CLUP outperforms the fully supervised baselines.
 
-나쁜 성능을 보인 데이터셋들은 뭘까?
+Which datasets showed poor performance?
 
-→ (본문 내용) we see that zero-shot CLIP is quite weak on several specialized, complex, or abstract tasks such as satellite image classification (EuroSAT and RESISC45), lymph node tumor detection (PatchCamelyon), counting objects in synthetic scenes (CLEVRCounts), self-driving related tasks such as German traffic sign recognition (GTSRB), recognizing distance to the nearest car (KITTI Distance).
+→ (The paper states that) we see that zero-shot CLIP is quite weak on several specialized, complex, or abstract tasks such as satellite image classification (EuroSAT and RESISC45), lymph node tumor detection (PatchCamelyon), counting objects in synthetic scenes (CLEVRCounts), self-driving related tasks such as German traffic sign recognition (GTSRB), recognizing distance to the nearest car (KITTI Distance).
 
-매우 특수하거나 복잡한 이미지 인식에는 Transfer performance가 나쁘게 나타남
+For highly specialized or complex image recognition tasks, transfer performance tends to be poor.
 
-다만 이런 예시는 사전학습에서 거의 마주치지 못한 class일 확률이 높으며, non-expert human 또한 zero-shot으로 해당 task를 수행할 때 보일 성과를 생각하면…
+However, these cases likely involve classes that were ralely, if ever, encountered during pre-training. Considering the performance of non-expert humans on such zero-shot tasks, this result is understandable.
 
 
 **vs Few-shot models**
 ![](/study/paper-review/clip/4.png)
-Linear Probe CLIP은 LogisticRegression으로 학습 후 평가
+Linear Probe CLIP is evaluated after being trained with Logistic Regression.
 
-놀라운 점은 CLIP의 4-shot까지는 Zero-shot이 높은 성능을 보임
+What's remarkable is that, up to 4-shot, CLIP's zero-shot performance remains higher.
 
-→ (본문 내용) Context-less example-based learning has the drawback that many different hypotheses can be consistent with the data, especially in the one-shot case.
+→ (The paper states that) Context-less example-based learning has the drawback that many different hypotheses can be consistent with the data, especially in the one-shot case.
 
-Q) 왜 그럴까?
+Q) why it does?
 
 A)
+1. Images exhibit much higher variance compared to text. Even within the same class, factors like lighting, angle, background, resolution, style, and noise can make images look completely different.
+2. In contrast, text is structured and conveys meaning clearly.  
+-> The difference in clarity between presenting a cat as a photo versus as a word 'cat'.
 
-1. image는 text에 비해 매우 높은 variance을 보임. 같은 class여도 조명, 각도, 배경, 해상도, 스타일, 노이즈 등에 따라 완전히 다르게 보일 수 있음.
-2. text는 구조적이고 의미가 명확하게 표현됨.
+To sufficiently learn the visual features of images, a large number of few-shot samples is required.
 
-→ 고양이에 대해 사진으로 제시하는 것과 단어로 제시하는 것의 명확성 차이.
+Q) Does this mean that as image resolution increases, even more few-shot samples are needed?
 
-이미지의 시각적 특징을 충분히 학습할 수 있도록 많은 few-shot samples를 제공해야 함.
-
-Q) 그렇다면 image의 pixel이 늘어날수록 few-shot에 더 많은 샘플이 필요해질까?
-
-A) (by GPT)
+A) (by GPT in Korean)
 
 ```bash
 네, 맞습니다!  
@@ -332,68 +326,66 @@ A) (by GPT)
 **the # of samples to deal with zero-shot model**
 ![](/study/paper-review/clip/5.png)
 
-각 데이터셋별 zero-shot 성능을 따라 잡기 위한 few-shot sample의 개수
+The number of few-shot samples required to match zero-shot performance for each dataset.
 
-상위 4개 dataset에 대해 살펴보자
 
-FER2013: 표정 인식 → 사람마다 다른 표현 방식으로 인해 일관된 class representation 학습 불리
+Let's take a closer look at the top four datasets:
+- FER2013: Facial expression recognition -> It is difficult to learn consistent class representations due to the different ways people express emotions.
+- CIFAR10: Low resolution and high intra-class variation.
+- OxfordPets: Likely struggled with distinguishing between similar breeds.
+- Food101: Even the same dish can look completely different depending on the recipe or the angle of the photo.
 
-CIFAR10: 저해상도 및 클래스 내 다양한 변이
-
-OxfordPets: 품종 비교에서 어려움을 겪었을 거라 유추
-
-Food101: 같은 음식이더라도 다른 조리법이나 각도에 따라 완전히 달라 보일 수 있음
-
-다만 데이터셋을 하나하나 자세히 확인해본 건 아니고… 이정도 특성만 있음을 확인함. 클래스 내에서 포착해야 하는 특징이 매우 많거나(FER2013), class 외 배경 정보가 많을 경우(Food101) few-shot이 불리하다고 판단.
+That said, I haven't examined each dataset in detail--these are just general observations based on their characteristics.  
+If a dataset has a large number of features that need to be captured within a class (as in FER2013), or contains a lot of background information unrelated to the class (as in Food101), few-shot learning becomes more challenging.
 
 
 **A theoretical limit performance and the real performances**
 ![](/study/paper-review/clip/6.png)
-이론적 성능과 zero-shot의 비교
+A comparison between theoretical performance and zero-shot results
 ![](/study/paper-review/clip/7.png)
-모델 사이즈와 성능 비교 → 꾸준히 성능 상승. 더 큰 모델이 더 좋은 성능을 낼 수 있을 거란 기대
+Comparison of model size and performance -- performance steadily increases, suggesting that larger models can achieve even better results.
 
 ### 4) Representation Learning
 
-저자들은 Representation learning capability보다는 task leaning capability가 중요하다고는 했지만, 어쨌거나 기존 평가 방식으로 확인하고자 함.
+Although the authors emphasize task learning capability over representation learning capability, they still evaluate the modles using conventional methods.
 
-실험 방법
+Experimental setup:
+- The projection to the classification space is removed from each model
+- scikit-learn's L-BFGS implementation is used
+- The most appropriate metric for each dataset is chosen for evalution (see the images below and Appendix A in the papar for details)
 
-- 각각의 model에서 classification space로 projection 제거
-- scikit-learn’s L-BFGS implementation 사용
-- 각각의 dataset마다 적합한 metric 평가 (해당 부분은 아래 사진 첨부, 본문 부록 A에 존재)
 
 **Dataset and meta-information**
 ![](/study/paper-review/clip/8.png)
 ![](/study/paper-review/clip/9.png)
 
-해당 결과의 시각화 figure
+Visualization of the results:
 ![](/study/paper-review/clip/10.png)
 
-Large parameter CLIP model이 우수한 embedding 능력을 보임!
+The large-parameter CLIP model demonstrates excellent embedding capabilities!
 
-Q) Linear probe가 embedding 우수성을 체크하는 좋은 지표인가?
-A) 만약 embedding이 매우 간단한 linear layer만으로도 좋은 성능을 낸다고 가정. 이는 임베딩이 여러 이미지 속에서 다양한 시각적/추상적 특징을 잘 담고 있으며, 특정 class만을 잘 인식하기보다 일반적인 embedding을 갖고있다고 볼 수 있음. 이는 다시 말해 해당 모델이 이미지 내에서 다양한 class를 대상으로 feature를 뽑아내는 능력이 뛰어나다고 볼 수 있음 → 높은 embedding representation!
+Q) Is linear probing a good indicaotr of embedding quality?
+A) If an embedding achieves strong performance with just a simple linear layer, it suggests that the embedding captures a wide range of visual and abstract features across images. Rather than being tailored to specific classes, it provieds a general-purpose representation. In other words, the model excels at extracting features for a variety of classes within images--indicating high-quality embedding representations!
 
 ### 5) Robustness to Natural Distribution Shift
 
-Introduction에서 줄기차게 설명해온 transfer capability에 대한 실험
+This section presents experiments on transfer capability, which has been a recurring theme since the introduction.
 
-본문에서는 Robustness를 두 종류로 설명
+The paper describes two types of robustness.
 
 1. Relative Robustness: it captures any improvement in out-of-distribution accuracy.
 2. Effective Robustness: it measures improvements in accuracy under distribution shift above what is predicted by the documented relationship between in-distribution and out-of-distribution accuracy.
 
-당연히 둘 다 높아야 Robust한 모델이겠죠?
+Of course, for a model to be considered robust, both types of robustness should be high.
 
 ![](/study/paper-review/clip/11.png)
-다른 분포에서 더 높은 성능을 보여버리는 CLIP. ImageNet-R을 보면 ImageNet ResNet101은 약 40% 가량 감소한 성능이 CLIP은 되려 12%가 증가했다. 자연어로 이미지의 구조를 파악하는 능력이 일반화에 얼마나 강력한지 보여주는 예시. 애초에 GPT가 선례를 보여주기도 했고…
+CLIP demonstrates even higher performance on different distributions. For example, on ImageNet-R, while performance of ImageNet-trained ResNet101 drops by about 40%, CLIP's performance actually inreases by 12%. This highlights how powerful it is to understand image structure through natural language--a precedent already set by GPT.
 
 ![](/study/paper-review/clip/12.png)
-ImageNet에 대해 학습할 경우 다른 dataset에 대한 robustness가 떨어지는 걸 볼 수 있음. 대신 zero-shot CLIP에 class name를 맞춰줄 경우 특정 데이터셋에서 높은 성능 향상.
+When trained specifically on ImageNet, robustness to other datsets decreases. However, if you align the class names for zero-shot CLIP, you can see significant performance improvements on certain datasets.
 
 ![](/study/paper-review/clip/13.png)
-Zero-shot이 Few-shot 보다 훨씬 robust함.
+Zero-shot is much more robust than few-shot.
 
 ### 6) Comparison to Human Performance
 
@@ -401,27 +393,31 @@ CLIP is better
 
 ### 7) Data overlap
 
-pre-training model 평가가 어려운 이유 중 하나로 eval dataset이 학습에 섞여 들어가는 일이 발생. 본 논문에서는 Overlap detector를 만들어서 Clean subset을 만들었고, 몇 dataset을 제외하면 허용할만한 범위에 존재하는 것으로 판단. 다만 CLIP 이후 만들어진 eval dataset으로 정밀한 평가 필요.
+One of the challenges in evaluating pre-trained models is that evaluation datasets can sometimes overlap with training data. In this paper, the authors created an overlap detector to construct a clean subset, and fount that, except for a few datasets, the overlap was within acceptable limits. However, for more precise evaluation, it will be necessay to use evaluation datasets created after CLIP.
 
-(본문 내용) Creating a new benchmark of tasks designed explicitly to evaluate broad zero-shot transfer capabilities, rather than re-using existing supervised datasets, would help address these issues.
+(The paper states that) Creating a new benchmark of tasks designed explicitly to evaluate broad zero-shot transfer capabilities, rather than re-using existing supervised datasets, would help address these issues.
 
 
 ### 8) Bias
 
-대규모 인터넷 데이터로 학습된 만큼 Sexual, Race, Job bias 존재
+Since the model is trained on large-scale internet data, it inevitably contains biases related to sexuality, race, and occupation.
+
 ![](/study/paper-review/clip/14.png)
 ![](/study/paper-review/clip/15.png)
 
-InstructionGPT처럼 효과적인 Intruction Tuning이 필요할 것.
+Just like with InstructionGPT, effective instruction tuning will be necessary.
 
 ## 5. Conclusion (Lessons learned)
 
-대규모 자원을 동원해 나온 갖가지 Insight의 범람 덕에, 매우 긴 길이였음에도 상당히 재미있게 읽었다. 특히 실험 하나하나마다 연구 주제급.
+Thanks to the abundance of insights gained from leveraging massive resources, I found this paper highly engaging despite its considerable length. Each experiment could practically be a research topic on its own.
 
-이 외에도 개인적으로 Speech-to-Text쪽 논문을 살펴보는데, CLIP과 유사하게 Whisper도 natural supervision dataset을 구축해 pre-training한 모델을 제시하고 다양한 실험 결과를 공유함. GPT-3도 그렇고 사실상 현재 AI 모델들의 토대를 전부 OpenAI가 만든 셈… 특히 본문 안에서도 ‘Representation learning capability’가 아닌 ‘Task learning capability’에 집중하고 ‘현실 세계에 의미 있는 AI model’을 만들고 싶다는 뚜렷한 목적이 보였다. 지금이야 Closed model로 바뀌었지만 지금까지의 결과만 해도 정말 OpenAI의 이름을 그대로 실천한 듯. 특히 25페이지 우측에 적힌 문단에 감동먹음.
+On a personal note, I've also been reading papers in the speech-to-text domain. Similar to CLIP, Whisper, which is audio model made by OpenAI, presents a pre-trained model built on a natural supervision dataset and shares a variety of experimental results. Along with GPT-3, it's clear that OpenAI has laid the foundation for most of today's AI models.  
+What stood out in this paper was the clear focus on 'task learning capability' rather than just 'representation learning capability,' and the strong intention to build AI models that are meaningful in the real world.  
+Although OpenAI has since shifted to closed models, their ahcievements so far truly embody the spirit of "Open" AI. I was especially moved by the paragraph on the right side of page 25.
 
 - We hope that this work motivates future research on the characterization of the capabilities, shortcomings, and biases of such models, and we are excited to engage with the research community on such questions.
 
 ---
 
-진짜 소감
+정말 재미있게 읽었다. 꽤 긴 분량이라 처음에는 어떻게 읽나 싶었는데... 하나하나 살펴보는 재미가 있었고 금방 다 읽었다. 이 논문 하나만으로도 정말 배운 게 많았음.  
+실은 OpenAI가 단순히 ChatGPT로 유명한 줄 알았다만, 초창기에 추구했던 가치와 의미를 보니 정말 멋있는 걸 넘어서 애초에 현재 LLM 시대의 완전한 바탕인 셈이었다.
