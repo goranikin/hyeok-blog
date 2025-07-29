@@ -11,19 +11,19 @@ thumbnailUrl: /study/paper-review/vq-vae/vq-vae_thm1.jpeg
 
 ## 1. Introduction
 
-1) 논문이 다루는 분야
+1) The research area covered by the paper
 
 - Latent representation
 - Vector Quantization
 
-2) 해당 task에서 기존 연구 한계점 (정상적인 논문이라면 introduction에서 간략히 언급함)
+2) Limitations of previous studies in this task
 
 - Language and speech are inherently discrete in nature.
     - This raises the question: since images can often be described using language, is it beneficial to represent images with discrete latent variables?
 - Traditional VAEs suffer from posterior collapse problem.
     - This occurs when the encoder becomes too closely aligned with the prior distribution, causing the latent variables to carry little or no meaningful information about the input.
 
-3) 논문의 contributions 
+3) Contributions 
 
 - It shows a wide variety of applications such as speech and video generation.
 - It doesn’t suffer from the posterior collapse problem.
@@ -84,7 +84,7 @@ A first term is reconstruction loss
 
 Q) I’ve understood why does loss contains only the output of the encoder and embedding vectors (due to an non-differentiable of quantization operation). But why they are divided into two terms as codebook loss and commitment loss?
 
-A) (본문 내용)  To make sure the encoder commits to an embedding and its output does not grow, we add a commitment loss, the third term in equation
+A) (The paper states that)  To make sure the encoder commits to an embedding and its output does not grow, we add a commitment loss, the third term in equation
 
 Q) Waiiiiiiiiit… the reconstruction loss contains quantization loss which is not differentiable. 
 
@@ -120,19 +120,15 @@ VQ-VAE presents a Vector-Quantization method at VAE with a codebook(embedding ve
 
 ## 5. Conclusions
 
-기존 VAE 코드에 VQ 과정만 얹어서 코드를 짜보았습니다.
+I modified the original VAE code by simply adding the VQ process.  
 ![](/study/paper-review/vq-vae/6.png)
 
-논문에서 ImageNet 생성할 때 사용한 embedding 개수인 512개로 했더니 그렇게 좋지 않음... 실제로 원래 이미지를 복원하는 문제에서도 Traditional VAE보다 훨씬 흐릿한 이미지가 생성됨.
+When I set the number of embeddings to 512, as used for ImageNet generation in the paper, the results weren't very good. In fact, even for the image reconstruction task, the generated images were much blurrier than those from the traditional VAE.
 
-다만 같은 embedding vector 표현에서 생성된 애들은 동일한 모습을 보여주는 결과.
+However, samples generated from the same embedding vector showed identical appearances.
 
 ![](/study/paper-review/vq-vae/7.png)
 
-이건 embedding number를 10으로 제한한 결과. 이전 보단 좀 더 깔끔해진 듯.
+This is the result when the number of embeddings is limited to 10. It looks a bit cleaner than before.
 
-적당한 하이퍼파라미터를 찾으면 잘 나오겠다만… 그냥 여기서 stop!
-
-+ latent diffusion model의 경우 n_embed: 8192를 사용
-
----
+I'm sure the results would improve if I found the right hyperparameters, but I'll just stop here!
