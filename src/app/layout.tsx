@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { MobileNav, SidebarNav } from "@/components/navigation";
 import localFont from "next/font/local";
+import "katex/dist/katex.min.css";
 
 export const metadata: Metadata = {
   title: "Hyeok's Blog",
@@ -21,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={pretendard.className}>
+    <html lang="en" className={pretendard.className}>
       <body className="min-w-[320px] mx-auto">
         {/* 모바일 네비게이션 - 모바일에서만 표시 */}
         <div className="sm:hidden">

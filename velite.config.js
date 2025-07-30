@@ -1,4 +1,6 @@
 import rehypeShiki from "@shikijs/rehype";
+import rehypeKatex from "rehype-katex";
+import remarkMath from "remark-math";
 import { defineConfig, s } from "velite";
 
 export default defineConfig({
@@ -121,6 +123,7 @@ export default defineConfig({
     },
   },
   mdx: {
-    rehypePlugins: [[rehypeShiki, { theme: "nord" }]],
+    rehypePlugins: [[rehypeShiki, { theme: "nord" }], rehypeKatex],
+    remarkPlugins: [[remarkMath]],
   },
 });
