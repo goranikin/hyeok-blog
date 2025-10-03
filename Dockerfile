@@ -11,6 +11,14 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+# Set Node.js options for better memory management during build
+ENV NODE_OPTIONS="--max-old-space-size=400 --optimize-for-size"
+
+# Enable swap and build optimizations
+RUN echo 'vm.swappiness=10' >> /etc/sysctl.conf
+
+# Run velite and build with memory optimizations
 RUN bun velite
 RUN bun run build
 
