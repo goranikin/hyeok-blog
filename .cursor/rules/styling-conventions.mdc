@@ -1,0 +1,140 @@
+---
+globs: *.css,*.tsx,*.ts
+description: Styling conventions and UI component patterns using Tailwind CSS
+---
+
+# Styling & UI Conventions
+
+This project uses Tailwind CSS with custom components and follows specific styling patterns for consistency and maintainability.
+
+## Tailwind CSS Patterns
+
+### Class Organization
+- Use Tailwind utility classes in logical order
+- Group related classes together (layout, spacing, colors, etc.)
+- Use the `cn()` utility from [src/utils/cn.ts](mdc:src/utils/cn.ts) for conditional classes
+- Example: `className={cn("w-full text-left px-4 py-3 hover:bg-gray-100 transition-colors rounded-md", isActive ? "text-black font-semibold bg-gray-100" : "")}`
+
+### Responsive Design
+- Use mobile-first approach with responsive prefixes
+- Implement proper breakpoints: `sm:`, `md:`, `lg:`, `xl:`
+- Example: `className="hidden sm:block w-[350px] border-r shrink-0 h-screen sticky top-0"`
+
+### Layout Patterns
+- Use Flexbox for component layouts: `flex`, `flex-col`, `flex-row`
+- Implement proper spacing with `gap-*` classes
+- Use `justify-*` and `items-*` for alignment
+- Example: `className="flex flex-col h-full"`
+
+## Component Styling
+
+### Button Components
+- Use shadcn/ui Button component as base
+- Apply custom styling with variant props
+- Use proper size and icon combinations
+- Example: `<Button variant="outline" size="icon" className="rounded-full">`
+
+### Navigation Styling
+- Implement hover states with `hover:` prefix
+- Use transition classes for smooth animations
+- Apply active states with conditional classes
+- Example: `className="flex items-center px-3 py-1.5 hover:bg-gray-100 rounded-md transition-colors"`
+
+### Layout Components
+- Use container classes for content width
+- Implement proper padding and margins
+- Use sticky positioning for navigation elements
+- Example: `className="container mx-auto py-4 px-4 md:px-20"`
+
+## Typography
+
+### Font Loading
+- Use local fonts with Next.js font optimization
+- Apply font classes consistently
+- Example: `className={pretendard.className}` in [src/app/layout.tsx](mdc:src/app/layout.tsx)
+
+### Text Styling
+- Use semantic text size classes: `text-sm`, `text-lg`, `text-xl`
+- Apply proper font weights: `font-medium`, `font-semibold`, `font-bold`
+- Use text color classes for hierarchy
+- Example: `className="font-medium text-lg break-all line-clamp-2"`
+
+## Color System
+
+### Primary Colors
+- Use consistent color palette throughout the application
+- Apply proper contrast ratios for accessibility
+- Use semantic color names where possible
+
+### State Colors
+- Implement hover, active, and focus states
+- Use gray scale for neutral elements
+- Apply proper color transitions
+- Example: `hover:bg-gray-100 transition-colors`
+
+## Spacing and Sizing
+
+### Consistent Spacing
+- Use Tailwind spacing scale: `p-4`, `py-3`, `px-4`
+- Apply consistent gap sizes: `gap-2`, `gap-4`
+- Use margin classes for component separation
+- Example: `className="py-5 items-center justify-between gap-2"`
+
+### Component Sizing
+- Use consistent width and height classes
+- Implement proper aspect ratios for images
+- Use responsive sizing where appropriate
+- Example: `className="object-cover w-40 h-40"`
+
+## Animation and Transitions
+
+### Smooth Transitions
+- Use `transition-*` classes for smooth animations
+- Apply hover effects consistently
+- Use transform classes for interactive elements
+- Example: `className="hover:bg-gray-100 transition-colors rounded-md"`
+
+### Loading States
+- Implement proper loading indicators
+- Use skeleton loading patterns
+- Apply fade-in animations for content
+
+## Accessibility
+
+### Focus States
+- Implement proper focus indicators
+- Use keyboard navigation patterns
+- Apply proper ARIA attributes
+- Example: `className="focus:outline-none focus:ring-2 focus:ring-blue-500"`
+
+### Screen Reader Support
+- Use semantic HTML elements
+- Apply proper alt text for images
+- Use descriptive link text
+- Example: `alt={post.title}` in [src/components/postList.tsx](mdc:src/components/postList.tsx)
+
+## Custom Components
+
+### shadcn/ui Integration
+- Use shadcn/ui components as base
+- Extend with custom styling
+- Maintain component API consistency
+- Example: `<SheetContent side="right">` in [src/components/navigation.tsx](mdc:src/components/navigation.tsx)
+
+### Component Variants
+- Implement proper variant handling
+- Use TypeScript for variant types
+- Apply consistent styling across variants
+- Example: `variant="outline"` for button variants
+
+## Global Styles
+
+### CSS Custom Properties
+- Define custom properties in [src/app/globals.css](mdc:src/app/globals.css)
+- Use CSS variables for consistent theming
+- Apply proper CSS reset and base styles
+
+### Utility Classes
+- Create custom utility classes when needed
+- Use Tailwind's `@apply` directive for complex patterns
+- Maintain consistency with existing utility classes

@@ -1,0 +1,146 @@
+---
+description: Development workflow, scripts, and deployment patterns
+---
+
+# Development Workflow
+
+This project follows specific development patterns for content creation, build processes, and deployment.
+
+## Package Management
+
+### Bun Package Manager
+- Use Bun as the primary package manager
+- Run `bun install` for dependency installation
+- Use `bun run` for script execution
+- Example: `bun run dev` for development server
+
+### Scripts Configuration
+- Development: `bun run dev` - Start Next.js development server
+- Build: `bun run build` - Build production application
+- Start: `bun run start` - Start production server
+- Lint: `bun run lint` - Run Biome linting
+- Fix: `bun run fix` - Run Biome formatting and fixing
+
+## Content Development
+
+### Content Creation Workflow
+1. Create MDX files in appropriate [src/contents/](mdc:src/contents/) directory
+2. Add proper frontmatter with required fields
+3. Include images in [public/](mdc:public/) directory
+4. Test content rendering in development
+5. Verify Velite processing and generation
+
+### Content Categories
+- **Study Content**: Development tutorials, paper reviews, project documentation
+- **Writing Content**: Book reviews, personal essays, light topics
+- **Laboratory Content**: Experimental features and tools
+
+### Asset Management
+- Store images in [public/](mdc:public/) directory
+- Organize by content category
+- Use descriptive filenames
+- Optimize images for web delivery
+
+## Build Process
+
+### Velite Content Processing
+- Velite processes MDX files during build
+- Generates static data in `.velite/` directory
+- Copies assets to `public/static/` directory
+- Configures content collections and schemas
+
+### Next.js Build
+- Uses App Router for routing
+- Implements MDX integration
+- Generates static pages for content
+- Optimizes images and assets
+
+### Build Configuration
+- Output: `standalone` for deployment
+- MDX integration with rehype and remark plugins
+- Math support with KaTeX
+- Code highlighting with Shiki
+
+## Development Environment
+
+### Local Development
+- Run `bun run dev` for development server
+- Velite watches content changes
+- Hot reload for component changes
+- Automatic content regeneration
+
+### Content Testing
+- Test MDX rendering in development
+- Verify frontmatter schema compliance
+- Check asset loading and optimization
+- Test responsive design
+
+## Deployment
+
+### Docker Configuration
+- Uses [Dockerfile](mdc:Dockerfile) for containerization
+- Implements multi-stage build process
+- Optimizes for production deployment
+- Uses standalone output for efficiency
+
+### Production Build
+- Run `bun run build` for production build
+- Test build output locally
+- Verify all content is properly generated
+- Check asset optimization
+
+## Code Quality
+
+### Linting and Formatting
+- Use `bun run lint` for code linting
+- Use `bun run fix` for automatic formatting
+- Follow Biome configuration in [biome.json](mdc:biome.json)
+- Maintain consistent code style
+
+### Type Checking
+- Use TypeScript strict mode
+- Implement proper type definitions
+- Use proper import/export patterns
+- Follow React and Next.js patterns
+
+## Content Management
+
+### Content Organization
+- Follow directory structure in [src/contents/](mdc:src/contents/)
+- Use consistent naming conventions
+- Implement proper categorization
+- Maintain content metadata
+
+### Content Validation
+- Verify frontmatter schema compliance
+- Check content formatting
+- Validate asset references
+- Test content rendering
+
+## Performance Optimization
+
+### Build Optimization
+- Use proper code splitting
+- Implement lazy loading
+- Optimize images and assets
+- Use proper caching strategies
+
+### Content Optimization
+- Optimize MDX processing
+- Implement proper asset handling
+- Use efficient content queries
+- Minimize bundle size
+
+## Monitoring and Maintenance
+
+### Content Updates
+- Regular content updates
+- Asset optimization
+- Performance monitoring
+- Error tracking
+
+### Build Monitoring
+- Monitor build times
+- Track bundle sizes
+- Monitor content generation
+- Performance metrics

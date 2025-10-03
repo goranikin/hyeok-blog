@@ -1,0 +1,103 @@
+---
+globs: *.tsx,*.ts,*.js,*.jsx
+description: Next.js and React development patterns and conventions
+---
+
+# Next.js & React Patterns
+
+This project follows specific Next.js 15 and React patterns for optimal performance and maintainability.
+
+## Next.js App Router Patterns
+
+### Page Components
+- All page components are in [src/app/](mdc:src/app/) directory
+- Use default exports for page components
+- Follow the pattern: `export default function PageName() { ... }`
+- Example: [src/app/page.tsx](mdc:src/app/page.tsx)
+
+### Layout Components
+- Root layout in [src/app/layout.tsx](mdc:src/app/layout.tsx)
+- Use `Readonly<{ children: React.ReactNode }>` for children prop typing
+- Implement responsive design with mobile-first approach
+- Use local fonts with `next/font/local`
+
+### API Routes
+- API routes in [src/app/api/](mdc:src/app/api/) directory
+- Use `route.ts` files for API endpoints
+- Follow RESTful conventions
+- Example: [src/app/api/extract-transcript/route.ts](mdc:src/app/api/extract-transcript/route.ts)
+
+## React Component Patterns
+
+### Component Structure
+- Use functional components with TypeScript
+- Define interfaces for props with descriptive names
+- Use `"use client"` directive only when necessary for client-side features
+- Example from [src/components/navigation.tsx](mdc:src/components/navigation.tsx)
+
+### State Management
+- Use React hooks (useState, useEffect) for local state
+- Implement proper state initialization and updates
+- Use pathname and router hooks for navigation state
+- Example: `const [selectedCategory, setSelectedCategory] = useState<NavItem | null>(navigationItems[0])`
+
+### Event Handling
+- Use proper TypeScript typing for event handlers
+- Implement onClick handlers with proper state updates
+- Use router.back() for navigation
+- Example: `onClick={() => router.back()}`
+
+## TypeScript Patterns
+
+### Type Definitions
+- Define interfaces for complex data structures
+- Use union types for component variants
+- Export types for reuse across components
+- Example: `export type Post = { permalink: string; slug: string; ... }`
+
+### Import Patterns
+- Use absolute imports with `@/` alias`
+- Group imports: React/Next.js, third-party, local components, utilities
+- Use named imports for utilities and components
+- Example: `import { cn } from "@/utils/cn"`
+
+## Performance Patterns
+
+### Image Optimization
+- Use Next.js Image component for all images
+- Provide proper alt text and dimensions
+- Use object-fit classes for responsive images
+- Example: `<Image src="/images/itisme.PNG" width={300} height={300} className="object-cover w-40 h-40" />`
+
+### Code Splitting
+- Use dynamic imports for heavy components
+- Implement proper loading states
+- Use React.lazy() for route-based code splitting
+
+## Navigation Patterns
+
+### Link Components
+- Use Next.js Link component for internal navigation
+- Implement proper href patterns
+- Use target="_blank" for external links with rel="noopener noreferrer"
+- Example: `<Link href="/study/development" className="...">`
+
+### Route Handling
+- Use usePathname() for current route detection
+- Implement active state management
+- Use useRouter() for programmatic navigation
+- Example: `const pathname = usePathname()`
+
+## Component Composition
+
+### Layout Components
+- Create reusable layout components
+- Use children prop for content composition
+- Implement responsive layouts with Tailwind classes
+- Example: [src/components/pageLayout.tsx](mdc:src/components/pageLayout.tsx)
+
+### UI Component Patterns
+- Use shadcn/ui components as base
+- Extend with custom styling using cn() utility
+- Implement proper variant handling
+- Example: `<Button variant="outline" size="icon" className="rounded-full">`
