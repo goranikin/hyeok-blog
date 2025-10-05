@@ -312,6 +312,14 @@
     "permalink": "/writing/personal-essay/be-hard-at-today"
   },
   {
+    "title": "Dalpha, and 8 weeks",
+    "description": "Review for the 8 weeks at Dalpha.",
+    "slug": "dalpha-1",
+    "publishDate": "2025-10-05",
+    "content": "const{jsx:e}=arguments[0];function _createMdxContent(n){const t={p:\"p\",...n.components};return e(t.p,{children:\"I've been having few questions.\\nCould I complete for my own duties?\\nCould I feel fun for my work, especially the real world's AI engineering?\"})}return{default:function(n={}){const{wrapper:t}=n.components||{};return t?e(t,{...n,children:e(_createMdxContent,{...n})}):_createMdxContent(n)}};",
+    "permalink": "/writing/personal-essay/dalpha-1"
+  },
+  {
     "title": "아빠",
     "description": ".",
     "slug": "fa",
