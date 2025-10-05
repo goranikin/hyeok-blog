@@ -15,9 +15,9 @@ const PostPageLayout = (props: Props) => {
   });
 
   return (
-    <article className="flex flex-col">
+    <article className="flex flex-col animate-fade-in">
       {/* Post Header */}
-      <header className="mb-10 pb-8 border-b">
+      <header className="mb-10 pb-8 border-b animate-slide-in">
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-5 tracking-tight">
           {props.post.title}
         </h1>

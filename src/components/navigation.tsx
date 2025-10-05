@@ -78,8 +78,13 @@ export const SidebarNav = () => {
 
       {/* Navigation Categories */}
       <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
-        {navigationItems.map((item) => (
-          <div key={item.label}>
+        {navigationItems.map((item, index) => (
+          <div 
+            key={item.label}
+            style={{
+              animation: `fadeIn 0.4s ease-out ${(index + 1) * 0.1}s both`,
+            }}
+          >
             <CategoryButton
               item={item}
               isActive={selectedCategory?.label === item.label}
@@ -88,13 +93,24 @@ export const SidebarNav = () => {
 
             {/* Subcategories - show when selected */}
             {selectedCategory?.label === item.label && item.subcategories && (
-              <div className="mt-1 ml-2 space-y-1">
-                {item.subcategories.map((subItem) => (
-                  <SubcategoryItem
+              <div 
+                className="mt-1 ml-2 space-y-1 overflow-hidden"
+                style={{
+                  animation: "slideDown 0.3s ease-out",
+                }}
+              >
+                {item.subcategories.map((subItem, subIndex) => (
+                  <div
                     key={subItem.href}
-                    item={subItem}
-                    isActive={pathname.startsWith(subItem.href)}
-                  />
+                    style={{
+                      animation: `fadeIn 0.2s ease-out ${subIndex * 0.05}s both`,
+                    }}
+                  >
+                    <SubcategoryItem
+                      item={subItem}
+                      isActive={pathname.startsWith(subItem.href)}
+                    />
+                  </div>
                 ))}
               </div>
             )}
@@ -118,10 +134,10 @@ const CategoryButton = ({
     <button
       type="button"
       className={cn(
-        "w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-colors",
+        "w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-all duration-200",
         isActive 
-          ? "bg-white shadow-sm text-black" 
-          : "hover:bg-white/50 text-gray-700"
+          ? "bg-white shadow-sm text-black scale-[1.02]" 
+          : "hover:bg-white/50 text-gray-700 hover:translate-x-1"
       )}
       onClick={onClick}
     >
@@ -141,17 +157,19 @@ const SubcategoryItem = ({
     <Link
       href={item.href}
       className={cn(
-        "block px-3 py-1.5 text-sm rounded-md transition-colors group",
+        "block px-3 py-1.5 text-sm rounded-md transition-all duration-200 group",
         isActive 
-          ? "text-gray-900 font-medium bg-white/50" 
-          : "text-gray-600 hover:text-gray-900 hover:bg-white/50"
+          ? "text-gray-900 font-medium bg-white/50 translate-x-1" 
+          : "text-gray-600 hover:text-gray-900 hover:bg-white/50 hover:translate-x-1"
       )}
       target={item.external ? "_blank" : undefined}
     >
       <div className="flex items-center gap-1">
         <ArrowUpRight className={cn(
-          "h-3 w-3 transition-transform group-hover:translate-x-0.5",
-          item.external ? "opacity-100" : "opacity-0"
+          "h-3 w-3 transition-all duration-200",
+          item.external 
+            ? "opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" 
+            : "opacity-0"
         )} />
         <span>{item.label}</span>
       </div>
@@ -179,7 +197,7 @@ export const MobileNav = () => {
   }, [pathname]);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 h-14 px-4 border-b flex justify-between items-center bg-white">
+    <div className="fixed top-0 left-0 right-0 z-50 h-14 px-4 border-b flex justify-between items-center bg-white animate-slide-in">
       <div className="flex items-center gap-2">
         <HomeButton />
         <BackButton />
@@ -190,9 +208,9 @@ export const MobileNav = () => {
           <Button
             variant="outline"
             size="icon"
-            className="rounded-md"
+            className="rounded-md group"
           >
-            <MenuIcon className="h-5 w-5" />
+            <MenuIcon className="h-5 w-5 transition-transform duration-200 group-hover:rotate-90" />
           </Button>
         </SheetTrigger>
         <SheetContent side="right" className="bg-gray-50">
@@ -248,9 +266,9 @@ const HomeButton = () => {
         type="button"
         variant="ghost"
         size="icon"
-        className="h-8 w-8"
+        className="h-8 w-8 group"
       >
-        <Home className="h-4 w-4" />
+        <Home className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
       </Button>
     </Link>
   );
@@ -263,10 +281,10 @@ const BackButton = () => {
       type="button"
       variant="ghost"
       size="icon"
-      className="h-8 w-8"
+      className="h-8 w-8 group"
       onClick={() => router.back()}
     >
-      <ArrowLeft className="h-4 w-4" />
+      <ArrowLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" />
     </Button>
   );
 };

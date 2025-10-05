@@ -14,7 +14,7 @@ export default function PageLayout({
   className,
 }: PageLayoutProps) {
   return (
-    <div className={cn(["flex flex-col gap-8", className])}>
+    <div className={cn(["flex flex-col gap-8 animate-fade-in", className])}>
       {(title || description) && (
         <div className="flex flex-col gap-4 border-b pb-6">
           {title && (

@@ -18,7 +18,7 @@ export default function PostList({ posts, basePath }: PostListProps) {
           (a, b) =>
             Number(new Date(b.publishDate)) - Number(new Date(a.publishDate)),
         )
-        .map((post: Post) => {
+        .map((post: Post, index: number) => {
           const date = new Date(post.publishDate);
           const year = date.getFullYear();
           const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -31,8 +31,11 @@ export default function PostList({ posts, basePath }: PostListProps) {
               href={`${basePath}/${post.slug}`}
               key={post.slug}
               className="group block"
+              style={{
+                animation: `fadeIn 0.5s ease-out ${index * 0.1}s both`,
+              }}
             >
-              <article className="flex gap-6 p-4 rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 bg-white">
+              <article className="flex gap-6 p-4 rounded-lg border border-gray-200 hover:border-gray-300 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 bg-white">
                 {/* Thumbnail - Left side on desktop, top on mobile */}
                 {post.thumbnailUrl && (
                   <div className="relative shrink-0 w-full sm:w-40 h-40 rounded-md overflow-hidden bg-gray-100">
