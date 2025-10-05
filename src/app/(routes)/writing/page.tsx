@@ -11,13 +11,12 @@ export default function WritingPage() {
 
   return (
     <PageLayout title={category.label} description={category.description}>
-      <div className="flex flex-col gap-4 mt-6">
+      <div className="space-y-4">
         {category.collections.map((collection) => (
           <LinkButton
             key={collection.key}
             href={collection.path}
             label={collection.label}
-            className="py-6"
           />
         ))}
       </div>

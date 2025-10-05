@@ -38,7 +38,7 @@ export default function RootLayout({
           {/* 메인 콘텐츠 영역 - Centered with max-width */}
           <main className="flex-1 overflow-hidden sm:pt-0 pt-16 bg-white">
             {/* pt-16은 모바일 네비게이션(h-14)을 고려한 여백 */}
-            <div className="max-w-3xl mx-auto py-8 px-6 md:px-8">
+            <div className="max-w-4xl mx-auto py-8 px-6 md:px-8">
               {children}
             </div>
           </main>

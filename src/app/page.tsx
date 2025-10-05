@@ -1,5 +1,4 @@
 import PageLayout from "@/components/pageLayout";
-import { Button } from "@/components/ui/button";
 import { Github, Instagram } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,36 +6,52 @@ import Link from "next/link";
 export default function Home() {
   return (
     <PageLayout>
-      <Image
-        alt="큰제비갈매기"
-        src="/images/itisme.PNG"
-        width={300}
-        height={300}
-        className="self-center rounded-full"
-      />
-      <h1 className="self-center text-2xl font-bold mt-4 mb-2">
-        장혁이의 블로그
-      </h1>
+      <div className="flex flex-col items-center text-center py-12 space-y-6">
+        {/* Profile Image */}
+        <div className="relative">
+          <Image
+            alt="Profile"
+            src="/images/itisme.PNG"
+            width={160}
+            height={160}
+            className="rounded-full border-4 border-gray-100 shadow-lg"
+            priority
+          />
+        </div>
 
-      <div className="flex gap-4 self-center mt-2">
-        <Link
-          href="https://github.com/goranikin"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Button variant="ghost" size="icon" className="rounded-full">
-            <Github className="h-5 w-5" />
-          </Button>
-        </Link>
-        <Link
-          href="https://www.instagram.com/hyeok_12053/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Button variant="ghost" size="icon" className="rounded-full">
-            <Instagram className="h-5 w-5" />
-          </Button>
-        </Link>
+        {/* Name and Title */}
+        <div className="space-y-3">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">
+            장혁이의 블로그
+          </h1>
+          <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
+            Welcome to my blog
+          </p>
+        </div>
+
+        {/* Social Links */}
+        <div className="flex gap-4 pt-4">
+          <Link
+            href="https://github.com/goranikin"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group"
+          >
+            <div className="p-3 rounded-full border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 bg-white">
+              <Github className="h-6 w-6 text-gray-700 group-hover:text-black transition-colors" />
+            </div>
+          </Link>
+          <Link
+            href="https://www.instagram.com/hyeok_12053/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group"
+          >
+            <div className="p-3 rounded-full border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all duration-200 bg-white">
+              <Instagram className="h-6 w-6 text-gray-700 group-hover:text-pink-600 transition-colors" />
+            </div>
+          </Link>
+        </div>
       </div>
     </PageLayout>
   );
