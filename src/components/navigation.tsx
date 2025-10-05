@@ -48,7 +48,7 @@ export const navigationItems: NavItem[] = categoriesConfig.map((category) => {
   };
 });
 
-// 사이드바 네비게이션 (PC 버전)
+// 사이드바 네비게이션 (PC 버전) - Narrow Sidebar Design
 export const SidebarNav = () => {
   const pathname = usePathname();
 
@@ -69,53 +69,38 @@ export const SidebarNav = () => {
   }, [pathname]);
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="p-4 flex items-center gap-3">
+    <div className="flex flex-col h-full bg-gray-50">
+      {/* Header */}
+      <div className="p-4 border-b flex items-center gap-2">
         <HomeButton />
         <BackButton />
       </div>
 
-      <div className="flex flex-row flex-grow h-[calc(100%-64px)]">
-        {/* 왼쪽 칸 - 메인 카테고리 */}
-        <div className="w-11/12 border-r">
-          <nav className="w-full p-3">
-            {navigationItems.map((item, index) => (
-              <div key={item.label}>
-                <CategoryButton
-                  item={item}
-                  isActive={selectedCategory?.label === item.label}
-                  onClick={() => setSelectedCategory(item)}
-                />
-                {/* 마지막 항목이 아니면 구분선 추가 */}
-                {index < navigationItems.length - 1 && (
-                  <div className="h-px bg-gray-300 my-1" />
-                )}
-              </div>
-            ))}
-          </nav>
-        </div>
+      {/* Navigation Categories */}
+      <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+        {navigationItems.map((item) => (
+          <div key={item.label}>
+            <CategoryButton
+              item={item}
+              isActive={selectedCategory?.label === item.label}
+              onClick={() => setSelectedCategory(item)}
+            />
 
-        {/* 오른쪽 칸 - 서브 카테고리 */}
-        <div className="w-11/12 p-4">
-          {selectedCategory?.subcategories && (
-            <div className="py-2">
-              {selectedCategory.subcategories.map((subItem, index) => (
-                <div key={subItem.href}>
+            {/* Subcategories - show when selected */}
+            {selectedCategory?.label === item.label && item.subcategories && (
+              <div className="mt-1 ml-2 space-y-1">
+                {item.subcategories.map((subItem) => (
                   <SubcategoryItem
+                    key={subItem.href}
                     item={subItem}
                     isActive={pathname.startsWith(subItem.href)}
                   />
-                  {/* 마지막 항목이 아니면 구분선 추가 */}
-                  {index <
-                    (selectedCategory.subcategories?.length || 0) - 1 && (
-                    <div className="h-px bg-gray-300 my-1" />
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </nav>
     </div>
   );
 };
@@ -133,8 +118,10 @@ const CategoryButton = ({
     <button
       type="button"
       className={cn(
-        "w-full text-left px-4 py-3 hover:bg-gray-100 transition-colors rounded-md mb-1 block text-xl cursor-pointer",
-        isActive ? "text-black font-semibold bg-gray-100" : "",
+        "w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-colors",
+        isActive 
+          ? "bg-white shadow-sm text-black" 
+          : "hover:bg-white/50 text-gray-700"
       )}
       onClick={onClick}
     >
@@ -154,23 +141,46 @@ const SubcategoryItem = ({
     <Link
       href={item.href}
       className={cn(
-        "flex items-center px-3 py-1.5 hover:bg-gray-100 rounded-md transition-colors text-lg",
-        isActive ? "font-semibold bg-gray-100" : "",
+        "block px-3 py-1.5 text-sm rounded-md transition-colors group",
+        isActive 
+          ? "text-gray-900 font-medium bg-white/50" 
+          : "text-gray-600 hover:text-gray-900 hover:bg-white/50"
       )}
       target={item.external ? "_blank" : undefined}
     >
-      {item.label}
-      {item.external && <ArrowUpRight className="h-3 w-3" />}
+      <div className="flex items-center gap-1">
+        <ArrowUpRight className={cn(
+          "h-3 w-3 transition-transform group-hover:translate-x-0.5",
+          item.external ? "opacity-100" : "opacity-0"
+        )} />
+        <span>{item.label}</span>
+      </div>
     </Link>
   );
 };
 
 export const MobileNav = () => {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const [selectedCategory, setSelectedCategory] = useState<NavItem | null>(
+    navigationItems[0],
+  );
+
+  useEffect(() => {
+    if (pathname) {
+      const matchingCategory = navigationItems.find((item) =>
+        pathname.startsWith(item.href),
+      );
+
+      if (matchingCategory) {
+        setSelectedCategory(matchingCategory);
+      }
+    }
+  }, [pathname]);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 h-14 px-5 border-b flex justify-between items-center bg-background">
-      <div className="flex items-center gap-3">
+    <div className="fixed top-0 left-0 right-0 z-50 h-14 px-4 border-b flex justify-between items-center bg-white">
+      <div className="flex items-center gap-2">
         <HomeButton />
         <BackButton />
       </div>
@@ -179,32 +189,42 @@ export const MobileNav = () => {
         <SheetTrigger asChild>
           <Button
             variant="outline"
-            className="flex items-center gap-2 px-3 py-2"
+            size="icon"
+            className="rounded-md"
           >
-            <MenuIcon className="h-4 w-4 text-primary" />
-            <span className="">메뉴</span>
+            <MenuIcon className="h-5 w-5" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="right">
-          <SheetTitle className="font-bold text-3xl mb-6">메뉴</SheetTitle>
-          <nav className="flex flex-col">
+        <SheetContent side="right" className="bg-gray-50">
+          <SheetTitle className="font-bold text-2xl mb-6">Menu</SheetTitle>
+          <nav className="flex flex-col space-y-1">
             {navigationItems.map((category) => (
-              <div key={category.label} className="mb-4">
-                <Link
-                  href={category.href}
-                  className="text-lg font-medium hover:underline block mb-2"
-                  onClick={() => setOpen(false)}
+              <div key={category.label}>
+                <button
+                  type="button"
+                  onClick={() => setSelectedCategory(category)}
+                  className={cn(
+                    "w-full text-left px-3 py-2 rounded-md text-base font-medium transition-colors",
+                    selectedCategory?.label === category.label
+                      ? "bg-white shadow-sm text-black"
+                      : "hover:bg-white/50 text-gray-700"
+                  )}
                 >
-                  {category.label.toUpperCase()}
-                </Link>
+                  {category.label}
+                </button>
 
-                {category.subcategories && (
-                  <div className="pl-4 border-l space-y-1">
+                {selectedCategory?.label === category.label && category.subcategories && (
+                  <div className="mt-1 ml-2 space-y-1 mb-2">
                     {category.subcategories.map((subItem) => (
                       <Link
                         key={subItem.href}
                         href={subItem.href}
-                        className="text-sm text-muted-foreground hover:text-foreground block py-1"
+                        className={cn(
+                          "block px-3 py-1.5 text-sm rounded-md transition-colors",
+                          pathname.startsWith(subItem.href)
+                            ? "text-gray-900 font-medium bg-white/50"
+                            : "text-gray-600 hover:text-gray-900 hover:bg-white/50"
+                        )}
                         onClick={() => setOpen(false)}
                       >
                         {subItem.label}
@@ -223,14 +243,14 @@ export const MobileNav = () => {
 
 const HomeButton = () => {
   return (
-    <Link href="/" className="cursor-pointer">
+    <Link href="/">
       <Button
         type="button"
-        variant="outline"
+        variant="ghost"
         size="icon"
-        className="rounded-full cursor-pointer"
+        className="h-8 w-8"
       >
-        <Home className="h-5 w-5 transition-all text-primary stroke-1" />
+        <Home className="h-4 w-4" />
       </Button>
     </Link>
   );
@@ -241,12 +261,12 @@ const BackButton = () => {
   return (
     <Button
       type="button"
-      variant="outline"
+      variant="ghost"
       size="icon"
-      className="rounded-full cursor-pointer"
+      className="h-8 w-8"
       onClick={() => router.back()}
     >
-      <ArrowLeft className="h-5 w-5 transition-all text-primary stroke-1 " />
+      <ArrowLeft className="h-4 w-4" />
     </Button>
   );
 };
