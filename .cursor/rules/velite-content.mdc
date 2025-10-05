@@ -1,0 +1,213 @@
+---
+description: Velite configuration, content collections, and MDX processing patterns
+---
+
+# Velite Content Management
+
+This project uses Velite for MDX content processing and static site generation. All content configuration is defined in [velite.config.js](mdc:velite.config.js).
+
+## Content Collections
+
+### Collection Structure
+Velite defines six content collections:
+1. **development** - Development tutorials and guides (`study/development/**/*.mdx`)
+2. **project** - Project documentation (`study/project/**/*.mdx`)
+3. **paperReview** - Academic paper reviews (`study/paper-review/**/*.mdx`)
+4. **bookReview** - Book reviews (`writing/book-review/**/*.mdx`)
+5. **personalEssay** - Personal essays (`writing/personal-essay/**/*.mdx`)
+6. **lightTopic** - Light topics and casual posts (`writing/light-topic/**/*.mdx`)
+
+### Collection Schema
+All collections share the same schema structure:
+```typescript
+{
+  title: string;           // Post title
+  description: string;     // Post description
+  slug: string;           // File path slug
+  publishDate: string;    // ISO date format
+  thumbnailUrl?: string;  // Optional thumbnail
+  content: MDX;          // Processed MDX content
+}
+```
+
+### Collection Transformation
+Each collection transforms data to include:
+- `permalink`: Full URL path (e.g., `/study/development/post-slug`)
+- `slug`: Cleaned slug without category prefix
+- Example: `study/development/my-post` → `my-post`
+
+## Content Organization
+
+### Directory Structure
+- Root content directory: [src/contents/](mdc:src/contents/)
+- Study content:
+  - `study/development/` - Development tutorials
+  - `study/paper-review/` - Academic papers
+  - `study/project/` - Project documentation
+- Writing content:
+  - `writing/book-review/` - Book reviews
+  - `writing/personal-essay/` - Personal essays
+  - `writing/light-topic/` - Light topics
+
+### File Naming
+- Use kebab-case for file names
+- Use `.mdx` extension for all content files
+- Example: `setup-ci-cd-with-github-actions.mdx`
+
+## MDX Frontmatter
+
+### Required Fields
+```mdx
+---
+title: "Post Title"
+description: "Post description"
+publishDate: "2025-10-03"
+---
+```
+
+### Optional Fields
+```mdx
+---
+thumbnailUrl: "/images/thumbnail.jpg"
+---
+```
+
+### Date Format
+- Use ISO date format: `YYYY-MM-DD`
+- Example: `2025-10-03`
+
+## MDX Processing
+
+### Plugins Configuration
+Velite uses the following MDX plugins:
+
+**Syntax Highlighting:**
+- `@shikijs/rehype` with Nord theme
+- Automatic code block syntax highlighting
+
+**Math Support:**
+- `remark-math` for parsing math expressions
+- `rehype-katex` for rendering LaTeX math
+- Support for inline math `$...$` and block math `$$...$$`
+
+### Code Blocks
+```mdx
+\`\`\`typescript
+// Code here gets syntax highlighted
+const example = "code";
+\`\`\`
+```
+
+### Math Expressions
+```mdx
+Inline math: $E = mc^2$
+
+Block math:
+$$
+\int_{a}^{b} f(x) dx
+$$
+```
+
+## Asset Management
+
+### Asset Output Configuration
+- Generated assets: `public/static/`
+- Asset base URL: `/static/`
+- Asset naming: `[name]-[hash:8].[ext]`
+- Clean build: Enabled (removes old assets)
+
+### Image Paths
+- Store images in `public/` directory with category structure
+- Study images: `public/study/{category}/{post-slug}/`
+- Writing images: `public/writing/{category}/{post-slug}/`
+- Example: `public/study/development/ci-cd-with-docker/image.png`
+
+### Using Images in MDX
+```mdx
+![Alt text](/study/development/ci-cd-with-docker/image.png)
+```
+
+## Generated Content
+
+### Output Location
+- Generated data: `.velite/` directory
+- Collection files: `.velite/{collection-name}.json`
+- Example: `.velite/development.json`
+
+### Import Pattern
+```typescript
+import { development, paperReview, project } from "#site/contents";
+```
+
+### TypeScript Types
+Velite automatically generates TypeScript types for all collections.
+
+## Content Retrieval
+
+### Using Post Utility
+Use [src/utils/post.ts](mdc:src/utils/post.ts) for content retrieval:
+
+```typescript
+import { getPostBySlug } from "@/utils/post";
+
+const post = getPostBySlug({
+  slug: "post-slug",
+  category: "study/development"
+});
+```
+
+### Category Mapping
+- `study/development` → `development` collection
+- `study/paper-review` → `paperReview` collection
+- `study/project` → `project` collection
+- `writing/book-review` → `bookReview` collection
+- `writing/personal-essay` → `personalEssay` collection
+- `writing/light-topic` → `lightTopic` collection
+
+## Build Process
+
+### Velite Build Integration
+- Velite builds automatically with Next.js dev/build commands
+- Configured in [next.config.mjs](mdc:next.config.mjs)
+- Watch mode enabled during development
+- Clean build in production
+
+### Build Commands
+```bash
+bun run dev    # Starts dev server with Velite watch mode
+bun run build  # Builds production with Velite clean build
+```
+
+## Content Best Practices
+
+### MDX File Structure
+```mdx
+---
+title: "Clear, Descriptive Title"
+description: "Comprehensive description for SEO"
+publishDate: "2025-10-03"
+thumbnailUrl: "/path/to/thumbnail.jpg"
+---
+
+# Main Heading
+
+Content here...
+```
+
+### Image Optimization
+- Use appropriate image formats (JPEG for photos, PNG for graphics)
+- Optimize images before adding to repository
+- Use descriptive file names for images
+
+### Content Guidelines
+- Use clear, descriptive titles
+- Write comprehensive descriptions (100-200 characters)
+- Include thumbnails for better visual appeal
+- Organize images in category-specific directories
+- Use proper heading hierarchy (H1 → H2 → H3)
+
+### Writing Style
+- Use markdown formatting for emphasis
+- Add code blocks with language specifiers
+- Include alt text for all images
+- Use links for external references

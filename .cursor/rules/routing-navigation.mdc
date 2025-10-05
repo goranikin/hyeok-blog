@@ -1,0 +1,241 @@
+---
+description: Routing structure, navigation patterns, and path constants
+---
+
+# Routing & Navigation Patterns
+
+This project uses Next.js 15 App Router with specific routing conventions and navigation patterns.
+
+## Routing Structure
+
+### App Router Organization
+- Root: [src/app/](mdc:src/app/)
+- Routes: [src/app/(routes)/](mdc:src/app/(routes)/) (route group)
+- API routes: [src/app/api/](mdc:src/app/api/)
+
+### Route Groups
+Route groups use parentheses to organize routes without affecting URL structure:
+- `(routes)` - Main application routes
+- Doesn't appear in URL path
+
+### Dynamic Routes
+
+**Pattern:** `[category]/[subcategory]/[slug]`
+
+**Study Routes:**
+- `/study/development/[slug]` - Development posts
+- `/study/paper-review/[slug]` - Paper review posts
+- `/study/project/[slug]` - Project posts
+
+**Writing Routes:**
+- `/writing/book-review/[slug]` - Book review posts
+- `/writing/personal-essay/[slug]` - Personal essay posts
+- `/writing/light-topic/[slug]` - Light topic posts
+
+### Static Routes
+
+**Laboratory Routes:**
+- `/laboratory/extract-transcript` - YouTube transcript extraction
+- `/laboratory/human-interface-design-class` - HID class project
+
+**Main Pages:**
+- `/` - Home page ([src/app/page.tsx](mdc:src/app/page.tsx))
+- `/writing` - Writing category page
+- `/study/development` - Development category page
+- `/study/paper-review` - Paper review category page
+- `/study/project` - Project category page
+
+## Path Constants
+
+### Using Path Constants
+Import from [src/constants/paths.ts](mdc:src/constants/paths.ts):
+```typescript
+import { 
+  WRITING_PATH,
+  BOOK_REVIEW_PATH,
+  PERSONAL_ESSAY_PATH,
+  LABORATORY_PATH 
+} from "@/constants/paths";
+```
+
+### Available Constants
+- `WRITING_PATH = "/writing"`
+- `BOOK_REVIEW_PATH = "/book-review"`
+- `PERSONAL_ESSAY_PATH = "/personal-essay"`
+- `LABORATORY_PATH = "/laboratory"`
+
+### When to Add New Constants
+- Add constants for frequently used paths
+- Use constants for paths used in multiple components
+- Maintain consistency across the application
+
+## Navigation Component
+
+### Navigation Structure
+The main navigation is in [src/components/navigation.tsx](mdc:src/components/navigation.tsx):
+
+**Desktop Navigation:**
+- Fixed sidebar (350px width)
+- Sticky positioning
+- Nested category structure
+
+**Mobile Navigation:**
+- Hamburger menu with Sheet component
+- Responsive drawer navigation
+- Same structure as desktop
+
+### Navigation Items
+```typescript
+type NavItem = {
+  label: string;
+  href: string;
+  children?: NavItem[];
+};
+```
+
+**Main Categories:**
+1. **Study**
+   - Development (`/study/development`)
+   - Paper Review (`/study/paper-review`)
+   - Project (`/study/project`)
+
+2. **Writing**
+   - Book Review (`/writing/book-review`)
+   - Personal Essay (`/writing/personal-essay`)
+   - Light Topic (`/writing/light-topic`)
+
+3. **Laboratory**
+   - Extract Transcript (`/laboratory/extract-transcript`)
+   - Human Interface Design (`/laboratory/human-interface-design-class`)
+
+### Active State Management
+```typescript
+const pathname = usePathname();
+const isActive = pathname === item.href;
+```
+
+Apply active styles based on pathname:
+```typescript
+className={cn(
+  "base-styles",
+  isActive ? "text-black font-semibold bg-gray-100" : ""
+)}
+```
+
+## Navigation Patterns
+
+### Using Next.js Link
+```typescript
+import Link from "next/link";
+
+<Link href="/study/development">Development</Link>
+```
+
+### Programmatic Navigation
+```typescript
+import { useRouter } from "next/navigation";
+
+const router = useRouter();
+router.push("/path");
+router.back();
+```
+
+### External Links
+```typescript
+<Link 
+  href="https://external.com" 
+  target="_blank" 
+  rel="noopener noreferrer"
+>
+  External Link
+</Link>
+```
+
+## Route Parameters
+
+### Accessing Dynamic Parameters
+```typescript
+// In page component
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  // Use slug
+}
+```
+
+### Using Search Params
+```typescript
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const params = await searchParams;
+  // Use search params
+}
+```
+
+## Layout Components
+
+### Root Layout
+[src/app/layout.tsx](mdc:src/app/layout.tsx):
+- Wraps all pages
+- Includes Navigation component
+- Applies global fonts and styles
+
+### Page Layouts
+**PageLayout** ([src/components/pageLayout.tsx](mdc:src/components/pageLayout.tsx)):
+- For category listing pages
+- Includes breadcrumb navigation
+- Container with proper spacing
+
+**PostPageLayout** ([src/components/postPageLayout.tsx](mdc:src/components/postPageLayout.tsx)):
+- For individual post pages
+- Includes metadata display
+- Proper content formatting
+
+## Breadcrumb Navigation
+
+### Pattern
+```typescript
+<div className="flex items-center gap-2">
+  <Link href="/">Home</Link>
+  <span>/</span>
+  <Link href="/category">Category</Link>
+  <span>/</span>
+  <span className="font-semibold">Current Page</span>
+</div>
+```
+
+### When to Use
+- Category listing pages
+- Individual post pages
+- Multi-level navigation pages
+
+## Route Best Practices
+
+### File Naming
+- Use lowercase for route directories
+- Use kebab-case for multi-word routes
+- Use `page.tsx` for route pages
+- Use `layout.tsx` for route layouts
+
+### Route Organization
+- Group related routes in directories
+- Use route groups for organization without affecting URLs
+- Keep API routes separate from page routes
+
+### Navigation Patterns
+- Use Next.js Link component for internal links
+- Use proper target and rel for external links
+- Implement active state for current route
+- Use path constants for consistency
+
+### Performance
+- Use static generation for content pages
+- Implement proper loading states
+- Use proper metadata for SEO
+- Optimize navigation component rendering

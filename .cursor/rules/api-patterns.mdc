@@ -1,0 +1,123 @@
+---
+description: API route patterns, handler factory, and external API integration
+---
+
+# API Route Patterns
+
+This project follows specific patterns for API routes, including a handler factory pattern for external API calls.
+
+## API Route Structure
+
+### Directory Organization
+- All API routes are in [src/app/api/](mdc:src/app/api/) directory
+- Each API endpoint has its own directory with a `route.ts` file
+- Example: [src/app/api/extract-transcript/route.ts](mdc:src/app/api/extract-transcript/route.ts)
+
+### Route File Naming
+- Always use `route.ts` for API endpoints (not `route.tsx`)
+- Export HTTP method handlers: `GET`, `POST`, `PUT`, `DELETE`, etc.
+- Use named exports for each HTTP method
+
+## Handler Factory Pattern
+
+### Using createGetHandler
+- Use the handler factory from [src/lib/handlerFactory.ts](mdc:src/lib/handlerFactory.ts)
+- Pattern: `export const GET = createGetHandler(endpoint, paramKeys)`
+- Example:
+  ```typescript
+  export const GET = createGetHandler("/extract-transcript", ["youtube_url"]);
+  ```
+
+### Handler Factory Benefits
+- Centralizes error handling
+- Standardizes parameter extraction
+- Simplifies integration with external APIs
+- Provides consistent response format
+
+### Handler Factory Usage
+```typescript
+import { createGetHandler } from "@/lib/handlerFactory";
+
+// Define the endpoint and required parameters
+export const GET = createGetHandler("/endpoint-name", ["param1", "param2"]);
+```
+
+## External API Integration
+
+### FastAPI Integration
+- External API calls go through [src/lib/fast-api.ts](mdc:src/lib/fast-api.ts)
+- Use `fetchFromFastAPI` function for all external calls
+- Handles parameter conversion and error handling
+
+### API Configuration
+- API base URLs are configured in [src/constants/network.ts](mdc:src/constants/network.ts)
+- Use environment variables for sensitive configuration
+- Never hardcode API URLs in route handlers
+
+## Request Handling
+
+### Query Parameters
+- Extract query parameters using `searchParams.get(key)`
+- Provide default values for optional parameters
+- Validate required parameters before processing
+
+### Error Handling
+- Wrap API calls in try-catch blocks
+- Return proper HTTP status codes (200, 400, 500, etc.)
+- Use `NextResponse.json()` for all responses
+- Example error response:
+  ```typescript
+  return NextResponse.json({ error: "Error message" }, { status: 500 });
+  ```
+
+### Response Format
+- Always return JSON responses using `NextResponse.json()`
+- Use consistent response structure across all endpoints
+- Include proper error messages for debugging
+
+## API Route Examples
+
+### Simple GET Endpoint
+```typescript
+import { createGetHandler } from "@/lib/handlerFactory";
+
+export const GET = createGetHandler("/endpoint", ["param1", "param2"]);
+```
+
+### Custom POST Endpoint
+```typescript
+import { NextResponse } from "next/server";
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    // Process data
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+}
+```
+
+## Best Practices
+
+### Type Safety
+- Use TypeScript for all API routes
+- Define interfaces for request/response types
+- Use proper type annotations for parameters
+
+### Error Messages
+- Use descriptive error messages
+- Avoid exposing sensitive information in errors
+- Log errors for debugging purposes
+
+### Performance
+- Cache responses when appropriate
+- Use streaming for large responses
+- Implement proper timeout handling
+
+### Security
+- Validate all input parameters
+- Sanitize user input
+- Implement rate limiting for public endpoints
+- Use CORS headers appropriately

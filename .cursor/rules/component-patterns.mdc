@@ -1,0 +1,410 @@
+---
+description: Component architecture, patterns, and reusable component guidelines
+---
+
+# Component Patterns & Architecture
+
+This project follows specific React component patterns for consistency and reusability.
+
+## Component Organization
+
+### Directory Structure
+- **UI Components:** [src/components/ui/](mdc:src/components/ui/) - shadcn/ui base components
+- **Layout Components:** [src/components/](mdc:src/components/) - Page and post layouts
+- **Feature Components:** [src/components/](mdc:src/components/) - Navigation, post lists, etc.
+- **Page Components:** [src/app/](mdc:src/app/) - Route-specific page components
+
+### Component Types
+
+**Base UI Components:**
+- Button, Form, Label, Sheet, Accordion
+- Located in [src/components/ui/](mdc:src/components/ui/)
+- Built with shadcn/ui and Radix UI
+- Extended with custom styling
+
+**Layout Components:**
+- `PageLayout` - Category listing pages
+- `PostPageLayout` - Individual post pages
+- Provide consistent structure and spacing
+
+**Feature Components:**
+- `Navigation` - Main navigation sidebar and mobile menu
+- `PostList` - Blog post listing with thumbnails
+- `LinkButton` - Custom link button component
+
+## Component Definition Patterns
+
+### Functional Components
+```typescript
+// Use arrow functions for component definitions
+const ComponentName = ({ prop1, prop2 }: ComponentProps) => {
+  return (
+    <div>
+      {/* Component content */}
+    </div>
+  );
+};
+
+export default ComponentName;
+```
+
+### Props Interface
+```typescript
+// Define props interface above component
+interface ComponentProps {
+  prop1: string;
+  prop2?: number; // Optional prop
+  children?: React.ReactNode;
+}
+
+const ComponentName = ({ prop1, prop2, children }: ComponentProps) => {
+  // Component implementation
+};
+```
+
+### Client Components
+```typescript
+"use client"; // Only when necessary
+
+import { useState } from "react";
+
+const ClientComponent = () => {
+  const [state, setState] = useState(initialValue);
+  // Component with client-side interactivity
+};
+```
+
+## Layout Components
+
+### PageLayout Pattern
+[src/components/pageLayout.tsx](mdc:src/components/pageLayout.tsx):
+```typescript
+interface PageLayoutProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+const PageLayout = ({ title, children }: PageLayoutProps) => {
+  return (
+    <div className="container mx-auto py-4 px-4 md:px-20">
+      <h1 className="text-3xl font-bold mb-6">{title}</h1>
+      {children}
+    </div>
+  );
+};
+```
+
+**Usage:**
+- Category listing pages
+- Pages with consistent header and container
+- Responsive container with proper spacing
+
+### PostPageLayout Pattern
+[src/components/postPageLayout.tsx](mdc:src/components/postPageLayout.tsx):
+```typescript
+interface PostPageLayoutProps {
+  children: React.ReactNode;
+}
+
+const PostPageLayout = ({ children }: PostPageLayoutProps) => {
+  return (
+    <div className="container mx-auto py-8 px-4 max-w-4xl">
+      <article className="prose lg:prose-xl">
+        {children}
+      </article>
+    </div>
+  );
+};
+```
+
+**Usage:**
+- Individual blog posts
+- MDX content pages
+- Content with typography styling
+
+## Feature Components
+
+### Navigation Component
+[src/components/navigation.tsx](mdc:src/components/navigation.tsx):
+
+**Key Features:**
+- Responsive design (desktop sidebar + mobile sheet)
+- Active state management with `usePathname()`
+- Nested navigation structure
+- Profile section with image and links
+
+**Pattern:**
+```typescript
+"use client";
+
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+
+const Navigation = () => {
+  const pathname = usePathname();
+  const [selectedCategory, setSelectedCategory] = useState<NavItem | null>(null);
+  
+  // Navigation implementation
+};
+```
+
+### PostList Component
+[src/components/postList.tsx](mdc:src/components/postList.tsx):
+
+**Key Features:**
+- Displays list of blog posts
+- Thumbnail images with Next.js Image
+- Post metadata (title, description, date)
+- Responsive grid layout
+
+**Pattern:**
+```typescript
+interface PostListProps {
+  posts: Post[];
+  basePath: string;
+}
+
+const PostList = ({ posts, basePath }: PostListProps) => {
+  return (
+    <div className="grid gap-6">
+      {posts.map((post) => (
+        <PostCard key={post.slug} post={post} basePath={basePath} />
+      ))}
+    </div>
+  );
+};
+```
+
+## State Management Patterns
+
+### Local State with useState
+```typescript
+const [state, setState] = useState<Type>(initialValue);
+
+// Update state
+setState(newValue);
+
+// Update with previous state
+setState(prevState => prevState + 1);
+```
+
+### useEffect for Side Effects
+```typescript
+useEffect(() => {
+  // Side effect logic
+  
+  // Cleanup function
+  return () => {
+    // Cleanup
+  };
+}, [dependencies]);
+```
+
+### Router Hooks
+```typescript
+import { usePathname, useRouter } from "next/navigation";
+
+const pathname = usePathname(); // Current path
+const router = useRouter();     // Router instance
+
+// Navigate programmatically
+router.push("/path");
+router.back();
+```
+
+## Styling Patterns
+
+### Using cn Utility
+```typescript
+import { cn } from "@/utils/cn";
+
+<div className={cn(
+  "base-classes",
+  condition && "conditional-classes",
+  anotherCondition ? "true-classes" : "false-classes"
+)}>
+```
+
+### Responsive Design
+```typescript
+<div className="flex flex-col sm:flex-row gap-4 md:gap-6 lg:gap-8">
+```
+
+### Hover and Active States
+```typescript
+<Link 
+  href="/path"
+  className={cn(
+    "hover:bg-gray-100 transition-colors",
+    isActive && "bg-gray-100 font-semibold"
+  )}
+>
+```
+
+## Event Handling
+
+### Click Handlers
+```typescript
+// Simple click handler
+<button onClick={() => handleClick()}>
+
+// With event parameter
+<button onClick={(e) => handleClick(e)}>
+
+// Prevent default
+<a onClick={(e) => {
+  e.preventDefault();
+  handleClick();
+}}>
+```
+
+### Form Handling
+```typescript
+<form onSubmit={(e) => {
+  e.preventDefault();
+  handleSubmit();
+}}>
+```
+
+## Conditional Rendering
+
+### Conditional Content
+```typescript
+{condition && <Component />}
+
+{condition ? <ComponentA /> : <ComponentB />}
+
+{items.length > 0 ? (
+  <ItemList items={items} />
+) : (
+  <EmptyState />
+)}
+```
+
+### Optional Chaining
+```typescript
+{post?.thumbnailUrl && (
+  <Image src={post.thumbnailUrl} alt={post.title} />
+)}
+```
+
+## List Rendering
+
+### Map Pattern
+```typescript
+{items.map((item) => (
+  <Component key={item.id} data={item} />
+))}
+```
+
+### Key Requirements
+- Always use unique, stable keys
+- Prefer IDs over array indices
+- Use `item.slug` or `item.id` for blog posts
+
+## Image Handling
+
+### Next.js Image Component
+```typescript
+import Image from "next/image";
+
+<Image
+  src="/path/to/image.jpg"
+  alt="Descriptive alt text"
+  width={400}
+  height={300}
+  className="object-cover rounded-lg"
+/>
+```
+
+### Thumbnail Pattern
+```typescript
+{post.thumbnailUrl ? (
+  <Image
+    src={post.thumbnailUrl}
+    alt={post.title}
+    width={400}
+    height={300}
+    className="object-cover w-full h-48"
+  />
+) : (
+  <div className="w-full h-48 bg-gray-200" />
+)}
+```
+
+## Component Composition
+
+### Children Pattern
+```typescript
+interface ContainerProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const Container = ({ children, className }: ContainerProps) => {
+  return (
+    <div className={cn("container mx-auto", className)}>
+      {children}
+    </div>
+  );
+};
+```
+
+### Render Props Pattern
+```typescript
+interface RenderProps {
+  render: (data: DataType) => React.ReactNode;
+  data: DataType;
+}
+
+const RenderComponent = ({ render, data }: RenderProps) => {
+  return <>{render(data)}</>;
+};
+```
+
+## Type Safety
+
+### Component Props
+- Always define prop interfaces
+- Use optional props with `?` when appropriate
+- Use union types for variants
+
+### Event Types
+```typescript
+import { MouseEvent, FormEvent } from "react";
+
+const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+  // Handler implementation
+};
+
+const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  // Handler implementation
+};
+```
+
+## Best Practices
+
+### Component Design
+- Keep components focused and single-purpose
+- Use composition over prop drilling
+- Extract reusable logic into custom hooks
+- Implement proper error boundaries
+
+### Performance
+- Use React.memo() for expensive components
+- Implement proper dependency arrays in useEffect
+- Avoid inline function definitions in renders
+- Use proper key props in lists
+
+### Accessibility
+- Use semantic HTML elements
+- Provide alt text for images
+- Implement keyboard navigation
+- Use proper ARIA attributes
+
+### Code Organization
+- Group related functionality
+- Use consistent naming conventions
+- Export components properly
+- Keep file sizes manageable
