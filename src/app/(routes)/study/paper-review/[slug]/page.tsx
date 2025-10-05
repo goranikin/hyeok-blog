@@ -1,18 +1,21 @@
+import { paperReview } from "#site/contents";
 import PageLayout from "@/components/pageLayout";
 import PostPageLayout from "@/components/postPageLayout";
+import { getCollectionByKey } from "@/config/collections";
 import metadata from "@/utils/metadata";
 import { getPostBySlug } from "@/utils/post";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { paperReview } from "#site/contents";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
+const collection = getCollectionByKey("paperReview");
+
 export default async function PaperReviewPage({ params }: Props) {
   const { slug } = await params;
-  const post = getPostBySlug({ slug: slug, category: "study/paper-review" });
+  const post = getPostBySlug({ slug: slug, category: collection?.categoryPath || "" });
 
   if (!post) {
     notFound();
@@ -24,6 +27,7 @@ export default async function PaperReviewPage({ params }: Props) {
     </PageLayout>
   );
 }
+
 export function generateStaticParams() {
   return paperReview.map((post) => ({
     slug: post.slug,

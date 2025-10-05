@@ -1,10 +1,11 @@
+import { personalEssay } from "#site/contents";
 import PageLayout from "@/components/pageLayout";
 import PostPageLayout from "@/components/postPageLayout";
+import { getCollectionByKey } from "@/config/collections";
 import metadata from "@/utils/metadata";
 import { getPostBySlug } from "@/utils/post";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { personalEssay } from "#site/contents";
 
 type Props = {
   params: Promise<{
@@ -12,11 +13,13 @@ type Props = {
   }>;
 };
 
+const collection = getCollectionByKey("personalEssay");
+
 export default async function PersonalEssayPage({ params }: Props) {
   const { slug } = await params;
   const post = getPostBySlug({
     slug: slug,
-    category: "writing/personal-essay",
+    category: collection?.categoryPath || "",
   });
 
   if (!post) {

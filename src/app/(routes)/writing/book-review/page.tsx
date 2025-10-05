@@ -1,14 +1,18 @@
+import { bookReview } from "#site/contents";
 import PageLayout from "@/components/pageLayout";
 import PostList from "@/components/postList";
-import { bookReview } from "#site/contents";
+import { getCollectionByKey } from "@/config/collections";
 
-export default async function PersonalEssayListPage() {
+export default async function BookReviewListPage() {
+  const collection = getCollectionByKey("bookReview");
+
+  if (!collection) {
+    return null;
+  }
+
   return (
-    <PageLayout
-      title="책 정리"
-      description="실용적인 서적을 읽고 정리하는 공간"
-    >
-      <PostList posts={bookReview} basePath="/writing/book-review" />
+    <PageLayout title={collection.label} description={collection.description}>
+      <PostList posts={bookReview} basePath={collection.path} />
     </PageLayout>
   );
 }

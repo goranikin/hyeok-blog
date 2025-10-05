@@ -7,17 +7,17 @@ type Collections = typeof __vc.collections
 export type Development = Collections['development']['schema']['_output']
 export declare const development: Development[]
 
-export type Project = Collections['project']['schema']['_output']
-export declare const project: Project[]
-
 export type PaperReview = Collections['paperReview']['schema']['_output']
 export declare const paperReview: PaperReview[]
 
-export type BookReview = Collections['bookReview']['schema']['_output']
-export declare const bookReview: BookReview[]
+export type Project = Collections['project']['schema']['_output']
+export declare const project: Project[]
+
+export type LightTopic = Collections['lightTopic']['schema']['_output']
+export declare const lightTopic: LightTopic[]
 
 export type PersonalEssay = Collections['personalEssay']['schema']['_output']
 export declare const personalEssay: PersonalEssay[]
 
-export type LightTopic = Collections['lightTopic']['schema']['_output']
-export declare const lightTopic: LightTopic[]
+export type BookReview = Collections['bookReview']['schema']['_output']
+export declare const bookReview: BookReview[]

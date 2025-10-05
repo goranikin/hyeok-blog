@@ -1,5 +1,9 @@
 "use client";
 
+import {
+  categoriesConfig,
+  laboratoryRoutes,
+} from "@/config/collections";
 import { cn } from "@/utils/cn";
 import { ArrowLeft, ArrowUpRight, Home, MenuIcon } from "lucide-react";
 import Link from "next/link";
@@ -21,35 +25,28 @@ export type NavItem = {
   subcategories?: SubcategoryType[];
 };
 
-export const navigationItems: NavItem[] = [
-  {
-    href: "/study",
-    label: "공부",
-    subcategories: [
-      { href: "/study/development", label: "개발" },
-      { href: "/study/paper-review", label: "논문 리뷰" },
-      { href: "/study/project", label: "프로젝트" },
-    ],
-  },
-  {
-    href: "/writing",
-    label: "글",
-    subcategories: [
-      { href: "/writing/light-topic", label: "가벼운 것들" },
-      { href: "/writing/personal-essay", label: "삶의 기록" },
-      { href: "/writing/book-review", label: "리뷰" },
-    ],
-  },
+/**
+ * Generate navigation items from centralized configuration
+ * This automatically creates navigation structure from collections config
+ */
+export const navigationItems: NavItem[] = categoriesConfig.map((category) => {
+  const subcategories: SubcategoryType[] =
+    category.key === "laboratory"
+      ? laboratoryRoutes.map((route) => ({
+          href: route.path,
+          label: route.label,
+        }))
+      : category.collections.map((collection) => ({
+          href: collection.path,
+          label: collection.label,
+        }));
 
-  {
-    href: "/laboratory",
-    label: "실험실",
-    subcategories: [
-      { href: "/laboratory/human-interface-design-class", label: "휴인디" },
-      { href: "/laboratory/extract-transcript", label: "자막 추출" },
-    ],
-  },
-];
+  return {
+    href: category.path,
+    label: category.label,
+    subcategories,
+  };
+});
 
 // 사이드바 네비게이션 (PC 버전)
 export const SidebarNav = () => {

@@ -1,14 +1,18 @@
+import { paperReview } from "#site/contents";
 import PageLayout from "@/components/pageLayout";
 import PostList from "@/components/postList";
-import { paperReview } from "#site/contents";
+import { getCollectionByKey } from "@/config/collections";
 
-export default async function DevelopmentListPage() {
+export default async function PaperReviewListPage() {
+  const collection = getCollectionByKey("paperReview");
+
+  if (!collection) {
+    return null;
+  }
+
   return (
-    <PageLayout
-      title="논문 리뷰"
-      description="정리해두고 싶은 논문들을 리뷰합니다."
-    >
-      <PostList posts={paperReview} basePath="/study/paper-review" />
+    <PageLayout title={collection.label} description={collection.description}>
+      <PostList posts={paperReview} basePath={collection.path} />
     </PageLayout>
   );
 }

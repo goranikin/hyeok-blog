@@ -1,10 +1,11 @@
+import { bookReview } from "#site/contents";
 import PageLayout from "@/components/pageLayout";
 import PostPageLayout from "@/components/postPageLayout";
+import { getCollectionByKey } from "@/config/collections";
 import metadata from "@/utils/metadata";
 import { getPostBySlug } from "@/utils/post";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { bookReview } from "#site/contents";
 
 type Props = {
   params: Promise<{
@@ -12,9 +13,11 @@ type Props = {
   }>;
 };
 
+const collection = getCollectionByKey("bookReview");
+
 export default async function BookReviewPage({ params }: Props) {
   const { slug } = await params;
-  const post = getPostBySlug({ slug: slug, category: "writing/book-review" });
+  const post = getPostBySlug({ slug: slug, category: collection?.categoryPath || "" });
 
   if (!post) {
     notFound();

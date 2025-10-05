@@ -2,6 +2,49 @@ import rehypeShiki from "@shikijs/rehype";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import { defineConfig, s } from "velite";
+import { collectionsConfig } from "./src/config/collections.ts";
+
+/**
+ * Generate Velite schema for a collection
+ * This creates a standardized schema with transformation for all collections
+ */
+const createCollectionSchema = (pattern, pathPrefix) => {
+  return s
+    .object({
+      title: s.string(),
+      description: s.string(),
+      slug: s.path(),
+      publishDate: s.string().date(),
+      thumbnailUrl: s.string().optional(),
+      content: s.mdx(),
+    })
+    .transform((data) => ({
+      ...data,
+      permalink: `/${data.slug}`,
+      slug: data.slug.replaceAll(`${pathPrefix}/`, ""),
+    }));
+};
+
+/**
+ * Generate Velite collections from centralized configuration
+ * This eliminates the need to manually define each collection
+ */
+const generateCollections = () => {
+  const collections = {};
+
+  for (const config of collectionsConfig) {
+    // Convert path like "/study/development" to "study/development"
+    const pathPrefix = config.path.substring(1);
+
+    collections[config.key] = {
+      name: config.key.charAt(0).toUpperCase() + config.key.slice(1),
+      pattern: config.pattern,
+      schema: createCollectionSchema(config.pattern.split("/**")[0], pathPrefix),
+    };
+  }
+
+  return collections;
+};
 
 export default defineConfig({
   root: "src/contents",
@@ -12,116 +55,7 @@ export default defineConfig({
     name: "[name]-[hash:8].[ext]", // 에셋 파일 이름 포맷
     clean: true, // 빌드 전 출력 디렉토리 정리
   },
-  collections: {
-    development: {
-      name: "Development",
-      pattern: "study/development/**/*.mdx",
-      schema: s
-        .object({
-          title: s.string(),
-          description: s.string(),
-          slug: s.path(),
-          publishDate: s.string().date(),
-          thumbnailUrl: s.string().optional(),
-          content: s.mdx(),
-        })
-        .transform((data) => ({
-          ...data,
-          permalink: `/${data.slug}`,
-          slug: data.slug.replaceAll("study/development/", ""),
-        })),
-    },
-    project: {
-      name: "Project",
-      pattern: "study/project/**/*.mdx",
-      schema: s
-        .object({
-          title: s.string(),
-          description: s.string(),
-          slug: s.path(),
-          publishDate: s.string().date(),
-          thumbnailUrl: s.string().optional(),
-          content: s.mdx(),
-        })
-        .transform((data) => ({
-          ...data,
-          permalink: `/${data.slug}`,
-          slug: data.slug.replaceAll("study/project/", ""),
-        })),
-    },
-    paperReview: {
-      name: "PaperReview",
-      pattern: "study/paper-review/**/*.mdx",
-      schema: s
-        .object({
-          title: s.string(),
-          description: s.string(),
-          slug: s.path(),
-          publishDate: s.string().date(),
-          thumbnailUrl: s.string().optional(),
-          content: s.mdx(),
-        })
-        .transform((data) => ({
-          ...data,
-          permalink: `/${data.slug}`,
-          slug: data.slug.replaceAll("study/paper-review/", ""),
-        })),
-    },
-    bookReview: {
-      name: "BookReview",
-      pattern: "writing/book-review/**/*.mdx",
-      schema: s
-        .object({
-          title: s.string(),
-          description: s.string(),
-          slug: s.path(),
-          publishDate: s.string().date(),
-          thumbnailUrl: s.string().optional(),
-          content: s.mdx(),
-        })
-        .transform((data) => ({
-          ...data,
-          permalink: `/${data.slug}`,
-          slug: data.slug.replaceAll("writing/book-review/", ""),
-        })),
-    },
-    personalEssay: {
-      name: "PersonalEssay",
-      pattern: "writing/personal-essay/**/*.mdx",
-      schema: s
-        .object({
-          title: s.string(),
-          description: s.string(),
-          slug: s.path(),
-          publishDate: s.string().date(),
-          thumbnailUrl: s.string().optional(),
-          content: s.mdx(),
-        })
-        .transform((data) => ({
-          ...data,
-          permalink: `/${data.slug}`,
-          slug: data.slug.replaceAll("writing/personal-essay/", ""),
-        })),
-    },
-    lightTopic: {
-      name: "LightTopic",
-      pattern: "writing/light-topic/**/*.mdx",
-      schema: s
-        .object({
-          title: s.string(),
-          description: s.string(),
-          slug: s.path(),
-          publishDate: s.string().date(),
-          thumbnailUrl: s.string().optional(),
-          content: s.mdx(),
-        })
-        .transform((data) => ({
-          ...data,
-          permalink: `/${data.slug}`,
-          slug: data.slug.replaceAll("writing/light-topic/", ""),
-        })),
-    },
-  },
+  collections: generateCollections(),
   mdx: {
     rehypePlugins: [[rehypeShiki, { theme: "nord" }], rehypeKatex],
     remarkPlugins: [[remarkMath]],

@@ -1,18 +1,21 @@
+import { project } from "#site/contents";
 import PageLayout from "@/components/pageLayout";
 import PostPageLayout from "@/components/postPageLayout";
+import { getCollectionByKey } from "@/config/collections";
 import metadata from "@/utils/metadata";
 import { getPostBySlug } from "@/utils/post";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { project } from "#site/contents";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
-export default async function DevelopmentPage({ params }: Props) {
+const collection = getCollectionByKey("project");
+
+export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
-  const post = getPostBySlug({ slug: slug, category: "study/project" });
+  const post = getPostBySlug({ slug: slug, category: collection?.categoryPath || "" });
 
   if (!post) {
     notFound();
@@ -24,6 +27,7 @@ export default async function DevelopmentPage({ params }: Props) {
     </PageLayout>
   );
 }
+
 export function generateStaticParams() {
   return project.map((post) => ({
     slug: post.slug,

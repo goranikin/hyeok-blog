@@ -1,11 +1,18 @@
+import { project } from "#site/contents";
 import PageLayout from "@/components/pageLayout";
 import PostList from "@/components/postList";
-import { project } from "#site/contents";
+import { getCollectionByKey } from "@/config/collections";
 
-export default async function DevelopmentListPage() {
+export default async function ProjectListPage() {
+  const collection = getCollectionByKey("project");
+
+  if (!collection) {
+    return null;
+  }
+
   return (
-    <PageLayout title="프로젝트" description="프로젝트를 회고합니다.">
-      <PostList posts={project} basePath="/study/project" />
+    <PageLayout title={collection.label} description={collection.description}>
+      <PostList posts={project} basePath={collection.path} />
     </PageLayout>
   );
 }

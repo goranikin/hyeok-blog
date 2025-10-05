@@ -1,11 +1,18 @@
+import { lightTopic } from "#site/contents";
 import PageLayout from "@/components/pageLayout";
 import PostList from "@/components/postList";
-import { lightTopic } from "#site/contents";
+import { getCollectionByKey } from "@/config/collections";
 
-export default async function PersonalEssayListPage() {
+export default async function LightTopicListPage() {
+  const collection = getCollectionByKey("lightTopic");
+
+  if (!collection) {
+    return null;
+  }
+
   return (
-    <PageLayout title="가벼운 것들" description="생각나는 대로 적는 편한 공간">
-      <PostList posts={lightTopic} basePath="/writing/light-topic" />
+    <PageLayout title={collection.label} description={collection.description}>
+      <PostList posts={lightTopic} basePath={collection.path} />
     </PageLayout>
   );
 }
