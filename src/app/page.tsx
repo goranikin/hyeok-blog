@@ -1,7 +1,8 @@
 import PageLayout from "@/components/pageLayout";
-import { Github, Instagram } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaThreads } from "react-icons/fa6";
 
 export default function Home() {
   return (
@@ -29,6 +30,30 @@ export default function Home() {
           </p>
         </div>
 
+        {/* Bio */}
+        <div 
+          className="w-full max-w-lg space-y-3 text-left"
+          style={{ animation: "fadeIn 0.5s ease-out 0.3s both" }}
+        >
+          <div className="flex items-start gap-3 p-4 rounded-lg border border-gray-200 bg-white hover:border-gray-300 transition-colors duration-200">
+            <span className="text-2xl mt-0.5">🎓</span>
+            <div className="flex-1">
+              <h3 className="font-bold text-lg text-gray-900">Seoul National University</h3>
+              <p className="text-base text-gray-600 mt-1">Major in Industrial Engineering</p>
+              <p className="text-base text-gray-600 mt-1">2020.02 ~ Present</p>
+            </div>
+          </div>
+          
+          <div className="flex items-start gap-3 p-4 rounded-lg border border-gray-200 bg-white hover:border-gray-300 transition-colors duration-200">
+            <span className="text-2xl mt-0.5">💼</span>
+            <div className="flex-1">
+              <h3 className="font-bold text-lg text-gray-900">Dalpha</h3>
+              <p className="text-base text-gray-600 mt-1">AI Engineer</p>
+              <p className="text-base text-gray-500 mt-1">2025.08 ~ Present</p>
+            </div>
+          </div>
+        </div>
+
         {/* Social Links */}
         <div className="flex gap-4 pt-4" style={{ animation: "fadeIn 0.5s ease-out 0.4s both" }}>
           <Link
@@ -38,7 +63,17 @@ export default function Home() {
             className="group"
           >
             <div className="p-3 rounded-full border border-gray-200 hover:border-gray-300 hover:shadow-md hover:scale-110 transition-all duration-200 bg-white">
-              <Github className="h-6 w-6 text-gray-700 group-hover:text-black transition-colors duration-200" />
+              <FaGithub className="h-6 w-6 text-gray-700 group-hover:text-black transition-colors duration-200" />
+            </div>
+          </Link>
+          <Link
+            href="https://www.linkedin.com/in/janghyeok-choi-571ab8347/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group"
+          >
+            <div className="p-3 rounded-full border border-gray-200 hover:border-gray-300 hover:shadow-md hover:scale-110 transition-all duration-200 bg-white">
+              <FaLinkedin className="h-6 w-6 text-gray-700 group-hover:text-blue-600 transition-colors duration-200" />
             </div>
           </Link>
           <Link
@@ -48,7 +83,17 @@ export default function Home() {
             className="group"
           >
             <div className="p-3 rounded-full border border-gray-200 hover:border-gray-300 hover:shadow-md hover:scale-110 transition-all duration-200 bg-white">
-              <Instagram className="h-6 w-6 text-gray-700 group-hover:text-pink-600 transition-colors duration-200" />
+              <FaInstagram className="h-6 w-6 text-gray-700 group-hover:text-pink-600 transition-colors duration-200" />
+            </div>
+          </Link>
+          <Link
+            href="https://www.threads.com/@hyeok_12053"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group"
+          >
+            <div className="p-3 rounded-full border border-gray-200 hover:border-gray-300 hover:shadow-md hover:scale-110 transition-all duration-200 bg-white">
+              <FaThreads className="h-6 w-6 text-gray-700 group-hover:text-gray-900 transition-colors duration-200" />
             </div>
           </Link>
         </div>

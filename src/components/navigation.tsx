@@ -134,7 +134,7 @@ const CategoryButton = ({
     <button
       type="button"
       className={cn(
-        "w-full text-left px-3 py-2 rounded-md text-sm font-medium transition-all duration-200",
+        "w-full text-left px-3 py-2 rounded-md text-base font-medium transition-all duration-200",
         isActive 
           ? "bg-white shadow-sm text-black scale-[1.02]" 
           : "hover:bg-white/50 text-gray-700 hover:translate-x-1"
@@ -157,7 +157,7 @@ const SubcategoryItem = ({
     <Link
       href={item.href}
       className={cn(
-        "block px-3 py-1.5 text-sm rounded-md transition-all duration-200 group",
+        "block px-3 py-1.5 text-base rounded-md transition-all duration-200 group",
         isActive 
           ? "text-gray-900 font-medium bg-white/50 translate-x-1" 
           : "text-gray-600 hover:text-gray-900 hover:bg-white/50 hover:translate-x-1"
