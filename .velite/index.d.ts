@@ -13,9 +13,6 @@ export declare const paperReview: PaperReview[]
 export type Project = Collections['project']['schema']['_output']
 export declare const project: Project[]
 
-export type LightTopic = Collections['lightTopic']['schema']['_output']
-export declare const lightTopic: LightTopic[]
-
 export type PersonalEssay = Collections['personalEssay']['schema']['_output']
 export declare const personalEssay: PersonalEssay[]
 

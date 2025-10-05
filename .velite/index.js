@@ -3,6 +3,5 @@
 export { default as development } from './development.json'
 export { default as paperReview } from './paperReview.json'
 export { default as project } from './project.json'
-export { default as lightTopic } from './lightTopic.json'
 export { default as personalEssay } from './personalEssay.json'
 export { default as bookReview } from './bookReview.json'

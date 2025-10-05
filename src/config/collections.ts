@@ -61,15 +61,6 @@ export const collectionsConfig: CollectionConfig[] = [
 
   // Writing collections
   {
-    key: "lightTopic",
-    label: "가벼운 것들",
-    description: "생각나는 대로 적는 편한 공간",
-    parent: "writing",
-    pattern: "writing/light-topic/**/*.mdx",
-    path: "/writing/light-topic",
-    categoryPath: "writing/light-topic",
-  },
-  {
     key: "personalEssay",
     label: "삶의 기록",
     description: "삶의 무의미를 위한 공간",

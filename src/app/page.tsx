@@ -23,10 +23,10 @@ export default function Home() {
         {/* Name and Title */}
         <div className="space-y-3" style={{ animation: "fadeIn 0.5s ease-out 0.2s both" }}>
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">
-            장혁이의 블로그
+            Choi JangHyeok
           </h1>
           <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-            Welcome to my blog
+            I've been reading, and writing. All the things I've written are my vestige of my life. I believe that they are the profound nourishment for the future.
           </p>
         </div>
 
@@ -40,6 +40,7 @@ export default function Home() {
             <div className="flex-1">
               <h3 className="font-bold text-lg text-gray-900">Seoul National University</h3>
               <p className="text-base text-gray-600 mt-1">Major in Industrial Engineering</p>
+              <p className="text-sm text-gray-600 mt-1">(changed from Material Science and Engineering)</p>
               <p className="text-base text-gray-600 mt-1">2020.02 ~ Present</p>
             </div>
           </div>
