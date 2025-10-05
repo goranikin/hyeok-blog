@@ -1,7 +1,6 @@
 import {
   bookReview,
   development,
-  lightTopic,
   paperReview,
   personalEssay,
   project,
@@ -41,9 +40,6 @@ export const getPostBySlug = ({
       break;
     case "writing/personal-essay":
       posts = personalEssay;
-      break;
-    case "writing/light-topic":
-      posts = lightTopic;
       break;
     default:
       posts = [];

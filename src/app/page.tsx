@@ -29,21 +29,22 @@ export default function Home() {
             Choi JangHyeok
           </h1>
           <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-            I've been reading, and writing. All the things I've written are my
-            vestige of my life.
+            I&apos;ve been reading, and writing. All the things I&apos;ve
+            written are my vestige of my life.
           </p>
           <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-            I believe that they'll be the profound nourishment for the future.
+            I believe that they&apos;ll be the profound nourishment for the
+            future.
           </p>
           <div className="w-full max-w-md mx-auto border-t border-gray-300 my-4" />
           <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-            I'm starting to post in English after 2025.10.
+            I&apos;m starting to post in English after 2025.10.
           </p>
           <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
             The posts written before 2025.10 and the things in the personal
-            essay are in Korean. I'm sorry for the inconvenience of the English
-            readers. I'll try to write in English for my essays (also translate
-            the past posts if I can).
+            essay are in Korean. I&apos;m sorry for the inconvenience of the
+            English readers. I&apos;ll try to write in English for my essays
+            (also translate the past posts if I can).
           </p>
         </div>
 
