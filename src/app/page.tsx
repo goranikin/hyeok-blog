@@ -29,11 +29,11 @@ export default function Home() {
             Choi JangHyeok
           </h1>
           <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-            I've been reading and writing. All the things I've written are my
-            vestiges of my life.
+            I&apos;ve been reading and writing. All the things I&apos;ve written
+            are my vestiges of my life.
           </p>
           <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-            I believe that they'll be profound nourishment for the future.
+            I believe that they&apos;ll be profound nourishment for the future.
           </p>
           <div className="w-full max-w-md mx-auto border-t border-gray-300 my-4" />
           <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
