@@ -123,11 +123,14 @@ export const laboratoryRoutes = [
 export const getCollectionByKey = (key: string): CollectionConfig | undefined =>
   collectionsConfig.find((c) => c.key === key);
 
-export const getCollectionByPath = (path: string): CollectionConfig | undefined =>
+export const getCollectionByPath = (
+  path: string,
+): CollectionConfig | undefined =>
   collectionsConfig.find((c) => path.startsWith(c.path));
 
 export const getCategoryByKey = (key: string): CategoryConfig | undefined =>
   categoriesConfig.find((c) => c.key === key);
 
-export const getCollectionsByParent = (parent: "study" | "writing" | "laboratory"): CollectionConfig[] =>
-  collectionsConfig.filter((c) => c.parent === parent);
+export const getCollectionsByParent = (
+  parent: "study" | "writing" | "laboratory",
+): CollectionConfig[] => collectionsConfig.filter((c) => c.parent === parent);

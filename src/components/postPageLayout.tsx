@@ -21,7 +21,7 @@ const PostPageLayout = (props: Props) => {
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-5 tracking-tight">
           {props.post.title}
         </h1>
-        
+
         {/* Metadata */}
         <div className="flex items-center gap-2 text-gray-600">
           <Calendar className="h-4 w-4" />

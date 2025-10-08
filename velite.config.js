@@ -39,7 +39,10 @@ const generateCollections = () => {
     collections[config.key] = {
       name: config.key.charAt(0).toUpperCase() + config.key.slice(1),
       pattern: config.pattern,
-      schema: createCollectionSchema(config.pattern.split("/**")[0], pathPrefix),
+      schema: createCollectionSchema(
+        config.pattern.split("/**")[0],
+        pathPrefix,
+      ),
     };
   }
 
@@ -57,7 +60,7 @@ export default defineConfig({
   },
   collections: generateCollections(),
   mdx: {
-    rehypePlugins: [[rehypeShiki, { theme: "nord" }], rehypeKatex],
+    rehypePlugins: [[rehypeShiki, { theme: "github-light" }], rehypeKatex],
     remarkPlugins: [[remarkMath]],
   },
 });

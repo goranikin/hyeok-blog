@@ -7,7 +7,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Hyeok's Blog",
   icons: {
-    icon: "/itisme.png",
+    icon: "/images/itisme.png",
   },
 };
 
