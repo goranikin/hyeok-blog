@@ -328,6 +328,14 @@
     "permalink": "/writing/personal-essay/fa"
   },
   {
+    "title": "Goal of an year",
+    "description": "After [retrospect of 8 weeks at Dalpha], I feel I should write my year's goal for a long term view.",
+    "slug": "goal-of-an-year",
+    "publishDate": "2025-10-12",
+    "content": "const{Fragment:e,jsx:n,jsxs:r}=arguments[0];function _createMdxContent(a){const t={h2:\"h2\",h3:\"h3\",hr:\"hr\",img:\"img\",li:\"li\",p:\"p\",ul:\"ul\",...a.components};return r(e,{children:[n(t.hr,{}),\"\\n\",n(t.p,{children:\"I'm going to handle three topics.\"}),\"\\n\",r(t.ul,{children:[\"\\n\",n(t.li,{children:\"Omnifocus 4 and GTD for my habits\"}),\"\\n\",n(t.li,{children:\"Goals during working at Dalpha\"}),\"\\n\",n(t.li,{children:\"Goals for my future research\"}),\"\\n\"]}),\"\\n\",n(t.hr,{}),\"\\n\",n(t.h2,{children:\"Omnifocus 4 and GTD for my habits\"}),\"\\n\",n(t.p,{children:\"First, I'm going to share my setup of Omnifocus 4.\"}),\"\\n\",n(t.h3,{children:\"Project View\"}),\"\\n\",n(t.p,{children:n(t.img,{src:\"/writing/personal-essay/goal-of-an-year/1.png\",alt:\"\"})}),\"\\n\",n(t.p,{children:\"It has some directories, Projects, Areas of Responsibility, Someday / Maybe, Waiting For.\"}),\"\\n\",n(t.p,{children:\"'Projects' is for a project that has finite outcomes with an end.\\nOn my setup, there are the projects that I'm handling with at my company.\\nBesides, there is my personal project to read papers.\\nI'll continue to read a paper but that has a specific goal to take some narrow field.\\nSo I designate it in 'Projects'.\"}),\"\\n\",n(t.p,{children:\"'Areas of Responsibility' means ongoing standards with no end, as you see that it has some categories such as\\nCareer Development, Relationship, Financial Management and e.t.c.\\nThey have many routines repeated for a constant period, and also weekly to-do lists for ordinary days.\\nFor latters, I appoint days to work out for a week, because it is hard to fix a day of week for exercise due to other schedules.\"}),\"\\n\",n(t.p,{children:n(t.img,{src:\"/writing/personal-essay/goal-of-an-year/3.png\",alt:\"\"})}),\"\\n\",n(t.h3,{children:\"Tagging View\"}),\"\\n\",n(t.p,{children:n(t.img,{src:\"/writing/personal-essay/goal-of-an-year/2.png\",alt:\"\"})}),\"\\n\",n(t.hr,{}),\"\\n\",n(t.h2,{children:\"Goals during working at Dalpha\"}),\"\\n\",n(t.hr,{}),\"\\n\",n(t.h2,{children:\"Goals for my future research\"}),\"\\n\",n(t.hr,{})]})}return{default:function(e={}){const{wrapper:r}=e.components||{};return r?n(r,{...e,children:n(_createMdxContent,{...e})}):_createMdxContent(e)}};",
+    "permalink": "/writing/personal-essay/goal-of-an-year"
+  },
+  {
     "title": "합정과 당산 사이",
     "description": "풍경을",
     "slug": "in-the-subway",
