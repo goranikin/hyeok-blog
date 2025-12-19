@@ -61,3 +61,6 @@ next-env.d.ts
 
 # MDX files
 .temp_content/*
+
+# infra
+.azure/
