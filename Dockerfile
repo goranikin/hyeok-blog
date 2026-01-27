@@ -22,6 +22,12 @@ RUN echo 'vm.swappiness=10' >> /etc/sysctl.conf
 RUN bun velite
 RUN bun run build
 
+FROM nginx:1.27-alpine AS nginx
+COPY docker/nginx/prod.conf /etc/nginx/conf.d/default.conf
+RUN mkdir -p /var/www/certbot/.well-known/acme-challenge
+EXPOSE 80 443
+CMD ["nginx", "-g", "daemon off;"]
+
 # Step 3 - copy all the files and run server
 FROM base AS runner
 WORKDIR /app

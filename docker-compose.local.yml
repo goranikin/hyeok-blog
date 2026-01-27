@@ -1,0 +1,27 @@
+services:
+  hyeok-blog:
+    # Local/dev: build directly from your repo Dockerfile
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    expose:
+      - "3000"
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: nginx
+    depends_on:
+      - hyeok-blog
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # Local default: mirror certbot directories locally (or override with your own)
+      - ./nginx/letsencrypt:/etc/letsencrypt:ro
+      - ./nginx/certbot-www:/var/www/certbot:ro
