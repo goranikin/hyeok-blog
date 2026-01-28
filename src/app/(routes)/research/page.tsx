@@ -1,7 +1,9 @@
 import { research } from "#site/contents";
-import { WritingCard } from "@/components/cards";
+import { Card } from "@/components/cards";
 import { getCollectionByKey } from "@/config/collections-new";
 import type { Post } from "@/utils/post";
+import { Calendar } from "lucide-react";
+import Link from "next/link";
 
 export default async function ResearchPage() {
   const collection = getCollectionByKey("research");
@@ -33,6 +35,16 @@ export default async function ResearchPage() {
     .map(Number)
     .sort((a, b) => b - a);
 
+  // Accent colors for variety
+  const accentColors = [
+    "clay",
+    "sky",
+    "coral",
+    "olive",
+    "cactus",
+    "heather",
+  ] as const;
+
   return (
     <>
       {/* Hero Section */}
@@ -43,12 +55,10 @@ export default async function ResearchPage() {
               Research
             </h1>
             <p className="text-xl text-[#4A4A4A] leading-relaxed mb-4">
-              My research focuses on developing efficient and interpretable methods
-              for natural language processing and machine learning.
+              Publications, papers, and research work
             </p>
             <p className="text-lg text-[#4A4A4A] leading-relaxed">
-              I'm particularly interested in making AI systems more accessible,
-              efficient, and trustworthy for real-world applications.
+              Data Augmentation, LLM Agent, Retrieval, Time-Series Analysis
             </p>
           </div>
         </div>
@@ -72,27 +82,53 @@ export default async function ResearchPage() {
           {/* Publications by Year */}
           {years.length > 0 ? (
             <div className="space-y-16">
-              {years.map((year) => (
+              {years.map((year: number) => (
                 <div key={year} className="animate-fade-in">
                   <h3 className="text-2xl font-semibold text-[#1A1A1A] mb-6">
                     {year}
                   </h3>
-                  <div className="space-y-2">
-                    {postsByYear[year].map((post: Post) => {
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {postsByYear[year].map((post: Post, index: number) => {
                       const date = new Date(post.publishDate);
                       const formattedDate = date.toLocaleDateString("en-US", {
                         month: "short",
                         year: "numeric",
                       });
+                      const accent = accentColors[index % accentColors.length];
 
                       return (
-                        <WritingCard
-                          key={post.slug}
-                          title={post.title}
-                          date={formattedDate}
-                          excerpt={post.description}
+                        <Link
                           href={`/research/${post.slug}`}
-                        />
+                          key={post.slug}
+                          className="block h-full animate-fade-in"
+                          style={{ animationDelay: `${index * 0.1}s` }}
+                        >
+                          <Card accent={accent} className="h-full space-y-4">
+                            {/* Content */}
+                            <div>
+                              <h3 className="text-[22px] font-semibold text-[#1A1A1A] leading-tight mb-2">
+                                {post.title}
+                              </h3>
+
+                              <div className="flex items-center gap-2 text-sm text-[#8A8A8A] mb-3">
+                                <Calendar className="h-4 w-4" />
+                                <time dateTime={post.publishDate}>
+                                  {formattedDate}
+                                </time>
+                              </div>
+
+                              <p className="text-base text-[#4A4A4A] leading-relaxed line-clamp-3">
+                                {post.description}
+                              </p>
+                            </div>
+
+                            <div className="pt-2">
+                              <span className="text-[#6B5B3A] hover:text-[#4A3F28] font-medium text-sm transition-colors duration-200 inline-flex items-center gap-1">
+                                Read Paper →
+                              </span>
+                            </div>
+                          </Card>
+                        </Link>
                       );
                     })}
                   </div>
@@ -105,7 +141,8 @@ export default async function ResearchPage() {
                 Research publications coming soon!
               </p>
               <p className="text-base text-[#8A8A8A]">
-                I'm currently working on exciting projects. Check back later for updates.
+                I&apos;m currently working on exciting projects. Check back
+                later for updates.
               </p>
             </div>
           )}

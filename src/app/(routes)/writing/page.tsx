@@ -29,8 +29,8 @@ export default async function WritingPage() {
               learning and building in the world of machine learning.
             </p>
             <p className="text-lg text-[#4A4A4A] leading-relaxed">
-              From technical deep-dives to personal reflections, I write to share
-              what I learn and connect with others on similar paths.
+              From technical deep-dives to personal reflections, I write to
+              share what I learn and connect with others on similar paths.
             </p>
           </div>
         </div>
@@ -82,7 +82,8 @@ export default async function WritingPage() {
                 More writing coming soon!
               </p>
               <p className="text-base text-[#8A8A8A]">
-                I'm working on new posts about AI, engineering, and everything in between.
+                I&apos;m working on new posts about AI, engineering, and
+                everything in between.
               </p>
             </div>
           )}

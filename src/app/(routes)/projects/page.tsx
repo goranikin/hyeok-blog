@@ -2,7 +2,6 @@ import { projects } from "#site/contents";
 import { Card } from "@/components/cards";
 import { getCollectionByKey } from "@/config/collections-new";
 import { Calendar } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 export default async function ProjectsPage() {
@@ -15,11 +14,18 @@ export default async function ProjectsPage() {
   // Sort projects by date (newest first)
   const sortedProjects = [...projects].sort(
     (a, b) =>
-      new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime()
+      new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime(),
   );
 
   // Accent colors for variety
-  const accentColors = ["olive", "heather", "sky", "coral", "clay", "cactus"] as const;
+  const accentColors = [
+    "olive",
+    "heather",
+    "sky",
+    "coral",
+    "clay",
+    "cactus",
+  ] as const;
 
   return (
     <>
@@ -31,12 +37,10 @@ export default async function ProjectsPage() {
               Projects
             </h1>
             <p className="text-xl text-[#4A4A4A] leading-relaxed mb-4">
-              Open-source implementations and technical explorations where I bring
-              research ideas to life through code.
+              Anything related to AI, web development.
             </p>
             <p className="text-lg text-[#4A4A4A] leading-relaxed">
-              From machine learning libraries to web applications, these projects
-              reflect my passion for building practical tools that others can use and learn from.
+              Python, JavaScript (TypeScript), Rust
             </p>
           </div>
         </div>
@@ -58,7 +62,7 @@ export default async function ProjectsPage() {
           </div>
 
           {sortedProjects.length > 0 ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {sortedProjects.map((project, index) => {
                 const date = new Date(project.publishDate);
                 const formattedDate = date.toLocaleDateString("en-US", {
@@ -75,18 +79,6 @@ export default async function ProjectsPage() {
                     style={{ animationDelay: `${index * 0.1}s` }}
                   >
                     <Card accent={accent} className="h-full space-y-4">
-                      {/* Thumbnail */}
-                      {project.thumbnailUrl && (
-                        <div className="relative w-full h-48 rounded-lg overflow-hidden bg-gray-100 -mt-8 -mx-8 mb-4">
-                          <Image
-                            src={project.thumbnailUrl}
-                            alt={project.title}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                      )}
-
                       {/* Content */}
                       <div>
                         <h3 className="text-[22px] font-semibold text-[#1A1A1A] leading-tight mb-2">
@@ -121,7 +113,8 @@ export default async function ProjectsPage() {
                 New projects on the way!
               </p>
               <p className="text-base text-[#8A8A8A]">
-                I'm actively working on exciting new tools and implementations. Stay tuned!
+                I&apos;m actively working on exciting new tools and
+                implementations. Stay tuned!
               </p>
             </div>
           )}

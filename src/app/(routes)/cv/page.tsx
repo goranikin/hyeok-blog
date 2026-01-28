@@ -12,12 +12,11 @@ export default function CVPage() {
                 Curriculum Vitae
               </h1>
               <p className="text-xl text-[#4A4A4A] mb-3">
-                Choi JangHyeok · AI Researcher & Engineer
+                Janghyeok Choi · AI Engineer
               </p>
               <p className="text-lg text-[#4A4A4A] leading-relaxed">
-                Passionate about building intelligent systems that understand and
-                generate human language. Currently working at Dalpha and studying
-                Industrial Engineering at Seoul National University.
+                AI Engineer specializing in data augmentation, LLM agents, and machine learning pipelines.
+                Currently studying Industrial Engineering at Seoul National University.
               </p>
             </div>
             <Link
@@ -49,13 +48,13 @@ export default function CVPage() {
                   <h3 className="text-lg font-semibold text-[#1A1A1A]">
                     Seoul National University
                   </h3>
-                  <span className="text-sm text-[#8A8A8A]">2020 - Present</span>
+                  <span className="text-sm text-[#8A8A8A]">Mar. 2020 - Present</span>
                 </div>
                 <p className="text-base text-[#4A4A4A]">
                   B.S. in Industrial Engineering
                 </p>
                 <p className="text-sm text-[#8A8A8A] mt-1">
-                  Previously: Material Science and Engineering
+                  CGPA: 3.54/4.3
                 </p>
               </div>
             </div>
@@ -72,23 +71,62 @@ export default function CVPage() {
                   <h3 className="text-lg font-semibold text-[#1A1A1A]">
                     AI Engineer · Dalpha
                   </h3>
-                  <span className="text-sm text-[#8A8A8A]">Aug 2025 - Present</span>
+                  <span className="text-sm text-[#8A8A8A]">Aug. 2025 - Nov. 2025</span>
                 </div>
-                <ul className="list-disc list-inside space-y-1 text-base text-[#4A4A4A]">
-                  <li>Developing AI systems for natural language understanding</li>
-                  <li>Building scalable ML infrastructure and deployment pipelines</li>
-                  <li>Collaborating with product teams on AI feature development</li>
+                <ul className="list-disc list-inside space-y-2 text-base text-[#4A4A4A]">
+                  <li>
+                    <strong>Order Quantity Prediction (Contracted Project):</strong> Data Pipeline, Statistical Analysis, Machine Learning
+                  </li>
+                  <li>
+                    <strong>Customer Service Chatbot (Discontinued):</strong> Data Augmentation & Refinement, LLM Agent, Prompt Engineering, Data Pipeline
+                  </li>
                 </ul>
               </div>
             </div>
           </section>
 
+          {/* Projects */}
+          <section>
+            <h2 className="text-2xl font-semibold text-[#1A1A1A] mb-6 pb-2 border-b border-[#EFEFEF]">
+              Projects
+            </h2>
+            <div className="space-y-4">
+              <div>
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="text-lg font-semibold text-[#1A1A1A]">
+                    LitSearch Data Augmentation
+                  </h3>
+                  <span className="text-sm text-[#8A8A8A]">Mar. 2025 - Jun. 2025</span>
+                </div>
+              </div>
+            </div>
+            <p className="text-base text-[#4A4A4A] mt-4">
+              For more details, visit the{" "}
+              <Link
+                href="/projects"
+                className="text-[#6B5B3A] hover:text-[#4A3F28] font-medium transition-colors"
+              >
+                Projects page →
+              </Link>
+            </p>
+          </section>
+
           {/* Publications */}
           <section>
             <h2 className="text-2xl font-semibold text-[#1A1A1A] mb-6 pb-2 border-b border-[#EFEFEF]">
-              Selected Publications
+              Publications
             </h2>
-            <p className="text-base text-[#4A4A4A] mb-4">
+            <div className="space-y-4">
+              <div>
+                <p className="text-base text-[#1A1A1A] mb-1">
+                  <strong>(Under Writing) DALDALL: Data Augmentation for Lexical and Semantic Diverse in Legal Domain by leveraging LLM-Persona</strong>
+                </p>
+                <p className="text-sm text-[#4A4A4A]">
+                  Janghyeok Choi, Jaewon Lee
+                </p>
+              </div>
+            </div>
+            <p className="text-base text-[#4A4A4A] mt-4">
               For a complete list of publications, visit the{" "}
               <Link
                 href="/research"
@@ -97,7 +135,6 @@ export default function CVPage() {
                 Research page →
               </Link>
             </p>
-            {/* Add your key publications here */}
           </section>
 
           {/* Technical Skills */}
@@ -105,30 +142,25 @@ export default function CVPage() {
             <h2 className="text-2xl font-semibold text-[#1A1A1A] mb-6 pb-2 border-b border-[#EFEFEF]">
               Technical Skills
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <h3 className="font-semibold text-[#1A1A1A] mb-2">Languages</h3>
-                <p className="text-base text-[#4A4A4A]">
-                  Python, TypeScript, JavaScript, SQL
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-[#1A1A1A] mb-2">ML/AI</h3>
-                <p className="text-base text-[#4A4A4A]">
-                  PyTorch, TensorFlow, HuggingFace, scikit-learn
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-[#1A1A1A] mb-2">Web</h3>
-                <p className="text-base text-[#4A4A4A]">
-                  React, Next.js, Node.js, FastAPI
-                </p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-[#1A1A1A] mb-2">Tools</h3>
-                <p className="text-base text-[#4A4A4A]">
-                  Git, Docker, AWS, Linux, Bun
-                </p>
+            <div>
+              <h3 className="font-semibold text-[#1A1A1A] mb-2">Programming Languages</h3>
+              <p className="text-base text-[#4A4A4A]">
+                Python, JavaScript, TypeScript, Rust
+              </p>
+            </div>
+          </section>
+
+          {/* Military Service */}
+          <section>
+            <h2 className="text-2xl font-semibold text-[#1A1A1A] mb-6 pb-2 border-b border-[#EFEFEF]">
+              Military Service
+            </h2>
+            <div className="space-y-2">
+              <div className="flex justify-between items-start">
+                <h3 className="text-lg font-semibold text-[#1A1A1A]">
+                  Republic of Korea Air Force
+                </h3>
+                <span className="text-sm text-[#8A8A8A]">Apr. 2022 - Jan. 2024</span>
               </div>
             </div>
           </section>
@@ -139,10 +171,17 @@ export default function CVPage() {
               Awards & Honors
             </h2>
             <div className="space-y-3">
-              {/* Add your awards here */}
-              <p className="text-base text-[#4A4A4A]">
-                To be updated with your awards and achievements.
-              </p>
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-base font-semibold text-[#1A1A1A]">
+                    Altwell Mincho Scholarship
+                  </h3>
+                  <p className="text-sm text-[#4A4A4A] mt-1">
+                    Merit-based scholarship awarded to promising students
+                  </p>
+                </div>
+                <span className="text-sm text-[#8A8A8A] whitespace-nowrap ml-4">Mar. 2021 - Present</span>
+              </div>
             </div>
           </section>
           </div>
