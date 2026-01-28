@@ -89,17 +89,11 @@ jobs:
             # Set the ACR_LOGIN_SERVER environment variable for docker-compose
             export ACR_LOGIN_SERVER=${{ secrets.REGISTRY_LOGIN_SERVER }}
 
-            # Stop existing containers
-            docker compose down
-
             # Pull the latest app image we just pushed (from Azure ACR)
             docker compose pull hyeok-blog
 
-            # Rebuild nginx (in case config changed)
-            docker compose build nginx
-
-            # Start all services
-            docker compose up -d
+            # Restart the blog container with new image
+            docker compose up -d --force-recreate hyeok-blog
 
             # Clean up old unused images to save disk space
             docker image prune -af
