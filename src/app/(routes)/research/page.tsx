@@ -1,5 +1,11 @@
 import { research } from "#site/contents";
 import { Card } from "@/components/cards";
+import {
+  EmptyState,
+  PageHero,
+  SectionDivider,
+  SectionHeader,
+} from "@/components/collectionPageSections";
 import { getCollectionByKey } from "@/config/collections-new";
 import type { Post } from "@/utils/post";
 import { Calendar } from "lucide-react";
@@ -47,37 +53,21 @@ export default async function ResearchPage() {
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="py-16 lg:py-24 animate-fade-in">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl lg:text-5xl font-semibold text-[#1A1A1A] mb-6 leading-tight">
-              Research
-            </h1>
-            <p className="text-xl text-[#4A4A4A] leading-relaxed mb-4">
-              Publications, papers, and research work
-            </p>
-            <p className="text-lg text-[#4A4A4A] leading-relaxed">
-              Data Augmentation, LLM Agent, Retrieval, Time-Series Analysis
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        title="Research"
+        description="Publications, papers, and research work"
+        subdescription="Data Augmentation, LLM Agent, Retrieval, Time-Series Analysis"
+      />
 
-      {/* Divider */}
-      <hr className="border-t border-[#EFEFEF]" />
+      <SectionDivider />
 
       {/* Publications Section */}
       <section className="py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="mb-12">
-            <h2 className="text-3xl lg:text-4xl font-semibold text-[#1A1A1A] mb-3">
-              Publications
-            </h2>
-            <p className="text-lg text-[#4A4A4A]">
-              Papers, preprints, and research contributions
-            </p>
-          </div>
+          <SectionHeader
+            title="Publications"
+            description="Papers, preprints, and research contributions"
+          />
 
           {/* Publications by Year */}
           {years.length > 0 ? (
@@ -136,15 +126,10 @@ export default async function ResearchPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-16 bg-[#FAF9F6] rounded-2xl">
-              <p className="text-xl text-[#4A4A4A] mb-2">
-                Research publications coming soon!
-              </p>
-              <p className="text-base text-[#8A8A8A]">
-                I&apos;m currently working on exciting projects. Check back
-                later for updates.
-              </p>
-            </div>
+            <EmptyState
+              title="Research publications coming soon!"
+              description="I'm currently working on exciting projects. Check back later for updates."
+            />
           )}
         </div>
       </section>

@@ -1,5 +1,11 @@
 import { projects } from "#site/contents";
 import { Card } from "@/components/cards";
+import {
+  EmptyState,
+  PageHero,
+  SectionDivider,
+  SectionHeader,
+} from "@/components/collectionPageSections";
 import { getCollectionByKey } from "@/config/collections-new";
 import { Calendar } from "lucide-react";
 import Link from "next/link";
@@ -29,37 +35,21 @@ export default async function ProjectsPage() {
 
   return (
     <>
-      {/* Hero Section */}
-      <section className="py-16 lg:py-24 animate-fade-in">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl lg:text-5xl font-semibold text-[#1A1A1A] mb-6 leading-tight">
-              Projects
-            </h1>
-            <p className="text-xl text-[#4A4A4A] leading-relaxed mb-4">
-              Anything related to AI, web development.
-            </p>
-            <p className="text-lg text-[#4A4A4A] leading-relaxed">
-              Python, JavaScript (TypeScript), Rust
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        title="Projects"
+        description="Anything related to AI, web development."
+        subdescription="Python, JavaScript (TypeScript), Rust"
+      />
 
-      {/* Divider */}
-      <hr className="border-t border-[#EFEFEF]" />
+      <SectionDivider />
 
       {/* Projects Grid Section */}
       <section className="py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="mb-12">
-            <h2 className="text-3xl lg:text-4xl font-semibold text-[#1A1A1A] mb-3">
-              All Projects
-            </h2>
-            <p className="text-lg text-[#4A4A4A]">
-              Explore my work across machine learning, web development, and more
-            </p>
-          </div>
+          <SectionHeader
+            title="All Projects"
+            description="Explore my work across machine learning, web development, and more"
+          />
 
           {sortedProjects.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -108,15 +98,10 @@ export default async function ProjectsPage() {
               })}
             </div>
           ) : (
-            <div className="text-center py-16 bg-[#FAF9F6] rounded-2xl">
-              <p className="text-xl text-[#4A4A4A] mb-2">
-                New projects on the way!
-              </p>
-              <p className="text-base text-[#8A8A8A]">
-                I&apos;m actively working on exciting new tools and
-                implementations. Stay tuned!
-              </p>
-            </div>
+            <EmptyState
+              title="New projects on the way!"
+              description="I'm actively working on exciting new tools and implementations. Stay tuned!"
+            />
           )}
         </div>
       </section>

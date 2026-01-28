@@ -1,6 +1,6 @@
 import { cn } from "@/utils/cn";
 import Link from "next/link";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 // Base Card Component
 interface CardProps {
@@ -32,180 +32,11 @@ export const Card = ({
         "rounded-xl p-8 transition-all duration-300",
         accentColors[accent],
         hover && "card-hover cursor-pointer",
-        className
+        className,
       )}
     >
       {children}
     </div>
-  );
-};
-
-// Research Card Component
-interface ResearchCardProps {
-  title: string;
-  authors: string;
-  venue: string;
-  year: string;
-  abstract?: string;
-  pdfLink?: string;
-  arxivLink?: string;
-  codeLink?: string;
-  projectLink?: string;
-  accent?: "clay" | "sky" | "coral" | "olive" | "cactus" | "heather";
-}
-
-export const ResearchCard = ({
-  title,
-  authors,
-  venue,
-  year,
-  abstract,
-  pdfLink,
-  arxivLink,
-  codeLink,
-  projectLink,
-  accent = "clay",
-}: ResearchCardProps) => {
-  return (
-    <Card accent={accent} hover={false} className="space-y-4">
-      <div>
-        <h3 className="text-[22px] font-semibold text-[#1A1A1A] leading-tight mb-2">
-          {title}
-        </h3>
-        <p className="text-sm text-[#8A8A8A]">
-          {authors} · {venue} {year}
-        </p>
-      </div>
-
-      {abstract && (
-        <p className="text-base text-[#4A4A4A] leading-relaxed line-clamp-3">
-          {abstract}
-        </p>
-      )}
-
-      <div className="flex flex-wrap gap-3 pt-2">
-        {pdfLink && (
-          <Link
-            href={pdfLink}
-            className="text-[#6B5B3A] hover:text-[#4A3F28] font-medium text-sm transition-colors duration-200 inline-flex items-center gap-1"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            PDF →
-          </Link>
-        )}
-        {arxivLink && (
-          <Link
-            href={arxivLink}
-            className="text-[#6B5B3A] hover:text-[#4A3F28] font-medium text-sm transition-colors duration-200 inline-flex items-center gap-1"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            arXiv →
-          </Link>
-        )}
-        {codeLink && (
-          <Link
-            href={codeLink}
-            className="text-[#6B5B3A] hover:text-[#4A3F28] font-medium text-sm transition-colors duration-200 inline-flex items-center gap-1"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Code →
-          </Link>
-        )}
-        {projectLink && (
-          <Link
-            href={projectLink}
-            className="text-[#6B5B3A] hover:text-[#4A3F28] font-medium text-sm transition-colors duration-200 inline-flex items-center gap-1"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Project →
-          </Link>
-        )}
-      </div>
-    </Card>
-  );
-};
-
-// Project Card Component
-interface ProjectCardProps {
-  title: string;
-  description: string;
-  techStack: string[];
-  githubLink?: string;
-  demoLink?: string;
-  date?: string;
-  stars?: number;
-  accent?: "clay" | "sky" | "coral" | "olive" | "cactus" | "heather";
-}
-
-export const ProjectCard = ({
-  title,
-  description,
-  techStack,
-  githubLink,
-  demoLink,
-  date,
-  stars,
-  accent,
-}: ProjectCardProps) => {
-  return (
-    <Card accent={accent} className="space-y-4">
-      <div>
-        {/* Tech Stack Tags */}
-        <div className="flex flex-wrap gap-2 mb-3">
-          {techStack.map((tech) => (
-            <span
-              key={tech}
-              className="px-3 py-1 text-xs font-medium bg-[#1A1A1A] text-white rounded-full"
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
-
-        <h3 className="text-[22px] font-semibold text-[#1A1A1A] leading-tight mb-2">
-          {title}
-        </h3>
-
-        {(date || stars) && (
-          <p className="text-sm text-[#8A8A8A]">
-            {date && <span>{date}</span>}
-            {date && stars && <span> · </span>}
-            {stars && <span>⭐ {stars}</span>}
-          </p>
-        )}
-      </div>
-
-      <p className="text-base text-[#4A4A4A] leading-relaxed">
-        {description}
-      </p>
-
-      <div className="flex flex-wrap gap-3 pt-2">
-        {githubLink && (
-          <Link
-            href={githubLink}
-            className="text-[#6B5B3A] hover:text-[#4A3F28] font-medium text-sm transition-colors duration-200 inline-flex items-center gap-1"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View on GitHub →
-          </Link>
-        )}
-        {demoLink && (
-          <Link
-            href={demoLink}
-            className="text-[#6B5B3A] hover:text-[#4A3F28] font-medium text-sm transition-colors duration-200 inline-flex items-center gap-1"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View Demo →
-          </Link>
-        )}
-      </div>
-    </Card>
   );
 };
 
@@ -234,9 +65,7 @@ export const WritingCard = ({
               {title}
             </h3>
             {excerpt && (
-              <p className="text-base text-[#4A4A4A] line-clamp-2">
-                {excerpt}
-              </p>
+              <p className="text-base text-[#4A4A4A] line-clamp-2">{excerpt}</p>
             )}
             {tags && tags.length > 0 && (
               <div className="flex flex-wrap gap-2 pt-1">
