@@ -7,6 +7,8 @@ services:
       - NODE_ENV=production
     expose:
       - "3000"
+    networks:
+      - toefl-network
 
   nginx:
     build:
@@ -17,11 +19,13 @@ services:
       - hyeok-blog
     restart: unless-stopped
     ports:
-      - "8080:80"
-      - "8443:443"
+      - "80:80"
+      - "443:443"
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - /var/www/certbot:/var/www/certbot:ro
+    networks:
+      - toefl-network
 
   certbot:
     image: certbot/certbot:latest
@@ -29,9 +33,15 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
       - /var/www/certbot:/var/www/certbot
+    networks:
+      - toefl-network
     entrypoint: /bin/sh -c
     command: >
       "trap exit TERM; while :; do
       certbot renew --webroot -w /var/www/certbot --quiet;
       sleep 12h & wait $${!};
       done"
+
+networks:
+  toefl-network:
+    external: true
