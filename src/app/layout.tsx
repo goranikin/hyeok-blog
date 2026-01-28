@@ -1,11 +1,14 @@
-import { MobileNav, SidebarNav } from "@/components/navigation";
+import { Footer } from "@/components/footer";
+import { TopNavigation } from "@/components/top-navigation";
 import "katex/dist/katex.min.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Hyeok's Blog",
+  title: "Hyeok's Blog - AI Researcher",
+  description:
+    "Personal website and research portfolio of Choi JangHyeok, AI Researcher focused on natural language processing and machine learning.",
   icons: {
     icon: "/images/itisme.png",
   },
@@ -14,6 +17,7 @@ export const metadata: Metadata = {
 const pretendard = localFont({
   src: "../../public/fonts/PretendardVariable.woff2",
   display: "swap",
+  variable: "--font-pretendard",
 });
 
 export default function RootLayout({
@@ -22,27 +26,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={pretendard.className}>
-      <body className="min-w-[320px] mx-auto">
-        {/* 모바일 네비게이션 - 모바일에서만 표시 */}
-        <div className="sm:hidden">
-          <MobileNav />
-        </div>
+    <html lang="en" className={pretendard.variable}>
+      <body className={`${pretendard.className} min-w-[320px]`}>
+        {/* Top Navigation - Fixed */}
+        <TopNavigation />
 
-        <div className="flex flex-row min-h-screen">
-          {/* 사이드바 (PC에서만 표시) - Narrow design */}
-          <aside className="hidden sm:block w-56 border-r shrink-0 h-screen sticky top-0">
-            <SidebarNav />
-          </aside>
+        {/* Main Content - Starts below nav */}
+        <main className="pt-[72px] min-h-screen bg-white">{children}</main>
 
-          {/* 메인 콘텐츠 영역 - Centered with max-width */}
-          <main className="flex-1 overflow-hidden sm:pt-0 pt-16 bg-white">
-            {/* pt-16은 모바일 네비게이션(h-14)을 고려한 여백 */}
-            <div className="max-w-4xl mx-auto py-8 px-6 md:px-8">
-              {children}
-            </div>
-          </main>
-        </div>
+        <Footer />
       </body>
     </html>
   );

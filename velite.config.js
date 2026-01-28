@@ -2,7 +2,7 @@ import rehypeShiki from "@shikijs/rehype";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import { defineConfig, s } from "velite";
-import { collectionsConfig } from "./src/config/collections.ts";
+import { collectionsConfig } from "./src/config/collections-new.ts";
 
 /**
  * Generate Velite schema for a collection

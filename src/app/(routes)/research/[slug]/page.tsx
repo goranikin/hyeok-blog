@@ -1,7 +1,6 @@
-import { development } from "#site/contents";
-import PageLayout from "@/components/pageLayout";
+import { research } from "#site/contents";
 import PostPageLayout from "@/components/postPageLayout";
-import { getCollectionByKey } from "@/config/collections";
+import { getCollectionByKey } from "@/config/collections-new";
 import metadata from "@/utils/metadata";
 import { getPostBySlug } from "@/utils/post";
 import type { Metadata } from "next";
@@ -11,25 +10,30 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-const collection = getCollectionByKey("development");
+const collection = getCollectionByKey("research");
 
-export default async function DevelopmentPage({ params }: Props) {
+export default async function ResearchDetailPage({ params }: Props) {
   const { slug } = await params;
-  const post = getPostBySlug({ slug: slug, category: collection?.categoryPath || "" });
+  const post = getPostBySlug({
+    slug: slug,
+    category: collection?.categoryPath || "",
+  });
 
   if (!post) {
     notFound();
   }
 
   return (
-    <PageLayout>
-      <PostPageLayout post={post} />
-    </PageLayout>
+    <div className="py-16 lg:py-20">
+      <div className="max-w-4xl mx-auto px-6 lg:px-12">
+        <PostPageLayout post={post} />
+      </div>
+    </div>
   );
 }
 
 export function generateStaticParams() {
-  return development.map((post) => ({
+  return research.map((post) => ({
     slug: post.slug,
   }));
 }
@@ -40,7 +44,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = development.find((post) => post.slug === slug);
+  const post = research.find((post) => post.slug === slug);
 
   if (!post) {
     return {};

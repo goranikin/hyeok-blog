@@ -1,7 +1,6 @@
-import { paperReview } from "#site/contents";
-import PageLayout from "@/components/pageLayout";
+import { writing } from "#site/contents";
 import PostPageLayout from "@/components/postPageLayout";
-import { getCollectionByKey } from "@/config/collections";
+import { getCollectionByKey } from "@/config/collections-new";
 import metadata from "@/utils/metadata";
 import { getPostBySlug } from "@/utils/post";
 import type { Metadata } from "next";
@@ -11,25 +10,30 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-const collection = getCollectionByKey("paperReview");
+const collection = getCollectionByKey("writing");
 
-export default async function PaperReviewPage({ params }: Props) {
+export default async function WritingDetailPage({ params }: Props) {
   const { slug } = await params;
-  const post = getPostBySlug({ slug: slug, category: collection?.categoryPath || "" });
+  const post = getPostBySlug({
+    slug: slug,
+    category: collection?.categoryPath || "",
+  });
 
   if (!post) {
     notFound();
   }
 
   return (
-    <PageLayout>
-      <PostPageLayout post={post} />
-    </PageLayout>
+    <div className="py-16 lg:py-20">
+      <div className="max-w-4xl mx-auto px-6 lg:px-12">
+        <PostPageLayout post={post} />
+      </div>
+    </div>
   );
 }
 
 export function generateStaticParams() {
-  return paperReview.map((post) => ({
+  return writing.map((post) => ({
     slug: post.slug,
   }));
 }
@@ -40,7 +44,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = paperReview.find((post) => post.slug === slug);
+  const post = writing.find((post) => post.slug === slug);
 
   if (!post) {
     return {};

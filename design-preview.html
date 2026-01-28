@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Design Preview - Anthropic-Inspired</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Design System Variables */
+        :root {
+            /* Colors */
+            --color-bg-white: #FFFFFF;
+            --color-bg-oat: #FAF9F6;
+            --color-text-primary: #1A1A1A;
+            --color-text-secondary: #4A4A4A;
+            --color-text-tertiary: #8A8A8A;
+
+            /* Accent Colors */
+            --color-clay: #E8DED0;
+            --color-sky: #E3EBF2;
+            --color-coral: #F4E5E0;
+            --color-olive: #E8EBE0;
+            --color-cactus: #DFE8DC;
+            --color-heather: #E8E3EB;
+
+            /* Semantic */
+            --color-link: #6B5B3A;
+            --color-link-hover: #4A3F28;
+            --color-border-subtle: #EFEFEF;
+            --color-border-emphasis: #D4D4D4;
+
+            /* Typography */
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-serif: 'Merriweather', Georgia, serif;
+            --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+            --space-4xl: 96px;
+
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+
+            /* Border Radius */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-full: 24px;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--color-text-primary);
+            background: var(--color-bg-white);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 72px;
+            background: var(--color-bg-white);
+            z-index: 100;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .nav.scrolled {
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--space-2xl);
+        }
+
+        .nav-logo {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--space-xl);
+            list-style: none;
+        }
+
+        .nav-link {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--color-text-primary);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--color-link);
+        }
+
+        /* Main Content */
+        .main {
+            margin-top: 72px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-2xl);
+        }
+
+        .container-narrow {
+            max-width: 800px;
+        }
+
+        .section {
+            padding: var(--space-3xl) 0;
+        }
+
+        .section-header {
+            margin-bottom: var(--space-2xl);
+        }
+
+        /* Typography */
+        .display {
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: var(--space-md);
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: var(--space-lg);
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: var(--space-md);
+        }
+
+        h3 {
+            font-size: 22px;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: var(--space-sm);
+        }
+
+        .text-large {
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        .text-small {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .text-secondary {
+            color: var(--color-text-secondary);
+        }
+
+        .text-tertiary {
+            color: var(--color-text-tertiary);
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-2xl);
+        }
+
+        .card {
+            background: var(--color-bg-white);
+            border: 1px solid var(--color-border-subtle);
+            border-radius: var(--radius-md);
+            padding: var(--space-xl);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card.card-clay { background: var(--color-clay); border: none; }
+        .card.card-sky { background: var(--color-sky); border: none; }
+        .card.card-coral { background: var(--color-coral); border: none; }
+        .card.card-olive { background: var(--color-olive); border: none; }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+        }
+
+        .card-meta {
+            font-size: 14px;
+            color: var(--color-text-tertiary);
+            margin-bottom: var(--space-md);
+        }
+
+        .card-description {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .card-link {
+            color: var(--color-link);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .card-link:hover {
+            color: var(--color-link-hover);
+            text-decoration: underline;
+        }
+
+        /* Buttons */
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            font-size: 16px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .button-primary {
+            background: var(--color-link);
+            color: var(--color-bg-white);
+        }
+
+        .button-primary:hover {
+            background: var(--color-link-hover);
+        }
+
+        .button-secondary {
+            background: transparent;
+            border: 2px solid var(--color-link);
+            color: var(--color-link);
+        }
+
+        .button-secondary:hover {
+            background: var(--color-link);
+            color: var(--color-bg-white);
+        }
+
+        /* Tags */
+        .tags {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+            margin-bottom: var(--space-md);
+        }
+
+        .tag {
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 500;
+            background: var(--color-text-primary);
+            color: var(--color-bg-white);
+        }
+
+        /* Color Palette Display */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+
+        .color-swatch {
+            aspect-ratio: 1;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: flex-end;
+            padding: var(--space-md);
+            border: 1px solid var(--color-border-subtle);
+        }
+
+        .color-label {
+            font-size: 12px;
+            font-weight: 500;
+            background: rgba(255,255,255,0.9);
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        /* Hero Section Example */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-3xl);
+            align-items: center;
+            min-height: 500px;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 1;
+            background: var(--color-clay);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-tertiary);
+            font-size: 14px;
+            justify-self: end;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: var(--space-md);
+            margin-top: var(--space-xl);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 var(--space-lg);
+            }
+
+            .nav-links {
+                gap: var(--space-md);
+            }
+
+            .container {
+                padding: 0 var(--space-lg);
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-image {
+                justify-self: center;
+            }
+
+            .display {
+                font-size: 36px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+        }
+
+        /* Divider */
+        .divider {
+            border: none;
+            border-top: 1px solid var(--color-border-subtle);
+            margin: var(--space-2xl) 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">Your Name</a>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#research" class="nav-link">Research</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#cv" class="nav-link">CV</a></li>
+                <li><a href="#writings" class="nav-link">Writing</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Section -->
+        <section id="home" class="section">
+            <div class="container">
+                <div class="hero">
+                    <div class="hero-content">
+                        <h1 class="display">Your Name</h1>
+                        <p class="text-large text-secondary">AI Researcher focused on natural language processing and machine learning. PhD Candidate at University Name.</p>
+                        <p class="text-secondary" style="margin-top: 16px;">
+                            I develop methods for understanding and generating human language, with applications in education and accessibility.
+                        </p>
+                        <div class="hero-buttons">
+                            <a href="#" class="button button-primary">View Research</a>
+                            <a href="#" class="button button-secondary">Download CV</a>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        Professional Photo<br/>(400×400px)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- Design System Preview -->
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Design System Preview</h2>
+                    <p class="text-secondary">Warm minimalism inspired by Anthropic's design language</p>
+                </div>
+
+                <!-- Color Palette -->
+                <h3 style="margin-top: 48px;">Color Palette</h3>
+                <div class="color-grid">
+                    <div class="color-swatch" style="background: #FFFFFF; border: 2px solid #EFEFEF;">
+                        <span class="color-label">White</span>
+                    </div>
+                    <div class="color-swatch" style="background: #FAF9F6;">
+                        <span class="color-label">Oat</span>
+                    </div>
+                    <div class="color-swatch" style="background: #E8DED0;">
+                        <span class="color-label">Clay</span>
+                    </div>
+                    <div class="color-swatch" style="background: #E3EBF2;">
+                        <span class="color-label">Sky</span>
+                    </div>
+                    <div class="color-swatch" style="background: #F4E5E0;">
+                        <span class="color-label">Coral</span>
+                    </div>
+                    <div class="color-swatch" style="background: #E8EBE0;">
+                        <span class="color-label">Olive</span>
+                    </div>
+                    <div class="color-swatch" style="background: #DFE8DC;">
+                        <span class="color-label">Cactus</span>
+                    </div>
+                    <div class="color-swatch" style="background: #E8E3EB;">
+                        <span class="color-label">Heather</span>
+                    </div>
+                </div>
+
+                <!-- Typography -->
+                <h3 style="margin-top: 48px;">Typography</h3>
+                <div style="margin-top: 24px;">
+                    <div class="display">Display Text (48px)</div>
+                    <h1>Heading 1 (36px)</h1>
+                    <h2>Heading 2 (28px)</h2>
+                    <h3>Heading 3 (22px)</h3>
+                    <p class="text-large">Large body text for introductions (18px)</p>
+                    <p>Regular body text for most content (16px)</p>
+                    <p class="text-small text-tertiary">Small text for metadata and captions (14px)</p>
+                </div>
+
+                <!-- Buttons -->
+                <h3 style="margin-top: 48px;">Buttons</h3>
+                <div style="display: flex; gap: 16px; margin-top: 24px; flex-wrap: wrap;">
+                    <button class="button button-primary">Primary Button</button>
+                    <button class="button button-secondary">Secondary Button</button>
+                    <a href="#" class="card-link">Text Link →</a>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- Card Examples -->
+        <section id="research" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Research Publications</h2>
+                    <p class="text-secondary">Example of research cards with warm accent backgrounds</p>
+                </div>
+
+                <div class="card-grid">
+                    <div class="card card-clay">
+                        <h3 class="card-title">Efficient Attention Mechanisms for Long Documents</h3>
+                        <div class="card-meta">J. Doe, Y. Smith, A. Johnson · NeurIPS 2024</div>
+                        <p class="card-description">
+                            We propose a novel attention mechanism that reduces computational complexity from O(n²) to O(n log n) while maintaining model quality.
+                        </p>
+                        <a href="#" class="card-link">Read Paper →</a>
+                    </div>
+
+                    <div class="card card-sky">
+                        <h3 class="card-title">Zero-Shot Cross-Lingual Transfer in Language Models</h3>
+                        <div class="card-meta">Y. Smith, J. Doe · ACL 2024</div>
+                        <p class="card-description">
+                            An investigation of cross-lingual transfer capabilities in multilingual transformers without parallel training data.
+                        </p>
+                        <a href="#" class="card-link">Read Paper →</a>
+                    </div>
+
+                    <div class="card card-coral">
+                        <h3 class="card-title">Interpretable Neural Networks for Clinical Decision Support</h3>
+                        <div class="card-meta">A. Johnson, J. Doe, M. Lee · Nature Medicine 2023</div>
+                        <p class="card-description">
+                            We develop interpretable models that provide explanations for medical predictions, improving trust and adoption.
+                        </p>
+                        <a href="#" class="card-link">Read Paper →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- Project Cards -->
+        <section id="projects" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Open Source Projects</h2>
+                    <p class="text-secondary">Example of project cards with tech stack tags</p>
+                </div>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">PyTorch</span>
+                            <span class="tag">HuggingFace</span>
+                        </div>
+                        <h3 class="card-title">transformer-toolkit</h3>
+                        <div class="card-meta">Updated Jan 2026 · ⭐ 1.2k</div>
+                        <p class="card-description">
+                            A lightweight library for training and deploying transformer models with minimal boilerplate code.
+                        </p>
+                        <a href="#" class="card-link">View on GitHub →</a>
+                    </div>
+
+                    <div class="card card-olive">
+                        <div class="tags">
+                            <span class="tag">React</span>
+                            <span class="tag">TypeScript</span>
+                            <span class="tag">D3.js</span>
+                        </div>
+                        <h3 class="card-title">attention-visualizer</h3>
+                        <div class="card-meta">Updated Dec 2025 · ⭐ 350</div>
+                        <p class="card-description">
+                            Interactive visualization tool for understanding attention patterns in transformer-based models.
+                        </p>
+                        <a href="#" class="card-link">View Demo →</a>
+                    </div>
+
+                    <div class="card card-heather">
+                        <div class="tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">FastAPI</span>
+                            <span class="tag">Docker</span>
+                        </div>
+                        <h3 class="card-title">ml-api-template</h3>
+                        <div class="card-meta">Updated Nov 2025 · ⭐ 580</div>
+                        <p class="card-description">
+                            Production-ready template for deploying machine learning models as REST APIs with monitoring.
+                        </p>
+                        <a href="#" class="card-link">View on GitHub →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <section class="section" style="background: var(--color-bg-oat); margin-top: 64px;">
+            <div class="container">
+                <div style="text-align: center;">
+                    <p class="text-small text-tertiary">© 2026 Your Name. Design inspired by Anthropic's warm minimalism.</p>
+                    <p class="text-small text-tertiary" style="margin-top: 8px;">
+                        <a href="#" class="card-link">Email</a> ·
+                        <a href="#" class="card-link">GitHub</a> ·
+                        <a href="#" class="card-link">Twitter</a> ·
+                        <a href="#" class="card-link">Scholar</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Add shadow to navbar on scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Simple active link tracking
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

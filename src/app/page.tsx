@@ -1,130 +1,145 @@
-import PageLayout from "@/components/pageLayout";
+import { FeaturedCard } from "@/components/cards";
 import Image from "next/image";
 import Link from "next/link";
-import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
-import { FaThreads } from "react-icons/fa6";
 
 export default function Home() {
   return (
-    <PageLayout>
-      <div className="flex flex-col items-center text-center py-12 space-y-6">
-        {/* Profile Image */}
-        <div className="relative animate-fade-in-scale">
-          <Image
-            alt="Profile"
-            src="/images/itisme.PNG"
-            width={160}
-            height={160}
-            className="rounded-full border-4 border-gray-100 shadow-lg"
-            priority
-          />
-        </div>
-
-        {/* Name and Title */}
-        <div
-          className="space-y-3"
-          style={{ animation: "fadeIn 0.5s ease-out 0.2s both" }}
-        >
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-tight">
-            Choi JangHyeok
-          </h1>
-          <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-            I&apos;ve been reading and writing. All the things I&apos;ve written
-            are my vestiges of my life.
-          </p>
-          <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-            I believe that they&apos;ll be profound nourishment for the future.
-          </p>
-          <div className="w-full max-w-md mx-auto border-t border-gray-300 my-4" />
-          <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-            I&apos;m starting to post in English after 2025.10.
-          </p>
-          <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-            The posts written before 2025.10 and the things in the personal
-            essay are in Korean. I&apos;m sorry for the inconvenience of the
-            English readers. I&apos;ll try to write in English for my essays
-            (also translate the past posts if I can).
-          </p>
-        </div>
-
-        {/* Bio */}
-        <div
-          className="w-full max-w-lg space-y-3 text-left"
-          style={{ animation: "fadeIn 0.5s ease-out 0.3s both" }}
-        >
-          <div className="flex items-start gap-3 p-4 rounded-lg border border-gray-200bg-white hover:border-gray-300 transition-colors duration-200">
-            <span className="text-2xl mt-0.5">🎓</span>
-            <div className="flex-1">
-              <h3 className="font-bold text-lg text-gray-900">
-                Seoul National University
-              </h3>
-              <p className="text-base text-gray-600 mt-1">
-                Major in Industrial Engineering
+    <>
+      {/* Hero Section */}
+      <section className="py-16 lg:py-24">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 lg:gap-16 items-center">
+            {/* Left: Content */}
+            <div className="max-w-2xl space-y-6">
+              <h1 className="text-5xl lg:text-6xl font-semibold text-[#1A1A1A] leading-tight animate-fade-in">
+                Choi JangHyeok
+              </h1>
+              <p className="text-xl text-[#4A4A4A] leading-relaxed animate-fade-in" style={{ animationDelay: "0.1s" }}>
+                AI Researcher focused on natural language processing and machine learning.
+                AI Engineer at Dalpha, pursuing Industrial Engineering at Seoul National University.
               </p>
-              <p className="text-sm text-gray-600 mt-1">
-                (changed from Material Science and Engineering)
+              <p className="text-lg text-[#4A4A4A] leading-relaxed animate-fade-in" style={{ animationDelay: "0.2s" }}>
+                I develop methods for understanding and generating human language,
+                with applications in real-world AI systems and accessibility.
               </p>
-              <p className="text-base text-gray-600 mt-1">2020.02 ~ Present</p>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-wrap gap-4 pt-4 animate-fade-in" style={{ animationDelay: "0.3s" }}>
+                <Link
+                  href="/research"
+                  className="px-6 py-3 bg-[#6B5B3A] text-white rounded-lg font-medium hover:bg-[#4A3F28] transition-all duration-300 hover:shadow-md"
+                >
+                  View Research
+                </Link>
+                <Link
+                  href="/cv"
+                  className="px-6 py-3 border-2 border-[#6B5B3A] text-[#6B5B3A] rounded-lg font-medium hover:bg-[#6B5B3A] hover:text-white transition-all duration-300"
+                >
+                  Download CV
+                </Link>
+              </div>
             </div>
-          </div>
 
-          <div className="flex items-start gap-3 p-4 rounded-lg border border-gray-200 bg-white hover:border-gray-300 transition-colors duration-200">
-            <span className="text-2xl mt-0.5">💼</span>
-            <div className="flex-1">
-              <h3 className="font-bold text-lg text-gray-900">Dalpha</h3>
-              <p className="text-base text-gray-600 mt-1">AI Engineer</p>
-              <p className="text-base text-gray-500 mt-1">2025.08 ~ Present</p>
+            {/* Right: Photo */}
+            <div className="flex justify-center lg:justify-end animate-fade-in-scale" style={{ animationDelay: "0.2s" }}>
+              <div className="relative">
+                <Image
+                  alt="Choi JangHyeok"
+                  src="/images/itisme.PNG"
+                  width={400}
+                  height={400}
+                  className="rounded-2xl shadow-lg"
+                  priority
+                />
+              </div>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Social Links */}
-        <div
-          className="flex gap-4 pt-4"
-          style={{ animation: "fadeIn 0.5s ease-out 0.4s both" }}
-        >
-          <Link
-            href="https://github.com/goranikin"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group"
-          >
-            <div className="p-3 rounded-full border border-gray-200 hover:border-gray-300 hover:shadow-md hover:scale-110 transition-all duration-200 bg-white">
-              <FaGithub className="h-6 w-6 text-gray-700 group-hover:text-black transition-colors duration-200" />
-            </div>
-          </Link>
-          <Link
-            href="https://www.linkedin.com/in/janghyeok-choi-571ab8347/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group"
-          >
-            <div className="p-3 rounded-full border border-gray-200 hover:border-gray-300 hover:shadow-md hover:scale-110 transition-all duration-200 bg-white">
-              <FaLinkedin className="h-6 w-6 text-gray-700 group-hover:text-blue-600 transition-colors duration-200" />
-            </div>
-          </Link>
-          <Link
-            href="https://www.instagram.com/hyeok_12053/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group"
-          >
-            <div className="p-3 rounded-full border border-gray-200 hover:border-gray-300 hover:shadow-md hover:scale-110 transition-all duration-200 bg-white">
-              <FaInstagram className="h-6 w-6 text-gray-700 group-hover:text-pink-600 transition-colors duration-200" />
-            </div>
-          </Link>
-          <Link
-            href="https://www.threads.com/@hyeok_12053"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group"
-          >
-            <div className="p-3 rounded-full border border-gray-200 hover:border-gray-300 hover:shadow-md hover:scale-110 transition-all duration-200 bg-white">
-              <FaThreads className="h-6 w-6 text-gray-700 group-hover:text-gray-900 transition-colors duration-200" />
-            </div>
-          </Link>
+      {/* Divider */}
+      <hr className="border-t border-[#EFEFEF]" />
+
+      {/* Recent Highlights Section */}
+      <section className="py-16 lg:py-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="mb-12">
+            <h2 className="text-3xl lg:text-4xl font-semibold text-[#1A1A1A] mb-3">
+              Recent Highlights
+            </h2>
+            <p className="text-lg text-[#4A4A4A]">
+              Latest work across research, projects, and writing
+            </p>
+          </div>
+
+          {/* Featured Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <FeaturedCard
+              type="paper"
+              title="Efficient Attention Mechanisms for Long Documents"
+              description="We propose a novel attention mechanism that reduces computational complexity from O(n²) to O(n log n) while maintaining model quality."
+              link="/research"
+              accent="clay"
+            />
+            <FeaturedCard
+              type="project"
+              title="Transformer Toolkit"
+              description="A lightweight library for training and deploying transformer models with minimal boilerplate code. Built with PyTorch and HuggingFace."
+              link="/projects"
+              accent="sky"
+            />
+            <FeaturedCard
+              type="post"
+              title="Understanding Attention in Transformers"
+              description="A deep dive into the mathematics and intuition behind attention mechanisms, with interactive visualizations."
+              link="/writing"
+              accent="coral"
+            />
+          </div>
         </div>
-      </div>
-    </PageLayout>
+      </section>
+
+      {/* Divider */}
+      <hr className="border-t border-[#EFEFEF]" />
+
+      {/* Updates/News Section */}
+      <section className="py-16 lg:py-20">
+        <div className="max-w-4xl mx-auto px-6 lg:px-12">
+          <h2 className="text-3xl lg:text-4xl font-semibold text-[#1A1A1A] mb-8">
+            Recent Updates
+          </h2>
+
+          <div className="space-y-6">
+            {/* Update Item */}
+            <div className="flex gap-6 py-4 border-b border-[#EFEFEF] last:border-0">
+              <time className="text-sm text-[#8A8A8A] font-medium min-w-[100px]">
+                Jan 2026
+              </time>
+              <p className="text-base text-[#4A4A4A] flex-1">
+                Started as AI Engineer at <span className="font-medium text-[#1A1A1A]">Dalpha</span>
+              </p>
+            </div>
+
+            <div className="flex gap-6 py-4 border-b border-[#EFEFEF] last:border-0">
+              <time className="text-sm text-[#8A8A8A] font-medium min-w-[100px]">
+                Dec 2025
+              </time>
+              <p className="text-base text-[#4A4A4A] flex-1">
+                New blog post: <Link href="/writing" className="text-[#6B5B3A] hover:text-[#4A3F28] font-medium">Understanding Attention in Transformers</Link>
+              </p>
+            </div>
+
+            <div className="flex gap-6 py-4 border-b border-[#EFEFEF] last:border-0">
+              <time className="text-sm text-[#8A8A8A] font-medium min-w-[100px]">
+                Oct 2025
+              </time>
+              <p className="text-base text-[#4A4A4A] flex-1">
+                Relaunched blog with new design and English content
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

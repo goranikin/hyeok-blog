@@ -1,10 +1,4 @@
-import {
-  bookReview,
-  development,
-  paperReview,
-  personalEssay,
-  project,
-} from "#site/contents";
+import { projects, writing } from "#site/contents";
 
 export type Post = {
   permalink: string;
@@ -26,20 +20,11 @@ export const getPostBySlug = ({
   let posts: Post[];
 
   switch (category) {
-    case "study/development":
-      posts = development;
+    case "projects":
+      posts = projects;
       break;
-    case "study/paper-review":
-      posts = paperReview;
-      break;
-    case "study/project":
-      posts = project;
-      break;
-    case "writing/book-review":
-      posts = bookReview;
-      break;
-    case "writing/personal-essay":
-      posts = personalEssay;
+    case "writing":
+      posts = writing;
       break;
     default:
       posts = [];

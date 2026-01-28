@@ -4,17 +4,14 @@ import type __vc from '../velite.config.js'
 
 type Collections = typeof __vc.collections
 
-export type Development = Collections['development']['schema']['_output']
-export declare const development: Development[]
+export type Research = Collections['research']['schema']['_output']
+export declare const research: Research[]
 
-export type PaperReview = Collections['paperReview']['schema']['_output']
-export declare const paperReview: PaperReview[]
+export type Projects = Collections['projects']['schema']['_output']
+export declare const projects: Projects[]
 
-export type Project = Collections['project']['schema']['_output']
-export declare const project: Project[]
+export type Writing = Collections['writing']['schema']['_output']
+export declare const writing: Writing[]
 
-export type PersonalEssay = Collections['personalEssay']['schema']['_output']
-export declare const personalEssay: PersonalEssay[]
-
-export type BookReview = Collections['bookReview']['schema']['_output']
-export declare const bookReview: BookReview[]
+export type Cv = Collections['cv']['schema']['_output']
+export declare const cv: Cv[]
