@@ -1,5 +1,13 @@
 [
   {
+    "title": "Left from Dalpha",
+    "description": "What have happened until now since last writing?",
+    "slug": "after-dalpha",
+    "publishDate": "2026-02-01",
+    "content": "const{Fragment:e,jsx:n,jsxs:t}=arguments[0];function _createMdxContent(a){const i={hr:\"hr\",p:\"p\",...a.components};return t(e,{children:[n(i.p,{children:\"There have been a few significant events over the past three months. First, I left my job\\nin November 2025. Why? I'm going to explain briefly.\"}),\"\\n\",n(i.p,{children:\"It's hard to do things that feel meaningful in the company at the level of an undergraduate\\nwith limited industry experience. Sure, what feels meaningful involves multiple aspects.\\nI can't share everything, but for me one factor is social contribution, which isn't part of\\nDalpha's core mission. Honestly, I don't want to say it's only about money when I'm working.\\nI hope this doesn't mean I don't care about how a business model generates revenue. My view\\nhasn't changed: you have to take a company's cash flow seriously. Money comes first in\\ncapitalism, and especially in a startup.\"}),\"\\n\",n(i.p,{children:\"I knew that an early-stage startup is a place where a newcomer can grow extremely quickly\\nwhen I joined Dalpha. However, a very early-stage startup has to focus on survival rather\\nthan employee development, even if that means treating employees as replaceable components\\nthrough financial leverage. If I want to develop my skills and build my career simultaneously,\\nI need sufficient capabilities to handle both appropriately, and I think those capabilities\\ncome from minimal industry or academic experience. I knew I was an appentice who had to learn\\nthe fundamentals of real business, so I needed more time to grow. By that point, I realized\\nI didn't want to pursue Dalpha's business direction in the near future, so I concluded I\\nshould leave the compan.\"}),\"\\n\",n(i.p,{children:\"Dalpha taught me many things--both hard skills like development, infrastructure, and business\\ngoal-setting, and soft skills like communication with colleagues, meeting facilitation, and\\nstaying motivated in a startup environment. However, I didn't want to spend a significant\\nportion of my twenties there. I want to learn during a time when I can dedicate my days\\nentirely to myself.\"}),\"\\n\",n(i.hr,{})]})}return{default:function(e={}){const{wrapper:t}=e.components||{};return t?n(t,{...e,children:n(_createMdxContent,{...e})}):_createMdxContent(e)}};",
+    "permalink": "/writing/after-dalpha"
+  },
+  {
     "title": "Dalpha, and 8 weeks",
     "description": "Review for the 8 weeks at Dalpha.",
     "slug": "dalpha-1",
