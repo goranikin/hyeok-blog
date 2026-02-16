@@ -1,8 +1,15 @@
 services:
   hyeok-blog:
     image: ${ACR_LOGIN_SERVER}/hyeok-blog:latest
+    container_name: hyeok-blog
     restart: unless-stopped
     environment:
       - NODE_ENV=production
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
+    networks:
+      - web
+
+networks:
+  web:
+    external: true

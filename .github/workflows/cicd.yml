@@ -1,34 +1,20 @@
-# GitHub Actions Workflow for Hyeok-blog Repository
-# Path: .github/workflows/deploy.yml
-# Triggers: Push to main branch
-# Actions: Build Docker image → Push to ACR → Deploy to VM
-
 on:
   push:
     branches: [main]
 
-name: Build and Deploy Hyeok-blog
+name: Build and Push Hyeok-blog
 
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
-      # ========================================================================
-      # Step 1: Checkout the repository code
-      # ========================================================================
       - name: "Checkout repository"
         uses: actions/checkout@v4
 
-      # ========================================================================
-      # Step 2: Set up Docker Buildx (for multi-platform builds)
-      # ========================================================================
       - name: "Set up Docker Buildx"
         uses: docker/setup-buildx-action@v3
 
-      # ========================================================================
-      # Step 3: Login to Azure Container Registry
-      # ========================================================================
       - name: "Login to Azure Container Registry"
         uses: docker/login-action@v3
         with:
@@ -36,10 +22,7 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      # ========================================================================
-      # Step 4: Build and Push Docker Image (multi-platform)
-      # ========================================================================
-      - name: "Build and push web image"
+      - name: "Build and push image"
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -49,53 +32,3 @@ jobs:
           cache-from: type=registry,ref=${{ secrets.REGISTRY_LOGIN_SERVER }}/hyeok-blog:buildcache
           cache-to: type=registry,ref=${{ secrets.REGISTRY_LOGIN_SERVER }}/hyeok-blog:buildcache,mode=max
           target: runner
-
-      # ========================================================================
-      # Step 5: Sync compose + Dockerfile + nginx config to VM
-      # ========================================================================
-      - name: "Upload compose + Dockerfile + nginx config to VM"
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.VM_HOST }}
-          username: ${{ secrets.VM_USER }}
-          key: ${{ secrets.VM_SSH_KEY }}
-          port: ${{ secrets.VM_PORT || 22 }}
-          source: "docker-compose.yml,Dockerfile,docker"
-          target: ${{ secrets.VM_APP_PATH }}
-          strip_components: 0
-
-      # ========================================================================
-      # Step 6: Deploy to Azure VM via SSH
-      # ========================================================================
-      - name: "Deploy hyeok-blog container on Azure VM"
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.VM_HOST }}
-          username: ${{ secrets.VM_USER }}
-          key: ${{ secrets.VM_SSH_KEY }}
-          port: ${{ secrets.VM_PORT || 22 }}
-          script: |
-            set -e  # Exit on any error
-
-            # Login to ACR from the VM
-            echo "${{ secrets.REGISTRY_PASSWORD }}" | docker login \
-              ${{ secrets.REGISTRY_LOGIN_SERVER }} \
-              -u ${{ secrets.REGISTRY_USERNAME }} \
-              --password-stdin
-
-            # Navigate to the app directory on VM
-            cd ${{ secrets.VM_APP_PATH }}
-
-            # Set the ACR_LOGIN_SERVER environment variable for docker-compose
-            export ACR_LOGIN_SERVER=${{ secrets.REGISTRY_LOGIN_SERVER }}
-
-            # Pull the latest app image we just pushed (from Azure ACR)
-            docker compose pull hyeok-blog
-
-            # Restart the blog container with new image
-            docker compose up -d --force-recreate hyeok-blog
-
-            # Clean up old unused images to save disk space
-            docker image prune -af
-
-            echo "✅ Hyeok-blog deployed successfully!"
