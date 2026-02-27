@@ -14,7 +14,7 @@ export default function Home() {
                 Choi Janghyeok
               </h1>
               <p className="text-xl text-[#4A4A4A] leading-relaxed">
-                Hi. I'm Janghyeok.
+                Hi. I&apos;m Janghyeok.
               </p>
               <p className="text-xl text-[#4A4A4A] leading-relaxed">
                 I like reading, writing, coffee, marathon, climbing, and
