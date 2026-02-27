@@ -11,19 +11,25 @@ export default function Home() {
             {/* Left: Content */}
             <div className="max-w-2xl space-y-6">
               <h1 className="text-5xl lg:text-6xl font-semibold text-[#1A1A1A] leading-tight">
-                Choi JangHyeok
+                Choi Janghyeok
               </h1>
               <p className="text-xl text-[#4A4A4A] leading-relaxed">
-                AI Researcher focused on natural language processing and machine
-                learning. AI Engineer at Dalpha, pursuing Industrial Engineering
-                at Seoul National University.
+                Hi. I'm Janghyeok.
               </p>
-              <p className="text-lg text-[#4A4A4A] leading-relaxed">
-                I develop methods for understanding and generating human
-                language, with applications in real-world AI systems and
-                accessibility.
+              <p className="text-xl text-[#4A4A4A] leading-relaxed">
+                I like reading, writing, coffee, marathon, climbing, and
+                swimming.
               </p>
-
+              <p className="text-xl text-[#4A4A4A] leading-relaxed">
+                You can see my personal thoughts on my{" "}
+                <Link
+                  href="https://www.instagram.com/hyeok_12053/?hl=en"
+                  className="text-[#456eff] hover:text-[#4A3F28] transition-colors duration-200 underline"
+                >
+                  Personal SNS
+                </Link>{" "}
+                (in Korean).
+              </p>
               {/* CTA Buttons */}
               <div
                 className="flex flex-wrap gap-4 pt-4"
@@ -66,6 +72,49 @@ export default function Home() {
 
       {/* Divider */}
       <hr className="border-t border-[#EFEFEF]" />
+
+      {/* Activity Photos */}
+      <section className="py-16 lg:py-24">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+              <div className="relative w-full aspect-[4/3]">
+                <Image
+                  src="/images/marathon.jpeg"
+                  alt="Running a marathon"
+                  fill
+                  className="object-cover rounded-2xl shadow-md"
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className="relative w-full aspect-[4/3]">
+                <Image
+                  src="/images/climbing.jpeg"
+                  alt="Climbing on a wall"
+                  fill
+                  className="object-cover rounded-2xl shadow-md"
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className="relative w-full aspect-[4/3]">
+                <Image
+                  src="/images/tri.jpeg"
+                  alt="Triathlon event"
+                  fill
+                  className="object-cover rounded-2xl shadow-md"
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

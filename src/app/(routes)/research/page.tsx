@@ -56,7 +56,7 @@ export default async function ResearchPage() {
       <PageHero
         title="Research"
         description="Publications, papers, and research work"
-        subdescription="Data Augmentation, LLM Agent, Retrieval, Time-Series Analysis"
+        subdescription="I have currently been finding interesting topics to research on!"
       />
 
       <SectionDivider />
