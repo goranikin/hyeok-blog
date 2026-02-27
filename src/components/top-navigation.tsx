@@ -16,8 +16,8 @@ export const navigationItems: NavItem[] = [
   { href: "/", label: "Home" },
   { href: "/research", label: "Research" },
   { href: "/projects", label: "Projects" },
-  { href: "/cv", label: "CV" },
   { href: "/writing", label: "Writing" },
+  { href: "/cv.pdf", label: "CV" },
 ];
 
 export const TopNavigation = () => {

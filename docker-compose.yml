@@ -3,6 +3,8 @@ services:
     image: ${ACR_LOGIN_SERVER}/hyeok-blog:latest
     container_name: hyeok-blog
     restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true" # ← auto-update
     environment:
       - NODE_ENV=production
     expose:
