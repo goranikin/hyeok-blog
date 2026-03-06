@@ -1,0 +1,146 @@
+---
+title: Setting up smart home devices in my room - 2
+publishDate: 2026-03-06
+description: record of structuring a smart home.
+---
+
+All devices are set up! I finished setting everything up, and Home Assistant is running on my home server. Here are the details.
+
+a server - the mini PC (CPU: AMD 5700u, RAM 16GB)
+a gateway - SONOFF Zigbee Dongle-P
+![gateway](/writing/smart-home-2/gateway.png)
+a temperature and moisture sensor - SONOFF SNZB-02D
+![sensor](/writing/smart-home-2/sensor.png)
+smartplugs - 다원디엔에스 16A Zigbee smart plug
+![smartplugs](/writing/smart-home-2/smartplug.png)
+
+---
+## Brief Thoughts
+
+Frankly, it's too expensive to set all of this up just for a hobby.  
+I think they're never efficient no matter what automations run, given the prices and the time I spent.
+
+So, would I do the same thing if I could go back to before I bought them? Absolutely! I really like it and find it fun.  
+Do I recommend to do like me for others? Nope!
+It would be better to take a nice meal if you aren't interested in that.
+
+Furthermore, there aren't many devices I can buy and install for my 27-squre-meter room. It could be
+very powerful under the environment of a sufficiently large house, having multiple smart electronic devices, such as an
+air conditioner, a dehumidifier, etc.
+
+As for me - nothing! I just control the lights for myself and my plants and there is no reason to construct a smart home to do like me.
+
+---
+## The Architecture
+
+![archi](/writing/smart-home-2/archi.png)
+
+The data flow of sensor example
+
+1. Sensor broadcasts temperature and humidity over Zigbee radio (Sensor -> SONOFF Dongle)
+2. Raw Zigbee data flows through USB cable to the Zigbee2MQTT container (SONOFF Dongle -> Zigbee2MQTT)
+3. Translated into MQTT message "zigbee2mqtt/temp_sensor" → \{"temperature": 23.5, "humidity": 45\} (Zigbee2MQTT -> Mosquitto)
+4. HA subscribes to Zigbee2MQTT/# topics and receives the sonsor data automatically (Mosquitto -> Home Assistant)
+5. I can see "My Room: 23.5°C, 45% humidity" on my HA dashborad!
+
+I can also control through the reverse flow.
+
+MQTT stands for Message Queueing Telemetry Transport. It's designed for IoT senarios where you need lightweight and reliable
+messaging between many small devices. I think of it as a kind of communication protocol, like HTTP.
+
+Mosquitto is the MQTT broker -- it receives message from publishers and delivers them to subscribers. Zigbee2MQTT is the
+translator between Zigbee radio and MQTT messages. I can build intricate scripts to interact with smart devices and integrate them
+via Mosquitto down the line.
+
+If you want a simpler archtecture, you can use ZHA, which connects the Zigbee dongle directly on HA.
+
+
+---
+## Specifications
+
+I use docker compose to run three containers via an internal docker network.
+1. Home Assistant
+2. Mosquitto
+3. Zigbee2MQTT
+
+I provide the specific configuration files in the last section of this post, but you will need to adjust the settings based on your own devices.
+After running `docker compose up`, I can access the HA dashboard at `http://<mini PC's IP>:<HA Port>`.
+
+![HA dashboard1](/writing/smart-home-2/HA1.png)
+
+
+---
+## After that
+
+I feel like I'm gradually getting used to how electronic devices communicate with each other.
+
+When I deployed my blog via a cloud server, it was a purely internet-based environment, and I didn't think much about the hardware side of things,
+including networks. However, when I first bought the mini PC, set it up, and deployed my blog on it as a server, I started to understand what's
+actually going on in the internet world. And now, I've had firsthand experience with hardward.
+
+I'm well aware of that what I've done isn't particularly complicated and that there's a vast area I still don't understand.
+But everything works well enough! :D
+
+I think that's what matters, and I just want to keep up this hobby of tinkering with electronic devices going forward.
+
+---
+## Appendix
+
+docker compose
+```docker
+services:
+  # ─── Home Assistant ───────────────────────────────────────
+  homeassistant:
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    restart: unless-stopped
+    ports:
+      - "oooo:oooo"
+    volumes:
+      - ./homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - TZ=Asia/Seoul
+    depends_on:
+      - mosquitto
+    networks:
+      - ha_network
+
+  # ─── Mosquitto MQTT Broker ────────────────────────────────
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    ports:
+      - "oooo:oooo"
+      - "oooo:oooo"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+    networks:
+      - ha_network
+
+  # ─── Zigbee2MQTT ──────────────────────────────────────────
+  zigbee2mqtt:
+    container_name: zigbee2mqtt
+    image: ghcr.io/koenkk/zigbee2mqtt
+    restart: unless-stopped
+    ports:
+      - "oooo:oooo"
+    volumes:
+      - ./zigbee2mqtt:/app/data
+      - /run/udev:/run/udev:ro
+    devices:
+      - /dev/serial/by-id/<my_zigbee_gateway_serial_number>:/dev/ttyUSB0
+    environment:
+      - TZ=Asia/Seoul
+    depends_on:
+      - mosquitto
+    networks:
+      - ha_network
+
+networks:
+  ha_network:
+    driver: bridge
+```
