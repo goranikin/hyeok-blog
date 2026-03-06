@@ -11,8 +11,6 @@
 !.yarn/versions
 .bun/
 .dockerignore
-Dockerfile
-docker*
 
 # testing
 /coverage
