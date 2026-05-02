@@ -1,0 +1,32 @@
+---
+title: Setting up smart home devices in my room - 3
+publishDate: 2026-05-02
+description: setting up ESP-BOX
+---
+
+I bought an ESP-BOX to set up a voice assistant for my smart home!
+
+Yes, It's definitely overkill. There's no reason to control smart devices by voice instead of using my laptop.
+But... I just bought it for fun! :D
+
+![ESP-BOX](/writing/smart-home-3/esp-box.png)
+
+At first, I set up the voice assistant with Whisper and Piper via the Wyoming Protocol
+- the tools for STT and TTS, respectively. However, I wasn't very satisfied with the quality.
+First, The TTS pronunciation is bad. Second, it often didn't follow my instructions correctly.
+
+Fortunately, I've found a good alternative: Gemini. It is super easy to connect a voice assistant to an LLM.
+You can add it by clicking the 'Add Integration' button on the Home Assistant dashboard and searching for Google - Gemini.
+Of course, tehre are other providers like Anthropic and OpenAI, but I chose Google because they offer affordable models and,
+more importantly, I had some credits on my account.
+
+![gemini](/writing/smart-home-3/gemini.png)
+
+My original goal was to improve the TTS quality, but it turns out there are many advantages to integrating Gemini into the Home Assistant ecosystem.
+Here's what I mean:
+- The voice assistant can handle multi-turn conversations.
+- I don't need to define a rigid script - like "the temperature is X, the moisture level is Y," and so on. I just feed it all the information, and it generates a natural response based on the Gemini API.
+- I can talk to it freely! I'm planning to build an English conversation practice program with it.
+
+My smart home ecosystem has improved in many ways. Frankly, I didn't expect to use Gemini when I bought the ESP-BOX, but it's a game changer!
+This year, I plan to integrate my daily routine and learning process with this voice assistant.
