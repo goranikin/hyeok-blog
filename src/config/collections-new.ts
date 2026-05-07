@@ -1,6 +1,6 @@
 /**
  * NEW: Centralized configuration for blog collections
- * Updated structure: Research, Projects, CV, Writing
+ * Updated structure: Research, CV, Writing (Logbook is served as static HTML, not MDX)
  */
 
 export type CollectionConfig = {
@@ -10,8 +10,8 @@ export type CollectionConfig = {
   label: string;
   /** Description text */
   description: string;
-  /** Parent category (research, projects, writing, cv) */
-  parent: "research" | "projects" | "writing" | "cv";
+  /** Parent category (research, writing, cv) */
+  parent: "research" | "writing" | "cv";
   /** Content file pattern for Velite */
   pattern: string;
   /** Base URL path */
@@ -21,7 +21,7 @@ export type CollectionConfig = {
 };
 
 export type CategoryConfig = {
-  key: "research" | "projects" | "writing" | "cv";
+  key: "research" | "writing" | "cv";
   label: string;
   description: string;
   path: string;
@@ -39,17 +39,6 @@ export const collectionsConfig: CollectionConfig[] = [
     pattern: "research/**/*.mdx",
     path: "/research",
     categoryPath: "research",
-  },
-
-  // Projects collection (code projects, implementations)
-  {
-    key: "projects",
-    label: "Projects",
-    description: "Open-source projects and technical implementations",
-    parent: "projects",
-    pattern: "projects/**/*.mdx",
-    path: "/projects",
-    categoryPath: "projects",
   },
 
   // Writing collection (blog posts, essays, tutorials)
@@ -85,13 +74,6 @@ export const categoriesConfig: CategoryConfig[] = [
     collections: collectionsConfig.filter((c) => c.parent === "research"),
   },
   {
-    key: "projects",
-    label: "Projects",
-    description: "Open-source projects and implementations",
-    path: "/projects",
-    collections: collectionsConfig.filter((c) => c.parent === "projects"),
-  },
-  {
     key: "writing",
     label: "Writing",
     description: "Blog posts, tutorials, and essays",
@@ -120,5 +102,5 @@ export const getCategoryByKey = (key: string): CategoryConfig | undefined =>
   categoriesConfig.find((c) => c.key === key);
 
 export const getCollectionsByParent = (
-  parent: "research" | "projects" | "writing" | "cv",
+  parent: "research" | "writing" | "cv",
 ): CollectionConfig[] => collectionsConfig.filter((c) => c.parent === parent);

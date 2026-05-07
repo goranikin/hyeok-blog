@@ -2,8 +2,28 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
+  const lastUpdated = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "Asia/Seoul",
+  }).format(new Date());
+
   return (
     <>
+      <section className="pt-6">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12">
+          <div className="rounded-xl border border-[#EFEFEF] bg-[#FAFAFA] px-4 py-3 text-sm text-[#4A4A4A]">
+            <p>
+              <span className="font-semibold text-[#1A1A1A]">
+                Last updated:
+              </span>{" "}
+              {lastUpdated}
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Hero Section */}
       <section className="py-16 lg:py-24">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -112,6 +132,15 @@ export default function Home() {
                 />
               </div>
             </div>
+          </div>
+
+          <div className="flex justify-center mt-12">
+            <Link
+              href="/logbook"
+              className="px-6 py-3 border-2 border-[#6B5B3A] text-[#6B5B3A] rounded-lg font-medium hover:bg-[#6B5B3A] hover:text-white transition-all duration-300"
+            >
+              Visit the Logbook →
+            </Link>
           </div>
         </div>
       </section>

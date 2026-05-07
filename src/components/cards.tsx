@@ -91,7 +91,7 @@ export const WritingCard = ({
 
 // Featured Card (for home page highlights)
 interface FeaturedCardProps {
-  type: "paper" | "project" | "post";
+  type: "paper" | "post";
   title: string;
   description: string;
   link: string;
@@ -107,7 +107,6 @@ export const FeaturedCard = ({
 }: FeaturedCardProps) => {
   const typeLabels = {
     paper: "Recent Paper",
-    project: "Featured Project",
     post: "Latest Post",
   };
 

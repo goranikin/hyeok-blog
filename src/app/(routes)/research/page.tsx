@@ -128,7 +128,7 @@ export default async function ResearchPage() {
           ) : (
             <EmptyState
               title="Research publications coming soon!"
-              description="I'm currently working on exciting projects. Check back later for updates."
+              description="I'm currently working on exciting research. Check back later for updates."
             />
           )}
         </div>
