@@ -10,12 +10,40 @@ import type { LogbookEntry } from "./types";
 export default function LogbookPage() {
   const [selected, setSelected] = useState<LogbookEntry | null>(null);
   const viewerRef = useRef<HTMLDivElement>(null);
+  const selectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleSelect = (entry: LogbookEntry) => {
+    if (selectTimerRef.current) {
+      clearTimeout(selectTimerRef.current);
+    }
+
+    selectTimerRef.current = setTimeout(() => {
+      setSelected(entry);
+      selectTimerRef.current = null;
+    }, 500);
+  };
+
+  const handleClose = () => {
+    if (selectTimerRef.current) {
+      clearTimeout(selectTimerRef.current);
+      selectTimerRef.current = null;
+    }
+    setSelected(null);
+  };
 
   useEffect(() => {
     if (selected && viewerRef.current) {
       viewerRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [selected]);
+
+  useEffect(() => {
+    return () => {
+      if (selectTimerRef.current) {
+        clearTimeout(selectTimerRef.current);
+      }
+    };
+  }, []);
 
   return (
     <>
@@ -27,14 +55,14 @@ export default function LogbookPage() {
             entries={logbookEntries}
             slots={topicSlots}
             selected={selected}
-            onSelect={setSelected}
+            onSelect={handleSelect}
           />
 
           {selected && (
             <LogbookEmbeddedViewer
               selected={selected}
               viewerRef={viewerRef}
-              onClose={() => setSelected(null)}
+              onClose={handleClose}
             />
           )}
         </div>

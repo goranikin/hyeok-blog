@@ -20,6 +20,7 @@ type FloatingStyle = CSSProperties & {
   "--drift-y": string;
   "--float-duration": string;
   "--float-delay": string;
+  "--wave-delay": string;
 };
 
 export function LogbookTopicField({
@@ -40,6 +41,7 @@ export function LogbookTopicField({
           "--drift-y": slot.driftY,
           "--float-duration": slot.duration,
           "--float-delay": slot.delay,
+          "--wave-delay": `${index * 180}ms`,
         };
 
         return (
@@ -58,8 +60,10 @@ export function LogbookTopicField({
                 "transition-all duration-300 ease-out",
                 "hover:shadow-xl hover:-translate-y-1 hover:rotate-0",
                 "focus:outline-none focus:ring-2 focus:ring-[#6B5B3A] focus:ring-offset-2",
+                styles.topicButton,
                 slot.accent,
                 slot.rotate,
+                isActive && styles.activeTopicButton,
                 isActive && "ring-2 ring-[#6B5B3A] rotate-0 -translate-y-1",
               )}
             >
