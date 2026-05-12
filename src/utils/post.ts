@@ -1,4 +1,4 @@
-import { research, writing } from "#site/contents";
+import { research, studying, writing } from "#site/contents";
 
 export type Post = {
   permalink: string;
@@ -25,6 +25,9 @@ export const getPostBySlug = ({
       break;
     case "writing":
       posts = writing;
+      break;
+    case "studying":
+      posts = studying;
       break;
     default:
       posts = [];

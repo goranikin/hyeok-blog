@@ -10,5 +10,8 @@ export declare const research: Research[]
 export type Writing = Collections['writing']['schema']['_output']
 export declare const writing: Writing[]
 
+export type Studying = Collections['studying']['schema']['_output']
+export declare const studying: Studying[]
+
 export type Cv = Collections['cv']['schema']['_output']
 export declare const cv: Cv[]

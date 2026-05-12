@@ -1,4 +1,4 @@
-import { writing } from "#site/contents";
+import { studying } from "#site/contents";
 import { Card } from "@/components/cards";
 import {
   EmptyState,
@@ -7,46 +7,45 @@ import {
   SectionHeader,
 } from "@/components/collectionPageSections";
 import { getCollectionByKey } from "@/config/collections-new";
-import { Calendar } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import Link from "next/link";
 
-export default async function WritingPage() {
-  const collection = getCollectionByKey("writing");
+export default async function StudyingPage() {
+  const collection = getCollectionByKey("studying");
 
   if (!collection) {
     return null;
   }
 
-  // Sort posts by date (newest first)
-  const sortedPosts = [...writing].sort(
+  const sortedPosts = [...studying].sort(
     (a, b) =>
       new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime(),
   );
 
   const accentColors = [
-    "heather",
-    "olive",
     "sky",
-    "coral",
+    "olive",
+    "heather",
     "clay",
+    "coral",
     "cactus",
   ] as const;
 
   return (
     <>
       <PageHero
-        title="Writing"
-        description="Simple thoughts on my personal life."
+        title="Studying"
+        description="Notes and progress on what I'm learning — textbooks, courses, papers, and anything else I'm working through in a structured way."
+        subdescription="Separate from informal writing: this section is for organizing study material and milestones."
       />
 
       <SectionDivider />
 
-      {/* Posts Section */}
       <section className="py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <SectionHeader
-            title="All Posts"
-            description="Essays, tutorials, and reflections in reverse chronological order"
+            title="Topics & notes"
+            description="Study entries in reverse chronological order"
           />
 
           {sortedPosts.length > 0 ? (
@@ -61,7 +60,7 @@ export default async function WritingPage() {
 
                 return (
                   <Link
-                    href={`/writing/${post.slug}`}
+                    href={`/studying/${post.slug}`}
                     key={post.slug}
                     className="block h-full animate-fade-in"
                     style={{ animationDelay: `${index * 0.1}s` }}
@@ -73,7 +72,7 @@ export default async function WritingPage() {
                         </h3>
 
                         <div className="flex items-center gap-2 text-sm text-[#8A8A8A] mb-3">
-                          <Calendar className="h-4 w-4" />
+                          <BookOpen className="h-4 w-4" />
                           <time dateTime={post.publishDate}>
                             {formattedDate}
                           </time>
@@ -86,7 +85,7 @@ export default async function WritingPage() {
 
                       <div className="pt-2">
                         <span className="text-[#6B5B3A] hover:text-[#4A3F28] font-medium text-sm transition-colors duration-200 inline-flex items-center gap-1">
-                          Read Post →
+                          Open notes →
                         </span>
                       </div>
                     </Card>
@@ -96,8 +95,8 @@ export default async function WritingPage() {
             </div>
           ) : (
             <EmptyState
-              title="More writing coming soon!"
-              description="I'm working on new posts about AI, engineering, and everything in between."
+              title="No study notes yet"
+              description="Add MDX files under src/contents/studying/ to show them here."
             />
           )}
         </div>

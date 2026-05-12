@@ -10,8 +10,8 @@ export type CollectionConfig = {
   label: string;
   /** Description text */
   description: string;
-  /** Parent category (research, writing, cv) */
-  parent: "research" | "writing" | "cv";
+  /** Parent category (research, writing, studying, cv) */
+  parent: "research" | "writing" | "studying" | "cv";
   /** Content file pattern for Velite */
   pattern: string;
   /** Base URL path */
@@ -21,7 +21,7 @@ export type CollectionConfig = {
 };
 
 export type CategoryConfig = {
-  key: "research" | "writing" | "cv";
+  key: "research" | "writing" | "studying" | "cv";
   label: string;
   description: string;
   path: string;
@@ -50,6 +50,17 @@ export const collectionsConfig: CollectionConfig[] = [
     pattern: "writing/**/*.mdx",
     path: "/writing",
     categoryPath: "writing",
+  },
+
+  // Studying collection (courses, books, structured learning notes)
+  {
+    key: "studying",
+    label: "Studying",
+    description: "What I'm learning — courses, books, and study notes",
+    parent: "studying",
+    pattern: "studying/**/*.mdx",
+    path: "/studying",
+    categoryPath: "studying",
   },
 
   // CV collection (optional - if you want CV sections as MDX)
@@ -81,6 +92,13 @@ export const categoriesConfig: CategoryConfig[] = [
     collections: collectionsConfig.filter((c) => c.parent === "writing"),
   },
   {
+    key: "studying",
+    label: "Studying",
+    description: "Organized notes on what I'm studying",
+    path: "/studying",
+    collections: collectionsConfig.filter((c) => c.parent === "studying"),
+  },
+  {
     key: "cv",
     label: "CV",
     description: "Curriculum Vitae",
@@ -102,5 +120,5 @@ export const getCategoryByKey = (key: string): CategoryConfig | undefined =>
   categoriesConfig.find((c) => c.key === key);
 
 export const getCollectionsByParent = (
-  parent: "research" | "writing" | "cv",
+  parent: "research" | "writing" | "studying" | "cv",
 ): CollectionConfig[] => collectionsConfig.filter((c) => c.parent === parent);

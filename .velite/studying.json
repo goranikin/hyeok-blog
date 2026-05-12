@@ -1,0 +1,10 @@
+[
+  {
+    "title": "Studying log",
+    "description": "A dedicated place for courses, books, and structured learning notes.",
+    "slug": "welcome",
+    "publishDate": "2026-05-12",
+    "content": "const{jsx:e,jsxs:n}=arguments[0];function _createMdxContent(r){const t={p:\"p\",strong:\"strong\",...r.components};return n(t.p,{children:[\"This is where I collect what I am studying in an organized way: syllabi, chapter notes, exercises, and pointers to papers or lectures — separate from longer essays in \",e(t.strong,{children:\"Writing\"}),\" or formal work in \",e(t.strong,{children:\"Research\"}),\".\"]})}return{default:function(n={}){const{wrapper:r}=n.components||{};return r?e(r,{...n,children:e(_createMdxContent,{...n})}):_createMdxContent(n)}};",
+    "permalink": "/studying/welcome"
+  }
+]

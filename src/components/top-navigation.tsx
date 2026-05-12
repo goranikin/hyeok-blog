@@ -16,6 +16,7 @@ export const navigationItems: NavItem[] = [
   { href: "/", label: "Home" },
   { href: "/research", label: "Research" },
   { href: "/writing", label: "Writing" },
+  { href: "/studying", label: "Studying" },
   { href: "/cv.pdf", label: "CV" },
 ];
 

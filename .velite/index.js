@@ -2,4 +2,5 @@
 
 export { default as research } from './research.json'
 export { default as writing } from './writing.json'
+export { default as studying } from './studying.json'
 export { default as cv } from './cv.json'
