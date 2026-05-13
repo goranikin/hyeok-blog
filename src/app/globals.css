@@ -207,27 +207,45 @@
   margin: 1.5em 0;
 }
 
+/* Inline `code` — reset inside <pre> so Shiki tokens control color */
 .prose code {
-  background-color: var(--color-bg-oat);
-  padding: 0.2em 0.4em;
-  border-radius: 0.25rem;
-  font-size: 0.875em;
+  background-color: #ebe6dc;
+  border: 1px solid #ddd4c8;
+  padding: 0.15em 0.45em;
+  border-radius: 0.3rem;
+  font-size: 0.88em;
   font-weight: 500;
-  color: var(--color-text-primary);
+  color: #2d2419;
   font-family: var(--font-mono);
 }
 
 .prose pre {
   padding: 1.25em;
   border-radius: 0.5rem;
-  line-height: 1.7;
+  line-height: 1.65;
   background-color: var(--color-bg-oat);
+  position: relative;
+  overflow-x: auto;
+}
+
+/* Shiki: black panel + light syntax tokens (theme: github-dark in velite.config.js) */
+.prose pre.shiki {
+  padding: 1rem 1.15rem;
+  background-color: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
 }
 
 .prose pre code {
-  background-color: transparent;
-  padding: 0;
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0 !important;
   font-weight: 400;
+  font-size: 0.875rem;
+  color: inherit;
+  display: block;
+  width: max-content;
+  min-width: 100%;
 }
 
 .prose table {
@@ -275,12 +293,6 @@
 .prose img {
   opacity: 0;
   animation: fadeIn 0.5s ease-out 0.1s forwards;
-}
-
-/* Code block improvements */
-.prose pre {
-  position: relative;
-  overflow-x: auto;
 }
 
 /* Focus visible for accessibility */

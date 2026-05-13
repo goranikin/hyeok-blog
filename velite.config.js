@@ -60,7 +60,10 @@ export default defineConfig({
   },
   collections: generateCollections(),
   mdx: {
-    rehypePlugins: [[rehypeShiki, { theme: "github-light" }], rehypeKatex],
+    rehypePlugins: [
+      [rehypeShiki, { theme: "github-dark" }],
+      rehypeKatex,
+    ],
     remarkPlugins: [[remarkMath]],
   },
 });
