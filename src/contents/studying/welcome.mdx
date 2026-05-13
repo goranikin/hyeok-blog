@@ -116,5 +116,15 @@ For the outermost layer, $a_3$ is equal to $\hat{y}$ and $\partial{L}/\partial{\
 And that's it! Let's apply it to the problem.
 ![gradient 4](/writing/backprop/gradient_4.png)
 
-I'm planning to write similar posts regarding LSTM, Transformer, GNN, and also other activation functions.
-See you soon!
+I'm planning to spend a week to study similar problems.
+Here's my schedule made by Claude!
+
+| Tier | Task | What it teaches | Verification target |
+|------|------|-----------------|---------------------|
+| 1 | 1 | Add bias terms $b_i$ to each layer: $z_i = W_i a_{i-1} + b_i$ | The gradient of an additive term is just the upstream delta: $\partial L / \partial b_i = \delta_i$ | $b_i$.grad matches `torch.autograd` to ~$10^{-7}$ |
+| 2 | 1 | Batch the inputs: change $x: (d_{\text{in}},)$ to $X: (B, d_{\text{in}})$ | Outer product generalizes to a matrix product $\delta^\top \cdot a_{\text{prev}} / B$; batching is where hand-derived gradients usually break | $W_i$.grad matches autograd for $B = 1, 8, 32$ |
+| 3 | 1 | Replace MSE with softmax + cross-entropy at the output: $L = -\sum y \log p$ where $p = \text{softmax}(z_L)$ | The output gradient collapses to the famous $(p - y) / B$ — derive by hand and see why the softmax Jacobian and CE gradient cancel | $z_L$.grad equals $(p - y) / B$ exactly |
+| 4 | 1 | Add ReLU as a second activation: $a = \max(0, z)$, derivative $\mathbf{1}[z > 0]$ | How to handle a non-smooth activation; subgradient convention at $z = 0$ | Train on the same task with tanh vs. ReLU; verify both backward passes |
+| 5 | 2 | Implement a 1D convolution layer end-to-end (forward + backward) | Weight sharing: $\partial L / \partial W = \sum_t \delta_t \cdot a_{\text{prev}, t\text{-shifted}}^\top$. The backward of a conv is itself a conv (with a flipped kernel) | Match `torch.nn.functional.conv1d` gradients |
+| 6 | 2 | Implement layer normalization with manual backward | Backprop through $(x - \mu) / \sigma$ couples every input via mean and std — the trickiest "clean" derivation in standard DL | Match `torch.nn.LayerNorm` gradients |
+| 7 | 2 | Build micrograd from scratch (~100 lines, scalar autograd engine) | Backprop is graph traversal, not per-architecture derivation. Once built, any expressible graph backprops itself | Train a small MLP on toy data using your engine |
