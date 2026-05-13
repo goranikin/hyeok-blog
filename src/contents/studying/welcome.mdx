@@ -116,6 +116,84 @@ For the outermost layer, $a_3$ is equal to $\hat{y}$ and $\partial{L}/\partial{\
 And that's it! Let's apply it to the problem.
 ![gradient 4](/writing/backprop/gradient_4.png)
 
+Here's the code.
+```python
+import logging
+
+import torch
+
+# In this file, there is a 3-layer neural network.
+# I'm going to compute each gradient step by step, not using a library.
+
+
+def main():
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+    logger = logging.getLogger(__name__)
+    torch.manual_seed(42)
+
+    d_in, d_h, d_out = 4, 8, 3
+
+    W1 = torch.randn((d_h, d_in)) * 0.5
+    W2 = torch.randn((d_h, d_h)) * 0.5
+    W3 = torch.randn((d_out, d_h)) * 0.5
+
+    x = torch.randn((d_in,))
+    y_true = torch.randn((d_out,))
+
+    logger.info(f"x: {x}")
+    logger.info(f"y_true: {y_true}")
+
+    # You can change this to see how the learning rate affects the backpropagation.
+    alpha = 0.1
+
+    for step in range(5):
+        # (d_in, ) -> (d_h, )
+        z1 = torch.matmul(W1, x)
+        a1 = torch.tanh(z1)
+
+        # (d_h, ) -> (d_h, )
+        z2 = torch.matmul(W2, a1)
+        a2 = torch.tanh(z2)
+
+        # (d_h, ) -> (d_out, )
+        z3 = torch.matmul(W3, a2)
+        a3 = torch.tanh(z3)
+
+        y_hat = a3
+
+        loss = torch.mean((y_hat - y_true) ** 2)
+        logger.info(f"Step {step}, Loss: {loss.item()}")
+
+        # We want dL/dWi for each entry of W to update the parameters.
+        dL_dy_hat = (2.0 / d_out) * (y_hat - y_true)
+        dL_dz3 = dL_dy_hat * (1 - a3**2)
+        dL_dW3 = torch.outer(dL_dz3, a2)
+
+        dL_da2 = torch.matmul(W3.T, dL_dz3)
+        dL_dz2 = dL_da2 * (1 - a2**2)
+        dL_dW2 = torch.outer(dL_dz2, a1)
+
+        dL_da1 = torch.matmul(W2.T, dL_dz2)
+        dL_dz1 = dL_da1 * (1 - a1**2)
+        dL_dW1 = torch.outer(dL_dz1, x)
+
+        W1 -= alpha * dL_dW1
+        W2 -= alpha * dL_dW2
+        W3 -= alpha * dL_dW3
+
+        logger.info(
+            f"  step {step}: loss={loss:7.4f}   "
+            f"||dL/dW1||={torch.norm(dL_dW1):.3f}  "
+            f"||dL/dW2||={torch.norm(dL_dW2):.3f}  "
+            f"||dL/dW3||={torch.norm(dL_dW3):.3f}"
+            f"y_hat: {y_hat}"
+        )
+
+
+if __name__ == "__main__":
+    main()
+```
+
 I'm planning to spend a week to study similar problems.
 Here's my schedule made by Claude!
 
