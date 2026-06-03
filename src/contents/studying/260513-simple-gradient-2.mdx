@@ -1,0 +1,34 @@
+---
+title: A simple gradient and backpropagation tutorial
+publishDate: 2026-05-13
+description: Don't use a library, but do implement what it exactly is.
+---
+
+In the previous post, I made a mistake. The tanh function is applied to
+the last output value, so $y_pred$ is caught on [-1, 1].
+
+I changed from
+```python
+a3 = torch.tanh(z3)
+
+dL_dz3 = dL_dy_hat * (1 - a3**2)
+```
+to
+```python
+# remove
+# a3 = torch.tanh(z3)
+
+# identity
+dL_dz3 = dL_dy_hat
+```
+
+If I don't use the normal distribution to generate random x and y values, the loss will seem to be wrong.
+
+---
+
+2026.06.04
+
+I've been studying the book "Reinforcement Learning: An Introduction" by Sutton.
+Yes, I know it would be better to organize what I've learned on my blog, but honestly, I just don't have
+the time to recap right now. I'm planning to write about everything I've done after the semeter ends,
+including the reinforcement learning material.
